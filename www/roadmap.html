@@ -1,0 +1,114 @@
+        <div data-role="page" class="vrn-page" id="vrn-roadmap-page">
+        
+            <div data-role="header" class="vrn-header" id="vrn-roadmap-header" data-position="fixed" data-tap-toggle="false"> </div>
+            
+            <div data-role="content" class="vrn-content vrn-roadmap-filter-top">
+                <div id="vrn-roadmap-div">
+                    <fieldset class="ui-grid-a" id="ui-grid-a-roadmap">
+                        <div class="ui-block-a">
+                            <a href="#vrn-filter-roadmap-popup" id="vrn-filter-roadmap-button" data-rel="popup" data-role="button" data-icon="arrow_down"
+                               data-iconpos="right">Filtrer les tournées</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="#vrn-roadmap-add-page" id="vrn-create-roadmap-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer une tournée</a>
+                        </div>
+                    </fieldset>
+                    <!--<div class="ui-grid-a">
+                        <div class="ui-block-a" style="padding-left:5%; width:45%;">
+                            <div data-role="collapsible" data-collapsed="true" data-inline="true">
+                                
+                                <h3>Sorting Options</h3>
+                                <div data-role="controlgroup" >
+                                    <input type="radio"  data-theme="c" name="radio-choice-1" id="datePosted" value="1" onchange='_search.sort("datePosted")'/>
+                                    <label for="datePosted">Added</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-block-b" style="padding-left:5%; width:45%;">
+                            <div data-role="collapsible" data-collapsed="true" data-inline="true">
+                                
+                                <h3 >Search Options</h3>
+                                <div data-role="controlgroup" >
+                                    <input type="radio"  data-theme="c" name="radio-choice-2" id="datePosted2" value="1" onchange='_search.sort("datePosted")'/>
+                                    <label for="datePosted2">Added</label>
+                                </div>
+                            </div>/Users/benelhadj/Downloads/Quartet 2013 FRENCH DVDRiP XviD-CARPEDIEM-.avi
+                        </div>
+                    </div>-->
+
+                    <div data-role="collapsible" id="vrn-roadmap-filter-collapsible" class="vrn-roadmap-filter-details">
+                        <h3>Filter</h3>
+                        <p>Par date:</p>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <input id="vrn-filter-roadmap-start-date" type="date" data-clear-btn="false" name="vrn-filter-roadmap-start-date">
+                            </div>
+                            <div class="ui-block-b">
+                                <!-- <label for="vrn-filter-roadmap-end-date">au</label>-->
+                                <input id="vrn-filter-roadmap-end-date" type="date" data-clear-btn="true" name="vrn-filter-roadmap-end-date">
+                            </div>
+                        </fieldset>
+                        <div data-role="fieldcontain">
+                            <label for="vrn-filter-roadmap-area">Par Secteur:</label>
+                            <select id="vrn-filter-roadmap-area" name="vrn-filter-roadmap-area" data-icon="arrow_down">
+                                <option value="option0">
+                                    TOUTES LES ZONES       
+                                </option>       
+                            </select>
+                        </div>
+                        <fieldset class="ui-grid-b">
+                            <div class="ui-block-a">
+                                <a href="#" id="vrn-filter-roadmap-clear-button">Supprimer tous les filtres >></a>
+                            </div>
+                            <div class="ui-block-b">
+                                <a href="#" id="vrn-filter-roadmap-cancel-button" data-role="button">Annuler</a>
+                            </div>
+                            <div class="ui-block-c">
+                                <a href="#" id="vrn-filter-roadmap-apply-button" data-role="button">Filtrer</a>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <br>
+                    <ul data-role="listview" id="vrn-roadmap-list">
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Settings popup -->
+            <div data-role="popup" id="settings-popup">
+                <div data-role="header">
+                    <h2>Settings</h2>
+                </div>
+                <div data-role="content">
+                    <p>This feature was added here because jquerymobile does not support more than 5 items into the footer navbars.</p>
+                    <p>
+                        See <a href="http://jquerymobile.com/demos/1.3.0/docs/widgets/navbar/">http://jquerymobile.com/demos/1.3.0/docs/widgets/navbar/</a>
+                </div>
+            </div>
+
+            <!-- Settings popup -->
+            <div data-role="popup" id="vrn-filter-roadmap-popup">
+                <div data-role="header">
+                    <h2>Collapsibles</h2>
+                </div>
+                <div data-role="content">
+                    <p>JQM expands collapsibles immediately below this their header and with a width equal to the header.</p>
+                    <p>We tried to put a collapsible below this button, without header and having the width of the page, and then to programatically
+                        expand it - but this does not work yet.</p>
+                    <p>Please expand the section presented below.</p>
+                </div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+                <div id="vrn-footer-navbar">
+                    <ul> 
+                      <li class="vrn-footer-navbar-li"><a href="homepage.html" id="vrn-taskboard" class="btn " data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li> 
+                      <li class="vrn-footer-navbar-li"><a href="inform.html" id="vrn-watchword" class="btn " data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li> 
+                      <li class="vrn-footer-navbar-liselected"><a href="roadmap.html" id="vrn-roadmap" class="btn-selected" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li> 
+                      <li class="vrn-footer-navbar-li"><a href="pos.html" id="vrn-pos" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li> 
+                      <li class="vrn-footer-navbar-li"><a href="stats.html" id="vrn-stats" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li> 
+                      <li class="vrn-footer-navbar-li"><a href="params.html" id="vrn-params" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li> 
+                    </ul>
+                </div>
+            </div>
+        </div>

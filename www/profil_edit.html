@@ -1,0 +1,63 @@
+        <div data-role="page" class="vrn-page" id="vrn-profil-edit-page">
+
+            <div data-role="header" class="vrn-header" id="vrn-profil-edit-header" data-position="fixed" data-tap-toggle="false"> </div>
+            
+            <!-- Content -->
+            <div data-role="content" class="vrn-content">
+                <div id="vrn-profil-edit-div">
+                    <fieldset class="ui-grid-a" id="ui-grid-a-edit">
+                        <div class="ui-block-a">
+                            <a href="#vrn-home-page" id="vrn-return-button" data-role="button">retour</a>
+                        </div>
+                        <div class="ui-block-b" id="vrn-edit-profil">
+                            <p>éditer mon profil</p>
+                        </div> 
+                    </fieldset>
+
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a" id="ui-block-profil-part-left">
+                            <!-- <img alt="" src="css/images/vrn/forma4.png" id="vrn-icon-men"> -->  
+                            <div id="profil_circle">
+                                <div class="vrn-profil-circle">
+                                    <div id="profil-small-circle">
+                                    </div>  
+                                    <div class="halfCircle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-block-b"  id="ui-block-profil-part-right">
+                            <input type="text" name="lastname" id="vrn-lastname" placeholder="Nom" value="">
+                            <input type="text" name="firstname" id="vrn-firstname" placeholder="Prénom" value="">
+                            <div class="profil-details">
+                                <input type="text" name="email" id="vrn-email" placeholder="Adresse email" value="">
+                                <input type="text" name="identif" id="vrn-identif" placeholder="Identifiant" value="">
+                                <input type="text" name="phone" id="vrn-phone" placeholder="téléphone" value="">
+                            </div>
+                            <div class="profil-details">
+                                <select id="vrn-profil-zone" name="vrn-profil-zone" data-icon="arrow_down">
+                                    <option value="option0">
+                                        ZONE      
+                                    </option>       
+                                </select>
+                            </div>
+                            <select id="vrn-profil-language" name="vrn-profil-language" data-icon="arrow_down">
+                                <option value="option0">
+                                    LANGUE     
+                                </option>       
+                            </select>
+                            <a href="#" id="vrn-white-enregistrer" data-role="button" data-icon="enregistrer_white" data-iconpos="right" data-inline="true">Enregistrer</a>
+
+                        </div>
+                    </div>
+                    <div id="pass_details">    
+                        <a href="#" id="vrn-change-pass" data-role="button" data-icon="change-pass"
+                           data-iconpos="right">Changer son mot de passe</a>
+                        <a href="#" id="vrn-connect-button" data-role="button" data-icon="connect"
+                           data-iconpos="right">Se connecter avec un autre compte</a>
+                    </div>               
+                </div>
+            </div>
+
+            <div data-role="footer" id="vrn-profil-edit-footer" data-position="fixed" data-tap-toggle="false"></div>
+
+        </div>

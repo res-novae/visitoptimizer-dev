@@ -1,0 +1,54 @@
+        <div data-role="page" class="vrn-page" id="vrn-roadmap-edit-page">
+
+            <div data-role="header" class="vrn-header" id="vrn-roadmap-edit-header" data-position="fixed" data-tap-toggle="false"> </div>
+            
+            <div data-role="content" class="vrn-content">
+                <div id="vrn-roadmap-creation-div">
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a href="#vrn-roadmap-page" id="vrn-roadmap-retour-button" data-role="button" data-transition="slide" data-direction="back">retour</a>
+                        </div>
+                        <div class="ui-block-b" id="ui-create-roadmap">
+                            Editer une tournée
+                        </div>
+                    </fieldset> 
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <input id="vrn-roadmap-date" type="text" name="vrn-roadmap-date" placeholder="DATE">
+                                
+                        </div>
+                        <div class="ui-block-b">
+                            <select id="vrn-roadmap-zone" name="vrn-roadmap-zone" data-icon="arrow_down">
+                                <option value="option0">
+                                    zone géographique      
+                                </option>       
+                            </select>
+                        </div>
+                    </fieldset> 
+                    <fieldset class="ui-grid-a" id="ui-grid-creation">
+                        <div class="ui-block-a" id="ui-block-no-pdv">
+                            <div id="no-pdv-text">Nbr de Points De Vente</div>
+                            <input id="vrn-roadmap-edit-no-pdv" type="text" data-clear-btn="false" name="vrn-roadmap-edit-no-pdv" placeholder="" class="centerText">
+                        </div>
+                        <div class="ui-block-b" id="ui-block-add">
+                            <a href="#vrn-roadmap-edit-page" data-rel="dialog" id="vrn-ajouter-pdv-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">  Ajouter un point de vente</a>
+                        </div>
+                    </fieldset> 
+                    <ol data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-edit-list">      
+                    </ol>
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a href="#" id="vrn-optimiser-button" data-role="button" class="ui-icon-test">Optimiser ma tournée</a>
+                                  
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="#" id="vrn-enregistrer-button-roadmap-creation" data-role="button" data-icon="enregistrer"
+                               data-iconpos="right">Enregistrer</a>
+                        </div>
+                    </fieldset>   
+                </div>
+            </div>
+
+            <div data-role="footer" id="vrn-roadmap-edit-footer" data-position="fixed" data-tap-toggle="false"></div>
+
+        </div>

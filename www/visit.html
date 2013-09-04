@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Running visit bloc in others headings</title>
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.3.0.min.css">
+        <script src="lib/jquery/jquery-1.9.1.min.js"></script>
+        <script src="lib/jquery/jquery.mobile-1.3.0.min.js"></script>
+        <link rel="stylesheet" href="css/app.css">
+
+    </head>
+    <body>
+        <div data-role="page" class="vrn-page" id="vrn-visit-page">
+
+            <!-- Header, filled by app.controller -->
+            <div data-role="header" class="vrn-header" data-position="fixed" data-tap-toggle="false">
+                <span class="ui-title"></span>
+                <div class="ui-btn-right vrn-header-controls">
+                    <span id="vrn-orange">Visit Optimizer</span>
+                    <!--  -->
+                    <a href="#" id="vrn-connectivity" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false"
+                       data-icon="circle" data-iconpos="left"  data-theme="without_border" class="app-theme-none"></a>
+                    <!--  -->
+                    <a href="profil.html" id="vrn-settings" data-role="button" data-inline="true" data-mini="true" data-shadow="false"
+                        data-iconshadow="false" data-icon="settings" data-iconpos="notext"  data-theme="without_border" class="app-theme-none">Settings</a>
+                    <!--  -->
+                    <a href="#help-popup" id="vrn-help" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false"
+                       data-icon="help" data-iconpos="notext" data-rel="popup" data-theme="without_border" class="app-theme-none">Help</a>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div data-role="content" class="vrn-content">
+                <div id="vrn-visit-div">
+                    <fieldset class="ui-grid-a" id="ui-grid-visit-cours">
+                        <div class="ui-block-a" id="ui-block-a-visite">
+                            <span id="visite-span">Visite en cours</span>
+                        </div>
+                        <div class="ui-block-b" id="vrn-question-back">
+                            <span id="vrn-revenir-text"><span id="vrn-ques-font">Revenir au</span> Questionnaire</span>
+                           
+                                <a href="questionnaire.html"><img src="css/images/vrn/forma1_3.png" id="om">
+                        </div>
+                    </fieldset>
+                    <fieldset class="ui-grid-a" id="ui-grid-a-visit">
+                        <div class="ui-block-a">
+                            <a href="#" id="vrn-filter-pos-button" data-role="button" data-icon="arrow_down"
+                               data-iconpos="right">Filtrer les PDV</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="pos_details.html" id="vrn-create-pos-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer un PDV</a>
+                        </div>
+                    </fieldset>
+                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-visit-list">      
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="height:69px; top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence</span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">cidut labore </span> <span class="type">- Agence </span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 14</span></span><span class="vrn-name">lorem ipsum</span> <span class="type">- Agence</span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">Dolorem incidut</span> <span class="type">- Agence </span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">incidut labore</span> <span class="type">- Agence</span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">rem incidut labore</span> <span class="type">- Agence </span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">cidut labore</span> <span class="type">- Agence </span> </a></li>
+                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence </span> </a></li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- Footer, filled by app.controller -->
+            <div data-role="footer" data-id="vrn-footer" data-theme="g" class="bgimg" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="homepage.html" id="vrn-taskboard" data-icon="task" class="" data-prefetch="true">Taskboard</a></li>
+                        <li><a href="roadmap.html" id="vrn-roadmap" data-prefetch="true" data-icon="road">Tournées</a></li>
+                        <li><a href="#" id="vrn-pos" data-prefetch="true" data-icon="pos-pressed" class="ui-btn-active ui-state-persist">PDV</a></li>
+                        <li><a href="inform.html" id="vrn-watchword" data-prefetch="true" data-icon="inform">Consignes</a></li>
+                        <li><a href="stats.html" id="vrn-stats" data-prefetch="true" data-icon="stats">Stats</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

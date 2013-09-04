@@ -1,0 +1,63 @@
+        <div data-role="page" class="vrn-page" id="vrn-pos-details-page">
+            
+            <div data-role="header" class="vrn-header" id="vrn-pos-details-header" data-position="fixed" data-tap-toggle="false"> </div>
+            
+            <!-- Content -->
+            <div data-role="content" class="vrn-content">
+                <div id="vrn-pos-div">
+                    <fieldset class="ui-grid-a" id="ui-grid-a-pos">
+                        <!--<a href="#" class="try back black">Back</a>-->
+                        <div class="ui-block-a">
+                            <a href="pos.html" id="vrn-retour-button" data-role="button" data-theme="f">retour</a>
+                        </div>
+                        <div class="ui-block-b" id="vrn-create-pdv">
+                            <p>créer un POINT DE VENTE</p>
+                        </div> 
+                    </fieldset>
+
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a" id="ui-block-a-form3">
+                            <img alt="" src="css/images/vrn/forma3.png" style="padding-top: 5px;"> 
+                        </div>
+                        <div class="ui-block-b"  id="ui-block-nom-pdv">
+                            <input type="text" name="pdv_name" id="vrn-name-pdv" placeholder="Nom du point de vente" value="">
+                        </div>
+                    </div>
+
+                    <div id="ui-block-a-fieldset">
+                        <div class="ui-grid-solo">
+                            <div class="ui-block-a"> <input type="text" name="street" id="vrn-street" placeholder="N° et Nom de la rue" value=""></div>
+                        </div>    
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" id="ui-block-code-postal"> <input type="text" name="code_postal" id="vrn-code-postal" placeholder="Code postal" value=""></div>
+                            <div class="ui-block-b" id="ui-block-city"> <input type="text" name="city" id="vrn-city" placeholder="Nom de la ville" value=""></div>	   
+                        </div>
+                    </div>
+
+                    <div id="ui-block-b-fieldset">
+                        <div class="ui-grid-solo">
+                            <div class="ui-block-a"> <input type="text" name="contact_name" id="vrn-contact-name" placeholder="Nom du contact" value=""></div>
+                        </div>    
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" id="ui-block-telephone"> <input type="text" name="telephone" id="vrn-telephone" placeholder="Téléphone" value=""></div>
+                            <div class="ui-block-b" id="ui-block-email"> <input type="text" name="email" id="vrn-email" placeholder="Adresse email" value=""></div>	   
+                        </div>
+                    </div>
+
+                    <textarea name="description" id="textarea-description"> Description    
+                    </textarea>
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a href="#" id="vrn-ajouter-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">ajouter un champs</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="#" id="vrn-enregistrer-button" data-role="button" data-icon="enregistrer"
+                               data-iconpos="right">Enregistrer</a>
+                        </div>
+                    </fieldset>   
+                </div>
+            </div>
+            
+            <div data-role="footer" id="vrn-pos-details-footer" data-position="fixed" data-tap-toggle="false"></div>
+
+        </div>

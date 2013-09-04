@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Roadmap (PoS identity)</title>
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+		<link type="text/css" rel="stylesheet" href="css/jquery-mobile-1.0/jquery.mobile.css" />
+        
+		<link type="text/css" rel="stylesheet" href="css/mobile.css" />
+        
+		<script type="text/javascript" src="js/modernizr.min.js"></script>
+        
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+        
+		<script type="text/javascript" src="lib/jquery/jquery-1.9.1.min.js"></script>
+        
+		<script type="text/javascript" src="lib/jquery-mobile/jquery.mobile-1.3.0.min.js"></script>
+        
+		<script type="text/javascript" src="js/jquery-ui/jquery.ui.autocomplete.min.js"></script>
+        
+		<script type="text/javascript" src="js/jquery-ui-map/demo.js"></script>
+        
+		<script type="text/javascript" src="js/jquery-ui-map/jquery.ui.map.js"></script>
+        
+		<script type="text/javascript" src="js/jquery-ui-map/jquery.ui.map.services.js"></script>
+        
+		<script type="text/javascript" src="js/jquery-ui-map/jquery.ui.map.extensions.js"></script>
+        <link rel="stylesheet" href="css/app.css">
+        <script src=http://maps.googleapis.com/maps/api/js?sensor=true></script>
+    </head>
+    <body>
+
+        <div data-role="page" id="vrn-map" data-add-back-btn="true">
+            <div data-role="header" id="vrn-header-map">
+                <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <!--<a href="identity.html" id="vrn-maps-retour-button" data-role="button" data-theme="f" data-inline="true">retour</a>-->
+                            <a href="identity.html" class="button back black"><span></span>retour</a>
+                        </div>
+                        <div class="ui-block-b" id="ui-maps-block">
+                          <img alt="" src="./css/images/vrn/forma1_5.png"> 
+                        </div>
+                    </fieldset> 
+            </div>
+            <div data-role="content">              
+            </div>
+        </div>
+
+    </body>
+</html>
+
+<script>
+        var lat = 48;
+        var lng = 2.37;
+        var latlng = new google.maps.LatLng (lat, lng);
+        var options = { 
+            zoom : 15, 
+            center : latlng, 
+            mapTypeId : google.maps.MapTypeId.ROADMAP 
+        };
+        var $content = $("#vrn-map div:jqmData(role=content)");
+        $content.height (screen.height - 50);
+        var map = new google.maps.Map ($content[0], options);
+
+        new google.maps.Marker ( 
+        { 
+            map : map, 
+            animation : google.maps.Animation.DROP,
+            position : latlng  
+
+        });  
+
+
+</script>
