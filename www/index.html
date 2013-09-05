@@ -31,16 +31,28 @@
 
         <!--<script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>-->
         <script type="text/javascript" charset="utf-8">
-            //document.addEventListener("deviceready", onDeviceReady, false);
+            
             function onDeviceReady() {
-                
-                isReady();
-                
+                init();
             }
+            
+            function onDeviceReadyChrome() {
+                isReady();
+            }
+            
+            var nav = navigator.userAgent; 
+            var ischrome = nav.indexOf("Chrome") ? true : false;
+            
+            if (ischrome) {
+                document.addEventListener("onloadpage", onDeviceReadyChrome, false);
+            }else{
+                document.addEventListener("deviceready", onDeviceReady, false);
+            }
+            
         </script>
         <title>Index</title>
     </head>
-    <body onLoad="onDeviceReady()">
+    <body onLoad="">
         <!-- index loading -->
      	<div data-role="page" class="vrn-page" id="vrn-index-loading" data-position="fixed" data-transition="slide">
     		<div data-role="content">

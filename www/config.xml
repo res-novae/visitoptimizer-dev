@@ -3,7 +3,7 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.resnovae.dev.visitoptimizer"
+        id        = "fr.resnovae.dev.visitoptimizer"
         versionCode = "10"
         version   = "1.0.0">
         
@@ -14,7 +14,7 @@
     </description>
 
     <author href="http://phonegap.com" email="support@phonegap.com">
-        BAGS Team
+        VO Team
     </author>
 
    
@@ -102,7 +102,7 @@
 	
 	
     <!-- Define app icon for each platform. -->
-    <icon src="img/logo.png" />
+    <icon src="icon.png" />
     <icon src="res/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:density="ldpi" />
     <icon src="res/icon/android/icon-48-mdpi.png"   gap:platform="android"    gap:density="mdpi" />
     <icon src="res/icon/android/icon-72-hdpi.png"   gap:platform="android"    gap:density="hdpi" />
