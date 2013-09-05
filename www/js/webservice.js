@@ -32,11 +32,11 @@ app.webservice = (function() {
 		var serviceUrl = webservice.RETAIL_SERVICE_URL + webservice_type;
 		app.log("app.webservice: executing post " + serviceUrl);
 		// console.log("app.service: " + JSON.stringify(requestObject));
-		
+		/*
 		$.ajaxPrefilter('json', function(options, orig, jqXHR) {
 		    if (options.crossDomain && !$.support.cors) return 'jsonp'
 		});
-		
+		*/
 		ajaxAsyncTask.jqXHR = $.ajax({
 		    crossDomain : true,
 		    url : serviceUrl,

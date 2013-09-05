@@ -33,7 +33,8 @@
         <script type="text/javascript" charset="utf-8">
             
             function onDeviceReady() {
-                init();
+                alert('start');
+                app.init();
             }
             
             function onDeviceReadyChrome() {
@@ -44,11 +45,11 @@
             var ischrome = nav.indexOf("Chrome") ? true : false;
             
             if (ischrome) {
-                document.addEventListener("onloadpage", onDeviceReadyChrome, false);
+                onDeviceReadyChrome(); 
             }else{
-                document.addEventListener("onloadpage", onDeviceReady, false);
+                
             }
-            
+            document.addEventListener("onDeviceReady", onDeviceReady, false);
         </script>
         <title>Index</title>
     </head>

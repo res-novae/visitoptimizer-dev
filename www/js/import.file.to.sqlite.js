@@ -19,9 +19,8 @@ app.importFile = (function() {
 
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
         
-        var a = dump_data.split(/\r\n|\r|\n/);
-        for (var i = 0; a.length > i; ++i) {
-            var rsql = a[i];
+        for (var i = 0; dd.length > i; ++i) {
+            var rsql = dd[i];
             $.when(saveToDB(rsql,(i+1))).done(function(theResultSet) {
 
             } );
@@ -73,7 +72,7 @@ app.importFile = (function() {
     
     var dd = new Array();
     var i = 0;
-    dd[i] = 'CREATE TABLE IF NOT EXISTS Translation (id INTEGER, value, languageId INTEGER)';
+    dd[i++] = 'CREATE TABLE IF NOT EXISTS Translation (id INTEGER, value, languageId INTEGER)';
     dd[i++] = 'CREATE TABLE IF NOT EXISTS language (id INTEGER UNIQUE, name, shortName)';
     dd[i++] = 'CREATE TABLE IF NOT EXISTS User (id INTEGER UNIQUE, parent_id INTEGER, user_category_id INTEGER, username, password, lastname, firstname, email, phone, preferred_language_id INTEGER, target_val)';
     dd[i++] = 'CREATE TABLE IF NOT EXISTS Settings (id INTEGER UNIQUE, defaultLanguageId INTEGER, userId INTEGER)';

@@ -70,7 +70,7 @@ app.controller = (function() {
                                     controller.last_sync = new app.domain.sync_infos(id,sync_id,userId, date);
                                     
                                     // show TASKBOARD
-                                    $.mobile.changePage($('#vrn-home-page'), {
+                                    $.mobile.changePage("homepage.html", {
                                        transition:"slide",
                                        changeHash:true,
                                        reverse:true

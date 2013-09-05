@@ -1,83 +1,0 @@
-10
-
-dir
-58
-svn://dev.res-novae.fr/vo_mobileapp/assets/www/lib
-svn://dev.res-novae.fr/vo_mobileapp
-
-
-
-2013-09-04T08:45:52.978626Z
-41
-fdegaudenzi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-9fa86d00-8312-4d8f-8642-fad63b4cdd7b
-
-jquery
-dir
-
-.DS_Store
-file
-
-
-
-
-2013-09-05T10:59:19.000000Z
-2c3cf001dbd2c7ffae8575fe741a4b02
-2013-09-04T08:45:52.978626Z
-41
-fdegaudenzi
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-6148
-
-archive
-dir
-
-jquery-md5
-dir
-
-jquery-mobile
-dir
-
-jquery-ui-map
-dir
-
-jquery-ui
-dir
-
-cordova
-dir
-
