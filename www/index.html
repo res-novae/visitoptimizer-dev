@@ -18,7 +18,7 @@
 
 		<!-- Init page -->
      	<div data-role="page" class="vrn-page" id="vrn-index-loading" data-position="fixed" data-transition="slide">
-			<div data-role="content">
+			<div data-rodocument.addEventListener("onDeviceReady", onDeviceReady, false);le="content">
 				<div id="vrn-index-loading-progress"><div id="vrn-index-loading-progress-dots"></div></div>
 			</div>
         </div>
@@ -136,7 +136,8 @@
         <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
         <script type="text/javascript" src="js/controller.js"></script>
         <script type="text/javascript">
-            app.initialize();
+            //app.initialize();
+            document.addEventListener("onDeviceReady", app.initialize, false);
         </script>
     </body>
 </html>
