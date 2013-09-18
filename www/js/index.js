@@ -44,7 +44,7 @@ var app = (function() {
             app.log("Chrome start");
         //    window.addEventListener('load', app_.onDeviceReady, false);
         }else{
-            // document.addEventListener('deviceready', app_.onDeviceReady, false);
+             document.addEventListener('deviceready', app_.onDeviceReady, false);
         }
 
         
