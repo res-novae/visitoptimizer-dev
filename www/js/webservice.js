@@ -3,8 +3,8 @@
 app.webservice = (function() {
 
 	var webservice = {};
-	//webservice.RETAIL_SERVICE_URL = "http://dev.res-novae.fr/vrn_retail_webservice/"; 
-	webservice.RETAIL_SERVICE_URL = "http://10.0.100.116/rn/rn__vrn_retail_webservice/";
+	webservice.RETAIL_SERVICE_URL = "http://dev.res-novae.fr/vrn_retail_webservice/"; 
+	//webservice.RETAIL_SERVICE_URL = "http://10.0.100.116/rn/rn__vrn_retail_webservice/";
 	// Protocol
 	webservice.CONTENT_TYPE_JSON = "application/json; charset=utf-8";
 	webservice.METHOD_POST = "POST";
