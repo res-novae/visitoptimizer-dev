@@ -36,10 +36,10 @@ var app = (function() {
     
         // fake to local dev
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-            document.addEventListener("deviceready", app_.init, false);
+            document.addEventListener("deviceready", app_.onDeviceReady, false);
         } else {
-            //window.addEventListener('load', app_.onDeviceReady, false);
-            app_.onDeviceReady();
+            window.addEventListener('load', app_.onDeviceReady, false);
+            //app_.onDeviceReady();
         }
         
     };
