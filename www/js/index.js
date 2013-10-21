@@ -31,56 +31,19 @@ var app = (function() {
         }
     };
     
-    // Application Constructor
-    app_.initialize = function() {
-        alert("app_.initialize");
-        app_.log("# APP is ready =:)");
-        app_.controller = app_.controller.init();
-        
-       //app_.bindEvents();
-        
-        // fake to local dev
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-            document.addEventListener("deviceready", app_.onDeviceReady, false);
-        } else {
-            window.addEventListener('load', app_.onDeviceReady, false);
-        }
-        
-    };
-    
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    app_.bindEvents = function() {
+    app_.initialize: function() {
+        app_.bindEvents();
+    },
+    app_.bindEvents: function() {
         document.addEventListener('deviceready', app_.onDeviceReady, false);
-    };
-    
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    app_.onDeviceReady = function() {
-        if(app_.chromeSingleton == 0){
-            app_.chromeSingleton = 1;
-            app.receivedEvent('deviceready');
-        }
-    };
-    
-    // Update DOM on a Received Event
+    },
+    app_.onDeviceReady: function() {
+        app_.receivedEvent('deviceready');
+    },
     app_.receivedEvent = function(id) {
-        var parentElement = document.getElementById(id);
-      //  var listeningElement = parentElement.querySelector('.listening');
-      //  var receivedElement = parentElement.querySelector('.received');
-
-      //  listeningElement.setAttribute('style', 'display:none;');
-      //  receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-        
-        app_.log("# APP is ready =:)");
-        app_.controller = app_.controller.init();
-        
+        alert('id:'+id)
+            app_.log("# APP is ready =:)");
+            app_.controller = app_.controller.init();
     };
     
     app_.init = function() {
@@ -89,13 +52,10 @@ var app = (function() {
 
         // init session
         app_.testConnexion(
-        	alert("1");
             function(doneCallback) {
-                alert("2");
                 app_.initRepository(
                     function(doneCallback) {
-                        alert("3");
-                        app_.initWebservice(app_.isReady);
+                        app_.initWebservice(app_.controller.init());
                     }
                 );
             }
