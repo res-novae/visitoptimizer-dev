@@ -32,7 +32,7 @@ var app = (function() {
     };
     
     app_.initialize = function() {
-        alert('initialize');
+       // alert('initialize');
         app_.bindEvents();
     },
     app_.bindEvents = function() {
@@ -42,7 +42,7 @@ var app = (function() {
         app_.receivedEvent('deviceready');
     },
     app_.receivedEvent = function(id) {
-        alert('id:'+id)
+        //alert('id:'+id)
             app_.log("# APP is ready =:)");
             app_.controller = app_.controller.init();
     };
