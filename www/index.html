@@ -42,12 +42,14 @@
 			</div>
         </div>
         <script type="text/javascript">
-        	$(window).load(function(){
-	        	alert('index5');
-	        	$(document).bind('deviceready', function(){
+        	$(document).bind('deviceready', function(){
 	        		alert('index6');
 	        		app.initialize
 	        	});
+        	
+        	$(window).load(function(){
+	        	alert('index5');
+	        	
         	});
         </script>
     </body>
