@@ -33,8 +33,10 @@ var app = (function() {
     
     // Application Constructor
     app_.initialize = function() {
-       alert("app_.initialize");
-       
+        alert("app_.initialize");
+        app_.log("# APP is ready =:)");
+        app_.controller = app_.controller.init();
+        
        //app_.bindEvents();
         
         // fake to local dev
