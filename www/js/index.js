@@ -33,6 +33,8 @@ var app = (function() {
     
     // Application Constructor
     app_.initialize = function() {
+       alert("app_.initialize");
+       
        //app_.bindEvents();
         
         // fake to local dev
