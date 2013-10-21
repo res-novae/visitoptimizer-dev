@@ -44,7 +44,9 @@
         <script type="text/javascript">
         	$(window).load(function(){
 	        	alert('index');
-	        	$(document).bind('deviceready', app.initialize);
+	        	$(document).bind('deviceready', function(){
+	        		app.initialize
+	        	});
         	});
         </script>
     </body>
