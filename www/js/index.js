@@ -85,9 +85,12 @@ var app = (function() {
 
         // init session
         app_.testConnexion(
+        	alert("1");
             function(doneCallback) {
+                alert("2");
                 app_.initRepository(
                     function(doneCallback) {
+                        alert("3");
                         app_.initWebservice(app_.isReady);
                     }
                 );
