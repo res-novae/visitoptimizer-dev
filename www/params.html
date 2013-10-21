@@ -4,6 +4,7 @@
 -->
 <html>
     <head>
+        <meta charset="utf-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
@@ -12,10 +13,27 @@
         <link rel="stylesheet" href="jquerymobile/jquery.mobile-1.3.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Visit Optimizer</title>
+        <title>Visit Optimizer : Params</title>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+        <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.mobile-1.3.0.min.js"></script>
+        <script type="text/javascript" src="lib/archive/archive-min.js"></script>
+        <script type="text/javascript" src="cordova-2.5.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript" src="js/webservice.js"></script>
+        <script type="text/javascript" src="js/domain.js"></script>
+        <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
+        <script type="text/javascript" src="js/controller.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui/jquery.ui.autocomplete.min.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/demo.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.services.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.extensions.js"></script>
     </head>
-    <body>
-
+    <body onload="app.initialize()">
         <div data-role="page" class="vrn-page" id="vrn-params-page">
         
             <div data-role="header" class="vrn-header" id="vrn-params-header" data-position="fixed" data-tap-toggle="false"> </div>
@@ -37,16 +55,16 @@
                         <div class="ui-block-b" id="vrn-profil-block">            
                             <span id ="vrn-params-name"></span>
                             <div class="vrn-padding">
-                                <span id="vrn-params-label-email">email:</span><span id="vrn-params-email"> b.lorem@gmail.com</span>
+                                <span id="vrn-params-label-email">email : </span><span id="vrn-params-email"></span>
                             </div>
                             <div class="vrn-padding">
-                                <span id="vrn-params-ident">Identifiant:</span><span id="vrn-ident-cont"> lorem</span>
+                                <span id="vrn-params-ident">Identifiant : </span><span id="vrn-ident-cont"></span>
                             </div>
                             <div class="vrn-padding">
-                                <span id="vrn-params-tel">tel:</span><span id="vrn-tel-cont"> 07 85 99 52 14</span>
+                                <span id="vrn-params-tel">tel : </span><span id="vrn-tel-cont"></span>
                             </div>
                             <div class="vrn-padding">
-                                <span id="vrn-params-label-zone">Zone:</span><span id="vrn-params-zone"> IDF</span>
+                                <span id="vrn-params-label-zone">Zone : </span><span id="vrn-params-zone"></span>
                             </div>
                         </div>
                     </fieldset>
@@ -56,41 +74,112 @@
 
                         </div>
                         <div class="ui-block-b" id="vrn-version-block-b">
-                            <span id="vrn-version">Version:</span><span id="vrn-email-cont"> VISITOR 2.0</span>
+                            <span id="vrn-version">Version :</span><span id="vrn-email-cont">VISITOR 2.0</span>
                             <div class="vrn-padding">
-                                <span id="vrn-language">Langue:</span><span id="vrn-ident-cont"> Français</span>
+                                <span id="vrn-language">Langue :</span><span id="vrn-params-language"></span>
                             </div>
                             <div class="vrn-padding">
-                                <span id="vrn-session">Durée de la session:</span><span id="vrn-tel-cont"> 09h 30min</span>
+                                <span id="vrn-session">Durée de la session :</span><span id="vrn-params-connex-cont"></span>
                             </div>
                             <div class="vrn-padding">
-                                <span id="vrn-date">Dernière connection</span><span id="vrn-zone-cont"> 20/05/2013</span>
+                                <span id="vrn-date">Dernière connection : </span><span id="vrn-params-connex-date"></span>
                             </div>
                         </div>
                     </fieldset>
                     <div class="ui-grid-solo" id="ui-grid-modifier">
                         <div class="ui-block-a">
-                            <a href="profil_edit.html" id="vrn-modifier" data-role="button" data-icon="modifier-arrow_right" data-iconpos="right" data-inline="true">Modifier</a>
+                            <a href="#vrn-params-edit-page" id="vrn-modifier" data-role="button" data-icon="modifier-arrow_right" data-iconpos="right" data-inline="true">Modifier</a>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <!--
-                <div id="vrn-footer-navbar">
-                    <ul> 
-                      <li class="vrn-footer-navbar-li"><a href="homepage.html" id="vrn-taskboard" class="btn " data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="inform.html" id="vrn-watchword" class="btn " data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="roadmap.html" id="vrn-roadmap" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="pos.html" id="vrn-pos" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="stats.html" id="vrn-stats" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li> 
-                      <li class="vrn-footer-navbar-liselected"><a href="params.html" id="vrn-params" class="btn-selected" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-paramsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li> 
-                    </ul>
-                </div>
-                -->
             </div>
 
         </div>
+        
+        <!-- Page : Params edit  -->
+        <div data-role="page" class="vrn-page" id="vrn-params-edit-page">
+
+            <!-- Header, filled by app.controller -->
+            <div data-role="header" class="vrn-header" id="vrn-params-edit-header" data-position="fixed" data-tap-toggle="false"> </div>
+
+
+            <!-- Content -->
+            <div data-role="content" class="vrn-content">
+                <div id="vrn-profil-edit-div">
+                    <fieldset class="ui-grid-a" id="ui-grid-a-edit">
+                        <div class="ui-block-a">
+                            <a href="params.html" id="vrn-return-button" data-role="button">retour</a>
+                        </div>
+                        <div class="ui-block-b" id="vrn-edit-profil">
+                            <p>éditer mon profil</p>
+                        </div> 
+                    </fieldset>
+
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a" id="ui-block-profil-part-left">
+                            <!-- <img alt="" src="css/images/vrn/forma4.png" id="vrn-icon-men"> -->  
+                            <div id="profil_circle">
+                                <div class="vrn-profil-circle">
+                                    <div id="profil-small-circle">
+                                    </div>  
+                                    <div class="halfCircle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-block-b"  id="ui-block-profil-part-right">
+                            <input type="text" name="vrn-params-edit-lastname" id="vrn-params-edit-lastname" placeholder="Nom" value="">
+                            <input type="text" name="vrn-params-edit-firstname" id="vrn-params-edit-firstname" placeholder="Prénom" value="">
+                            <div class="profil-details">
+                                <input type="text" name="vrn-params-edit-email" id="vrn-params-edit-email" placeholder="Adresse email" value="">
+                                <input type="text" name="vrn-params-edit-identif" id="vrn-params-edit-identif" placeholder="Identifiant" value="">
+                                <input type="text" name="vrn-params-edit-phone" id="vrn-params-edit-phone" placeholder="téléphone" value="">
+                            </div>
+                            <div class="profil-details">
+                                <select id="vrn-params-edit-profil-zone" name="vrn-params-edit-profil-zone" data-icon="arrow_down">
+                                    <option value="option0">
+                                        ZONE      
+                                    </option>       
+                                </select>
+                            </div>
+                            <select id="vrn-params-edit-profil-language" name="vrn-params-edit-profil-language" data-icon="arrow_down">
+                                <option value="option0">
+                                    LANGUE     
+                                </option>       
+                            </select>
+                            <a href="#" id="vrn-params-edit-enregistrer" data-role="button" data-icon="enregistrer_white" data-iconpos="right" data-inline="true">Enregistrer</a>
+
+                        </div>
+                    </div>
+                    <div id="pass_details">    
+                        <a href="#" id="vrn-change-pass" data-role="button" data-icon="change-pass"
+                           data-iconpos="right">Changer son mot de passe</a>
+                        <a href="#" id="vrn-connect-button" data-role="button" data-icon="connect"
+                           data-iconpos="right">Se connecter avec un autre compte</a>
+                    </div>               
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+            </div>
+            
+            <!-- pop : error -->
+            <div data-role="popup" data-url="vrn-form-item-error-popup" id="vrn-form-item-error-popup" data-overlay-theme="a" data-theme="c" data-dismissible="true" class="ui-corner-all">
+                <div data-role="header" data-theme="e" class="ui-corner-top">
+                    <h1>Erreurs</h1>
+                </div>
+                <div data-role="content" data-theme="c" class="ui-corner-bottom ui-content">
+                    <div id="vrn-form-item-error-popup-content">
+                        <h3 class="ui-title"> </h3>
+                        <br> <a href="#" data-rel="back" data-role="button" data-inline="true" data-theme="c">Cancel</a>
+                    </div>
+                </div>
+            </div> 
+            
+        </div>
+
     </body>
 </html>

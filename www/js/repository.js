@@ -15,16 +15,66 @@ app.repository = (function() {
         app.log("app.repository : " + JSON.stringify(err),'err_sql');
     }
 
+    
+    
     function nullHandler() {
         // success
     }
+
     
     repository.init = function(doneCallback) {
         app.log("# app.repository : init", 'wip');
         
+        // change to checkDatabaseExist
         checkDatabase(doneCallback);
-
+        
     };
+    
+    repository.checkStartDatabaseExist = function() {
+        app.log('repository.checkStartDatabaseExist : ');
+        var rsql_deferred = $.Deferred();
+        repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
+        repository.database.transaction(function(tx) {
+            var rsql = "SELECT language_id FROM sys_language_translation";
+            var param = null;
+            tx.executeSql(rsql, param,
+                function(tx,result) {
+                    if (result.rows.length != 0) {
+                        rsql_deferred.resolve('yes');
+                    } else {
+                        rsql_deferred.resolve('no');
+                    }
+                },
+                function(tx, error) {
+                    rsql_deferred.resolve('no');
+                }
+            )
+        });
+        return rsql_deferred.promise();
+    };
+    repository.checkDatabaseExist = function() {
+        app.log('repository.checkDatabaseExist ');
+        var rsql_deferred = $.Deferred();
+        repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
+        repository.database.transaction(function(tx) {
+            var rsql = "SELECT id FROM sync_infos";
+            var param = null;
+            tx.executeSql(rsql, param,
+                function(tx,result) {
+                    if (result.rows.length != 0) {
+                        rsql_deferred.resolve('yes');
+                    } else {
+                        rsql_deferred.resolve('yes');
+                    }
+                },
+                function(tx, error) {
+                    rsql_deferred.resolve('no');
+                }
+            )
+        });
+        return rsql_deferred.promise();
+    };  
+    
     
     repository.checkDatabase = function(existDBCallback, dontExistDBCallback){
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
@@ -86,8 +136,7 @@ app.repository = (function() {
     repository.purgeData = function(doneCallback) {
         app.log("# app.repository : purge data", 'wip');
         
-        repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName,
-                repository.databaseSize);
+        repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
         repository.database.transaction(function(tx) {
            tx.executeSql("DROP TABLE IF EXISTS area_list");
            tx.executeSql("DROP TABLE IF EXISTS area_item");
@@ -100,9 +149,11 @@ app.repository = (function() {
            tx.executeSql("DROP TABLE IF EXISTS frequency");
            tx.executeSql("DROP TABLE IF EXISTS message");
            tx.executeSql("DROP TABLE IF EXISTS question");
+           tx.executeSql("DROP TABLE IF EXISTS questions_frequency");
            tx.executeSql("DROP TABLE IF EXISTS questionnaire");
            tx.executeSql("DROP TABLE IF EXISTS questionnaire_question");
            tx.executeSql("DROP TABLE IF EXISTS questions_answer");
+           tx.executeSql("DROP TABLE IF EXISTS sp_answer");
            tx.executeSql("DROP TABLE IF EXISTS sales_point");
            tx.executeSql("DROP TABLE IF EXISTS status_mobile");
            tx.executeSql("DROP TABLE IF EXISTS status_visit");
@@ -123,9 +174,11 @@ app.repository = (function() {
            tx.executeSql("CREATE TABLE IF NOT EXISTS frequency (id_frequency INTEGER UNIQUE, label, translation_id INTEGER, frequency, frq_code)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS message (id_message INTEGER UNIQUE, message_type, send_date, start_date, end_date, subject, content, priority, attachment, id_usr_message INTEGER, lastname, read INTEGER DEFAULT '0')");
            tx.executeSql("CREATE TABLE IF NOT EXISTS question (id_question INTEGER UNIQUE, translation_id INTEGER, question_type, label, rank, status)");
+           tx.executeSql("CREATE TABLE IF NOT EXISTS questions_frequency (id_qf INTEGER, question_id INTEGER, frequency_id INTEGER, mandatory, readonly, display, rank)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS questionnaire (id_questionnaire INTEGER UNIQUE, name, translation_id INTEGER, frequency_id INTEGER, rank, status)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS questionnaire_question (questionnaire_id INTEGER , question_id INTEGER)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS questions_answer (id_answer INTEGER UNIQUE, translation_id INTEGER, question_id INTEGER, label, rank, status)");
+           tx.executeSql("CREATE TABLE IF NOT EXISTS sp_answer (sales_point_id INTEGER, visit_id INTEGER, questionnaire_id INTEGER, question_id INTEGER, answer_id INTEGER, answer, answer_time)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS roadmap (id_roadmap INTEGER UNIQUE, initiating_user_id INTEGER, operating_user_id INTEGER, mobile_status_id INTEGER, web_status_id INTEGER, creation_date, name, scheduled_date, km, comment, close_date, area_id INTEGER, local_id INTEGER)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS sales_point (id_sales_point INTEGER UNIQUE, name, email, description, contact_name, phone_number, street, city, postal_code, gps_latitude, gps_longitude, type_id INTEGER, user_id INTEGER, microzone_id INTEGER, last_visit_id INTEGER, frequency_id INTEGER, local_id INTEGER)");
            tx.executeSql("CREATE TABLE IF NOT EXISTS status_mobile (id_status_mobile INTEGER UNIQUE, name, translation_id INTEGER)");
@@ -138,9 +191,11 @@ app.repository = (function() {
     };
     
     // prepare dn to first init 
+    var rsql_deferred;
     repository.firstInitDbApp = function(doneCallback) {
         app.log("# app.repository : init Db App", 'wip');
-        
+        rsql_deferred = $.Deferred();
+
         var dd = new Array();
         var i = 0;
         
@@ -161,15 +216,20 @@ app.repository = (function() {
         dd[i++] = 'CREATE TABLE IF NOT EXISTS sys_users (id_user INTEGER UNIQUE, parent_id INTEGER, user_category_id INTEGER, username, password, lastname, firstname, email, phone, preferred_language_id INTEGER, target_val)';
         
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
-        
+        var i = 0;
+        var j = 0;
         for (var i = 0; dd.length > i; ++i) {
             var rsql = dd[i];
             $.when(saveToDB(rsql,(i+1))).done(function(theResultSet) {
-
+                j++;
+                if(i == j) {
+                    //alert('j:'+j);
+                    rsql_deferred.resolve('insert : end func');
+                }
             } );
         }
-
-        doneCallback();
+        
+        return rsql_deferred.promise();
 
     };
     
@@ -234,7 +294,7 @@ app.repository = (function() {
             });
         });
     };
-    
+    // remplace to loadSettingsB
     repository.loadSettings = function(successCallback) {
         repository.database.transaction(function(tx) {
             tx.executeSql("SELECT defaultLanguageId, userId FROM Settings WHERE (id = ?)", [ 1 ], function(tx, results) {
@@ -252,6 +312,29 @@ app.repository = (function() {
             });
         });
     };
+    
+    repository.loadSettingsB = function(existDBCallback, dontExistDBCallback){
+        app.log('repository.loadSettingsB : ');
+        var rsql_deferred = $.Deferred();
+        repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
+        repository.database.transaction(function(tx) {
+            var rsql = "SELECT defaultLanguageId, userId FROM Settings WHERE (id = ?)";
+            var param = [ 1 ];
+            tx.executeSql(rsql, param,
+                function(tx,results) {
+                    if (results.rows.length != 0) {
+                        rsql_deferred.resolve(new app.domain.Settings(1, results.rows.item(0).defaultLanguageId, results.rows.item(0).userId));
+                    } else {
+                        rsql_deferred.resolve(new app.domain.Settings(1, 1, 0));
+                    }
+                },
+                function(tx, error) {
+                    rsql_deferred.resolve(new app.domain.Settings(1, 1, 0));
+                }
+            )
+        });
+        return rsql_deferred.promise();
+    };    
     
     repository.loadUser = function(userId, successCallback) {
         repository.database.transaction(function(tx) {
@@ -301,9 +384,13 @@ app.repository = (function() {
                 for (var i=0;i<results.rows.length;i++){ 
                     trads[results.rows.item(i).translation_id] = results.rows.item(i).value;
                 }
+                //alert('t : yes');
+                op_deferred.resolve(trads);
+            }else{
+                //alert('t: no');
                 op_deferred.resolve(trads);
             }
-            op_deferred.resolve(trads);
+            
         } );
         return op_deferred.promise();
     };  
@@ -569,7 +656,7 @@ app.repository = (function() {
         app.log("repository.addPosSave");
         var op_deferred = $.Deferred();
 
-        var rsql = "INSERT INTO sales_point ( id_sales_point, name, street, postal_code, city, contact_name, email, phone_number, type_id, user_id, description, gps_latitude, gps_longitude, microzone_id, frequency_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        var rsql = "INSERT INTO sales_point ( id_sales_point, name, street, postal_code, city, contact_name, email, phone_number, type_id, user_id, description, gps_latitude, gps_longitude, microzone_id, last_visit_id, frequency_id, local_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $.when(requestToDB(rsql,param)).done(function(results) {
             op_deferred.resolve(null);
         } );
@@ -659,17 +746,37 @@ app.repository = (function() {
         return op_deferred.promise();
     }; 
     
+ 
+    
     //// ## ROADMAP ## ////
     repository.getRoadmapList = function(user_id) {
         app.log('repository.getRoadmapList : ');
         var op_deferred = $.Deferred();
-        var rsql = "SELECT roadmap.*, area_item.name AS area_name, " 
-                  +" (SELECT count(*) FROM sp_visit WHERE sp_visit.roadmap_id = roadmap.id_roadmap) AS nb_visit, "
-                  +" (SELECT count(*) FROM sp_visit WHERE sp_visit.roadmap_id = roadmap.id_roadmap AND sp_visit.status_visit_id != '1') AS nb_visited "
-                  +" FROM roadmap "
-                  +" LEFT JOIN area_item " 
-                  +" ON roadmap.area_id = area_item.id_item "
-                  +" WHERE ( operating_user_id = ?)";
+        var rsql = "SELECT roadmap.*,"+
+                    " initiating_user.id_user as initiating_user__id_user ," +
+                    " initiating_user.user_category_id as initiating_user__user_category_id ," +
+                    " initiating_user.id_user as initiating_user__id_user ," +
+                    " initiating_user.lastname as initiating_user__lastname ," +
+                    " initiating_user.firstname as initiating_user__firstname ," +
+                    " initiating_user.email as initiating_user__email ," +
+                    " initiating_user.phone as initiating_user__phone ," +
+                    " initiating_user_categories.id_user_category as initiating_user_categories__id_user_category ," +
+                    " initiating_user_categories.name as initiating_user_categories__name ," +
+                    " roadmap_status_visit.id_status_visit as roadmap_status_visit__id_status_visit ," +
+                    " roadmap_status_visit.name as roadmap_status_visit__name ," +
+                    " area_item.name AS area_name, "+ 
+                    " (SELECT count(*) FROM sp_visit WHERE sp_visit.roadmap_id = roadmap.id_roadmap) AS nb_visit, "+
+                    " (SELECT count(*) FROM sp_visit WHERE sp_visit.roadmap_id = roadmap.id_roadmap AND sp_visit.status_visit_id != '1') AS nb_visited "+
+                    " FROM roadmap "+
+                    " LEFT JOIN area_item "+ 
+                    " ON roadmap.area_id = area_item.id_item "+
+                    " LEFT JOIN sys_users AS initiating_user " +
+                    " ON roadmap.initiating_user_id = initiating_user.id_user "+
+                    " LEFT JOIN usr_categories AS initiating_user_categories " +
+                    " ON initiating_user__user_category_id = initiating_user_categories.id_user_category "+
+                    " LEFT JOIN status_visit AS roadmap_status_visit " +
+                    " ON roadmap.web_status_id = roadmap_status_visit.id_status_visit "+
+                    " WHERE ( operating_user_id = ?)";
         var param = [ user_id ];
         $.when(requestToDB(rsql,param)).done(function(results) {
             var roadmap_list = Array();
@@ -690,6 +797,18 @@ app.repository = (function() {
                         results.rows.item(i).area_id,
                         results.rows.item(i).local_id
                     );
+                    roadmap.initiating_user__id_user = results.rows.item(i).initiating_user__id_user;
+                    roadmap.initiating_user__user_category_id = results.rows.item(i).initiating_user__user_category_id;
+                    roadmap.initiating_user__id_user = results.rows.item(i).initiating_user__id_user;
+                    roadmap.initiating_user__lastname = results.rows.item(i).initiating_user__lastname;
+                    roadmap.initiating_user__firstname = results.rows.item(i).initiating_user__firstname;
+                    roadmap.initiating_user__email = results.rows.item(i).initiating_user__email;
+                    roadmap.initiating_user__phone = results.rows.item(i).initiating_user__phone;
+                    roadmap.initiating_user_categories__id_user_category = results.rows.item(i).initiating_user_categories__id_user_category;
+                    roadmap.initiating_user_categories__name = results.rows.item(i).initiating_user_categories__name;
+                    roadmap.roadmap_status_visit__id_status_mobile = results.rows.item(i).roadmap_status_visit__id_status_visit;
+                    roadmap.roadmap_status_visit__name = results.rows.item(i).roadmap_status_visit__name;
+                    
                     roadmap.area_name = results.rows.item(i).area_name;
                     roadmap.nb_visit = results.rows.item(i).nb_visit;
                     roadmap.nb_visited = results.rows.item(i).nb_visited;
@@ -731,18 +850,128 @@ app.repository = (function() {
             op_deferred.resolve(null);
         } );
         return op_deferred.promise();
-    };  
+    }; 
+    
+    repository.getDailyRoadmapItem = function() {
+        app.log('repository.getDailyRoadmapItem');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM roadmap ORDER BY scheduled_date DESC LIMIT 0, 1";
+        var param = null;
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) {
+                var i = 0;
+                var roadmap = new app.domain.roadmap(
+                    results.rows.item(i).id_roadmap,
+                    results.rows.item(i).initiating_user_id, 
+                    results.rows.item(i).operating_user_id, 
+                    results.rows.item(i).mobile_status_id, 
+                    results.rows.item(i).web_status_id, 
+                    results.rows.item(i).creation_date, 
+                    results.rows.item(i).name, 
+                    results.rows.item(i).scheduled_date, 
+                    results.rows.item(i).km, 
+                    results.rows.item(i).comment,
+                    results.rows.item(i).close_date,
+                    results.rows.item(i).area_id,
+                    results.rows.item(i).local_id
+                );
+                
+                // get pos 
+                var r2 = app.repository.getRoadmapItemPosListAllData(results.rows.item(i).id_roadmap);
+                $.when(r2).done(function(pos_list) {
+                    roadmap.pos_list = pos_list;
+                    //end return
+                    op_deferred.resolve(roadmap);
+                } );
+                
+                
+            } else op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
 
+    repository.getRoadmapItemPosListAllData = function(roadmap_id) {
+        app.log('repository.getRoadmapItemPosListAllData : ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT sales_point.*, " +
+                      "sp_type.name AS type_name," +
+                      "sp_visit.roadmap_id AS roadmap_id, " +
+                      "sp_visit.id_visit AS sp_visit__id_visit, " +
+                      "sp_visit.status_visit_id AS sp_visit__status_visit_id, " +
+                      "sp_visit.sales_point_id AS sp_visit__sales_point_id, " +
+                      "sp_visit.scheduled_date AS sp_visit__scheduled_date, " +
+                      "sp_visit.performed_date AS sp_visit__performed_date, " +
+                      "sp_visit.rank AS sp_visit__rank, " +
+                      "sp_visit.comment AS sp_visit__comment, " +
+                      "sp_visit.local_id AS sp_visit__local_id, " +
+                      "status_visit.name AS sp_visit__status_visit_name " +
+                      " FROM sales_point " +
+                      " LEFT JOIN sp_type " +
+                      " ON sales_point.type_id = sp_type.id_type " +
+                      " LEFT JOIN sp_visit " +
+                      " ON sales_point.id_sales_point = sp_visit.sales_point_id " +
+                      " LEFT JOIN status_visit " +
+                      " ON status_visit.id_status_visit = sp_visit.status_visit_id " +
+                      " WHERE ( sp_visit.roadmap_id = ?)";
+        var param = [ roadmap_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var pos_list = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var pos = new app.domain.sales_point(
+                        results.rows.item(i).id_sales_point,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).email, 
+                        results.rows.item(i).description, 
+                        results.rows.item(i).contact_name, 
+                        results.rows.item(i).phone_number, 
+                        results.rows.item(i).street, 
+                        results.rows.item(i).city, 
+                        results.rows.item(i).postal_code, 
+                        results.rows.item(i).gps_latitude,
+                        results.rows.item(i).gps_longitude,
+                        results.rows.item(i).type_id,
+                        results.rows.item(i).user_id,
+                        results.rows.item(i).microzone_id,
+                        results.rows.item(i).last_visit_id,
+                        results.rows.item(i).frequency_id,
+                        results.rows.item(i).local_id
+                    );
+                    pos.type_name = results.rows.item(i).type_name;
+                    pos.roadmap_id = results.rows.item(i).roadmap_id;
+                    pos.sp_visit__id_visit = results.rows.item(i).sp_visit__id_visit;
+                    pos.sp_visit__sales_point_id = results.rows.item(i).sp_visit__sales_point_id;
+                    pos.sp_visit__status_visit_id = results.rows.item(i).sp_visit__status_visit_id;
+                    pos.sp_visit__status_visit_name = results.rows.item(i).sp_visit__status_visit_name;
+                    pos.sp_visit__scheduled_date = results.rows.item(i).sp_visit__scheduled_date;
+                    pos.sp_visit__performed_date = results.rows.item(i).sp_visit__performed_date;
+                    pos.sp_visit__rank = results.rows.item(i).sp_visit__rank;
+                    pos.sp_visit__comment = results.rows.item(i).sp_visit__comment;
+                    pos.sp_visit__local_id = results.rows.item(i).sp_visit__local_id;
+                    
+                    pos_list[i] = pos;
+                }
+                op_deferred.resolve(pos_list);
+            } else op_deferred.resolve(pos_list);
+
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
     repository.getRoadmapItemPosList = function(roadmap_id) {
         app.log('repository.getRoadmapItemPosList : ');
         var op_deferred = $.Deferred();
-        var rsql = "SELECT sales_point.*, sp_type.name AS type_name, sp_visit.roadmap_id AS roadmap_id " 
-                  +" FROM sales_point "
-                  +" LEFT JOIN sp_type " 
-                  +" ON sales_point.type_id = sp_type.id_type "
-                  +" LEFT JOIN sp_visit " 
-                  +" ON sales_point.id_sales_point = sp_visit.sales_point_id "
-                  +" WHERE ( sp_visit.roadmap_id = ?)";
+        var rsql = "SELECT sales_point.*, " +
+            		  "sp_type.name AS type_name," +
+            		  "sp_visit.roadmap_id AS roadmap_id, " +
+            		  "sp_visit.status_visit_id AS sp_visit__status_visit_id " +
+                      " FROM sales_point " +
+                      " LEFT JOIN sp_type " +
+                      " ON sales_point.type_id = sp_type.id_type " +
+                      " LEFT JOIN sp_visit " +
+                      " ON sales_point.id_sales_point = sp_visit.sales_point_id " +
+                      " WHERE ( sp_visit.roadmap_id = ?)";
         var param = [ roadmap_id ];
         $.when(requestToDB(rsql,param)).done(function(results) {
             var pos_list = Array();
@@ -769,6 +998,7 @@ app.repository = (function() {
                     );
                     pos.type_name = results.rows.item(i).type_name,
                     pos.roadmap_id = results.rows.item(i).roadmap_id,
+                    pos.sp_visit__status_visit_id = results.rows.item(i).sp_visit__status_visit_id,
                     
                     pos_list[i] = pos;
                     app.log(pos.name);
@@ -780,7 +1010,391 @@ app.repository = (function() {
         } );
         return op_deferred.promise();
     };  
-        
+
+    
+    repository.getAllRoadmapItemPosList = function(roadmap_id) {
+        app.log('repository.getAllRoadmapItemPosList : ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT DISTINCT sales_point.*, " +
+                      "sp_type.name AS type_name" +
+                     // "sp_visit.roadmap_id AS roadmap_id, " +
+                     // "sp_visit.status_visit_id AS sp_visit__status_visit_id " +
+                      " FROM sales_point " +
+                      " LEFT JOIN sp_type " +
+                      " ON sales_point.type_id = sp_type.id_type " +
+                     //" LEFT JOIN sp_visit " +
+                     // " ON sales_point.id_sales_point = sp_visit.sales_point_id " +
+                      " order by min(sales_point.id_sales_point);";
+        var param =  null ;
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var pos_list = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var pos = new app.domain.sales_point(
+                        results.rows.item(i).id_sales_point,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).email, 
+                        results.rows.item(i).description, 
+                        results.rows.item(i).contact_name, 
+                        results.rows.item(i).phone_number, 
+                        results.rows.item(i).street, 
+                        results.rows.item(i).city, 
+                        results.rows.item(i).postal_code, 
+                        results.rows.item(i).gps_latitude,
+                        results.rows.item(i).gps_longitude,
+                        results.rows.item(i).type_id,
+                        results.rows.item(i).user_id,
+                        results.rows.item(i).microzone_id,
+                        results.rows.item(i).last_visit_id,
+                        results.rows.item(i).frequency_id,
+                        results.rows.item(i).local_id
+                    );
+                    pos.type_name = results.rows.item(i).type_name,
+                    pos.roadmap_id = results.rows.item(i).roadmap_id,
+                   // pos.sp_visit__status_visit_id = results.rows.item(i).sp_visit__status_visit_id,
+                    
+                    pos_list[i] = pos;
+                }
+                op_deferred.resolve(pos_list);
+            } else op_deferred.resolve(pos_list);
+
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };  
+    
+    repository.deleteRoadMapItemPos = function(roadmap_id,sales_point_id) {
+        app.log('repository.deleteRoadMapItemPos ');
+        var op_deferred = $.Deferred();
+        var rsql = "DELETE FROM sp_visit WHERE ( roadmap_id = ? AND sales_point_id = ? )";
+        var param = [ roadmap_id, sales_point_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(sales_point_id);
+        } );
+        return op_deferred.promise();
+    }; 
+
+    repository.testRoadMapItemPos = function(roadmap_id,sales_point_id) {
+        app.log('repository.testRoadMapItemPos ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM sp_visit WHERE ( roadmap_id = ? AND sales_point_id = ? )";
+        var param = [ roadmap_id, sales_point_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) op_deferred.resolve(sales_point_id, "yes");
+            else op_deferred.resolve(sales_point_id, "no");
+        } );
+        return op_deferred.promise();
+    }
+    
+    repository.addRoadMapItemPos = function(param) {
+        app.log('repository.addRoadMapItemPos ');
+        var op_deferred = $.Deferred();
+
+        var rsql = "INSERT INTO sp_visit (id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id) VALUES (?,?,?,?,?,?,?,?,?)";
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
+    
+    repository.getPosVisit = function(sp_visit_id) {
+        app.log('repository.getPosVisit : ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT sales_point.*, " +
+            "sp_type.name AS type_name," +
+            "sp_visit.roadmap_id AS roadmap_id, " +
+            "sp_visit.id_visit AS sp_visit__id_visit, " +
+            "sp_visit.status_visit_id AS sp_visit__status_visit_id, " +
+            "sp_visit.sales_point_id AS sp_visit__sales_point_id, " +
+            "sp_visit.scheduled_date AS sp_visit__scheduled_date, " +
+            "sp_visit.performed_date AS sp_visit__performed_date, " +
+            "sp_visit.rank AS sp_visit__rank, " +
+            "sp_visit.comment AS sp_visit__comment, " +
+            "sp_visit.local_id AS sp_visit__local_id, " +
+            "status_visit.name AS sp_visit__status_visit_name " +
+            " FROM sales_point " +
+            " LEFT JOIN sp_type " +
+            " ON sales_point.type_id = sp_type.id_type " +
+            " LEFT JOIN sp_visit " +
+            " ON sales_point.id_sales_point = sp_visit.sales_point_id " +
+            " LEFT JOIN status_visit " +
+            " ON status_visit.id_status_visit = sp_visit.status_visit_id " +
+            " WHERE ( sp_visit__id_visit = ?)";
+        var param = [ sp_visit_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) {
+                var i=0; 
+                var pos = new app.domain.sales_point(
+                    results.rows.item(i).id_sales_point,
+                    results.rows.item(i).name, 
+                    results.rows.item(i).email, 
+                    results.rows.item(i).description, 
+                    results.rows.item(i).contact_name, 
+                    results.rows.item(i).phone_number, 
+                    results.rows.item(i).street, 
+                    results.rows.item(i).city, 
+                    results.rows.item(i).postal_code, 
+                    results.rows.item(i).gps_latitude,
+                    results.rows.item(i).gps_longitude,
+                    results.rows.item(i).type_id,
+                    results.rows.item(i).user_id,
+                    results.rows.item(i).microzone_id,
+                    results.rows.item(i).last_visit_id,
+                    results.rows.item(i).frequency_id,
+                    results.rows.item(i).local_id
+                );
+                pos.type_name = results.rows.item(i).type_name,
+                pos.roadmap_id = results.rows.item(i).roadmap_id,
+                pos.sp_visit__id_visit = results.rows.item(i).sp_visit__id_visit;
+                pos.sp_visit__sales_point_id = results.rows.item(i).sp_visit__sales_point_id;
+                pos.sp_visit__status_visit_id = results.rows.item(i).sp_visit__status_visit_id;
+                pos.sp_visit__status_visit_name = results.rows.item(i).sp_visit__status_visit_name;
+                pos.sp_visit__scheduled_date = results.rows.item(i).sp_visit__scheduled_date;
+                pos.sp_visit__performed_date = results.rows.item(i).sp_visit__performed_date;
+                pos.sp_visit__rank = results.rows.item(i).sp_visit__rank;
+                pos.sp_visit__comment = results.rows.item(i).sp_visit__comment;
+                pos.sp_visit__local_id = results.rows.item(i).sp_visit__local_id;
+                op_deferred.resolve(pos);
+            } else op_deferred.resolve(null);
+
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };  
+    
+    repository.getQuestionnaires = function(sp_visit_id) {
+        app.log('repository.getQuestionnaires : ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT questionnaire.*," +
+            "frequency.id_frequency AS frequency__frequency_id," +
+            "frequency.label AS frequency__label," +
+            "frequency.frequency AS frequency__frequency," +
+            "frequency.frq_code AS frequency__frq_code," +
+            "(SELECT count(*) " +
+            "   FROM questionnaire_question " +
+            "   WHERE questionnaire_question.questionnaire_id = questionnaire.id_questionnaire" +
+            ") AS nb_question, " +
+            
+            "(SELECT count(*) " +
+            "   FROM questionnaire_question " +
+            "   LEFT JOIN questions_frequency ON questionnaire_question.question_id = questions_frequency.question_id AND questions_frequency.frequency_id = questionnaire.frequency_id" +
+            "   WHERE questionnaire_question.questionnaire_id = questionnaire.id_questionnaire" +
+            //"   AND questions_frequency.frequency_id = questionnaire.frequency_id " +
+            "   AND questions_frequency.mandatory = '1'" +
+            ") AS nb_question_mandatory, " +
+
+            "(SELECT count(*) FROM sp_answer " +
+            "   LEFT JOIN questions_answer ON sp_answer.answer_id = questions_answer.id_answer" +
+            "   WHERE sp_answer.questionnaire_id = questionnaire.id_questionnaire" +
+            "   AND sp_answer.visit_id = ?" +
+            ") AS nb_answer " +
+            
+            " FROM questionnaire " +
+            " LEFT JOIN frequency ON questionnaire.frequency_id = frequency.id_frequency " +
+            " LEFT JOIN sales_point ON sales_point.frequency_id = frequency.id_frequency " +
+            " LEFT JOIN sp_visit ON sales_point.id_sales_point = sp_visit.sales_point_id " +
+            " WHERE ( sp_visit.id_visit = ?)" +
+            " ORDER BY questionnaire.rank ASC";
+        var param = [ sp_visit_id, sp_visit_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var questionnaires = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var questionnaire = new app.domain.questionnaire(
+                        results.rows.item(i).id_questionnaire,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).translation_id, 
+                        results.rows.item(i).frequency_id, 
+                        results.rows.item(i).rank, 
+                        results.rows.item(i).status
+                    );
+                    questionnaire.frequency__frequency_id = results.rows.item(i).frequency__frequency_id,
+                    questionnaire.frequency__label = results.rows.item(i).frequency__label,
+                    questionnaire.frequency__frequency = results.rows.item(i).frequency__frequency;
+                    questionnaire.frequency__frq_code = results.rows.item(i).frequency__frq_code;
+                    questionnaire.nb_question = results.rows.item(i).nb_question;
+                    questionnaire.nb_question_mandatory = results.rows.item(i).nb_question_mandatory;
+                    questionnaire.nb_answer = results.rows.item(i).nb_answer;
+                    questionnaires[i] = questionnaire;
+                }
+                op_deferred.resolve(questionnaires);
+            } else op_deferred.resolve(null);
+
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };  
+    
+    
+    repository.getQuestionnaire = function(questionnaire_id) {
+        app.log('repository.getQuestionnaire : '+ questionnaire_id);
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM questionnaire WHERE ( id_questionnaire = ? )";
+        var param = [ questionnaire_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) {
+                var i=0;
+                var questionnaire = new app.domain.questionnaire(
+                    results.rows.item(i).id_questionnaire,
+                    results.rows.item(i).name, 
+                    results.rows.item(i).translation_id, 
+                    results.rows.item(i).frequency_id, 
+                    results.rows.item(i).rank, 
+                    results.rows.item(i).status
+                );
+                
+                op_deferred.resolve(questionnaire);
+            }
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };   
+
+    
+    
+    repository.getQuestionnaireQuestions = function(questionnaire_id) {
+        app.log('repository.getQuestionnaireQuestions : '+ questionnaire_id);
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM question " +
+            " LEFT JOIN questionnaire_question " +
+            " ON questionnaire_question.question_id = question.id_question " +
+            " WHERE ( questionnaire_question.questionnaire_id = ?)";
+        var param = [ questionnaire_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var questions = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var question = new app.domain.question(
+                        results.rows.item(i).id_question,
+                        results.rows.item(i).translation_id, 
+                        results.rows.item(i).question_type, 
+                        results.rows.item(i).label, 
+                        results.rows.item(i).rank, 
+                        results.rows.item(i).status
+                    );
+                    questions[i] = question;
+                }
+                op_deferred.resolve(questions);
+            }
+            op_deferred.resolve(questions);
+        } );
+        return op_deferred.promise();
+    }; 
+
+    repository.getQuestionnaireQuestionsAnswer = function(questionnaire_id) {
+        app.log('repository.getQuestionnaireQuestions : '+ questionnaire_id);
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM questions_answer " +
+            " LEFT JOIN question ON question.id_question = questions_answer.question_id " +
+            " LEFT JOIN questionnaire_question ON questionnaire_question.question_id = question.id_question " +
+            " WHERE ( questionnaire_question.questionnaire_id = ?)";
+        var param = [ questionnaire_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var questions_answer_list = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var questions_answer = new app.domain.questions_answer(
+                        results.rows.item(i).id_answer,
+                        results.rows.item(i).translation_id, 
+                        results.rows.item(i).question_id, 
+                        results.rows.item(i).label, 
+                        results.rows.item(i).rank, 
+                        results.rows.item(i).status
+                    );
+                    questions_answer_list[i] = questions_answer;
+                }
+                op_deferred.resolve(questions_answer_list);
+            }
+            op_deferred.resolve(questions_answer_list);
+        } );
+        return op_deferred.promise();
+    };  
+    
+    repository.resetQuestionnaireSpAnswer = function(sp_visit_id,questionnaire_id) {
+        app.log('repository.resetQuestionnaireSpAnswer ');
+        var op_deferred = $.Deferred();
+        var rsql = "DELETE FROM sp_answer WHERE ( visit_id = ? AND questionnaire_id = ? )";
+        var param = [ sp_visit_id, questionnaire_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+
+    
+    repository.addQuestionnaireSpAnswer = function(data) {
+        app.log("repository.addQuestionnaireSpAnswer");
+        var op_deferred = $.Deferred();
+
+        var rsql = "INSERT INTO sp_answer ( sales_point_id, visit_id, questionnaire_id, question_id, answer_id, answer, answer_time ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+        $.when(requestToDB(rsql,data)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+
+    repository.getQuestionnaireSpAnswer = function(visit_id, questionnaire_id) {
+        app.log('repository.getQuestionnaireAnswer');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM sp_answer WHERE ( visit_id = ? AND questionnaire_id = ?)";
+        var param = [ visit_id, questionnaire_id ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var answers = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var answer = new app.domain.sp_answer(
+                        results.rows.item(i).sales_point_id,
+                        results.rows.item(i).visit_id, 
+                        results.rows.item(i).questionnaire_id, 
+                        results.rows.item(i).question_id, 
+                        results.rows.item(i).answer_id, 
+                        results.rows.item(i).answer, 
+                        results.rows.item(i).answer_time
+                    );
+                    answers[i] = answer;
+                }
+                op_deferred.resolve(answers);
+            }
+            op_deferred.resolve(answers);
+        } );
+        return op_deferred.promise();
+    }; 
+    
+    repository.getStatusVisit = function() {
+        app.log('repository.getStatusVisit  ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM status_visit";
+        var param = null;
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var status_visit = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var stv = new app.domain.status_visit(
+                        results.rows.item(i).id_status_visit,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).translation_id
+                    );
+                    status_visit[i] = stv;
+                }
+                op_deferred.resolve(status_visit);
+            }
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };
+    
+    repository.closeRoadmapVisit = function(param) {
+        app.log("repository.closeRoadmapVisit");
+        var op_deferred = $.Deferred();
+
+        var rsql = "UPDATE sp_visit SET status_visit_id = ?, performed_date = ?, comment = ? WHERE id_visit = ?";
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
     //// ## PARAMS ## ////
     repository.getUserItem = function(id_user) {
         app.log('repository.getUserItem : '+ id_user);
@@ -810,6 +1424,61 @@ app.repository = (function() {
         return op_deferred.promise();
     };  
     
+    repository.getLanguages = function() {
+        app.log('repository.getLanguages  ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM sys_language";
+        var param = null;
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var languages = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var language = new app.domain.sys_language(
+                        results.rows.item(i).id_language,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).short_name,
+                        results.rows.item(i).default_language
+                    );
+                    languages[i] = language;
+                }
+                op_deferred.resolve(languages);
+            }
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
+    repository.getLanguage = function(id_language) {
+        app.log('repository.getLanguage ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM sys_language WHERE ( id_language = ?)";
+        var param = [ id_language ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) {
+                var i = 0;
+                var language = new app.domain.sys_language(
+                    results.rows.item(i).id_language,
+                    results.rows.item(i).name, 
+                    results.rows.item(i).short_name,
+                    results.rows.item(i).default_language
+                );
+                op_deferred.resolve(language);
+            }
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
+    repository.editParamsSave = function(param) {
+        app.log("repository.editPosSave");
+        var op_deferred = $.Deferred();
+        
+        var rsql = "UPDATE sys_users SET lastname = ?, firstname = ?, email = ?, phone = ?, preferred_language_id = ?, target_val = ? WHERE id_user = ?";
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
     
     ////## Local Authentication ## ////
     repository.localAuthentication = function(username,password) {
@@ -861,7 +1530,7 @@ app.repository = (function() {
                 function(tx,result) {
                     rsql_deferred.resolve(result);
                 },
-                function(tx, error) {
+                function (tx, error) {
                     app.log("code : "+ error.code+" \nmes : " + error.message + " \n \nrsql : " + rSQL ,'err_sql');
                 }
             )

@@ -126,8 +126,8 @@ app.domain = (function() {
     domain.question = function(id_question, translation_id, question_type, label, rank, status) {
         this.id_question = id_question;
         this.translation_id = translation_id;
-        this.label = label;
         this.question_type = question_type;
+        this.label = label;
         this.rank = rank;
         this.status = status;
     };
@@ -146,6 +146,16 @@ app.domain = (function() {
         this.question_id = question_id;
     };
     
+    domain.questions_frequency = function(id_qf, question_id, frequency_id, mandatory, readonly, display, rank) {
+        this.id_qf = id_qf;
+        this.question_id = question_id;
+        this.frequency_id = frequency_id;
+        this.mandatory = mandatory;
+        this.readonly = readonly;
+        this.display = display;
+        this.rank = rank;
+    };
+    
     domain.questions_answer = function(id_answer, translation_id, question_id, label, rank, status) {
         this.id_answer = id_answer;
         this.translation_id = translation_id;
@@ -153,6 +163,16 @@ app.domain = (function() {
         this.label = label;
         this.rank = rank;
         this.status = status;
+    };
+        
+    domain.sp_answer = function(sales_point_id, visit_id, questionnaire_id, question_id, answer_id, answer, answer_time) {
+        this.sales_point_id = sales_point_id;
+        this.visit_id = visit_id;
+        this.questionnaire_id = questionnaire_id;
+        this.question_id = question_id;
+        this.answer_id = answer_id;
+        this.answer = answer;
+        this.answer_time = answer_time;
     };
     
     domain.roadmap = function(id_roadmap, initiating_user_id, operating_user_id, mobile_status_id, web_status_id, creation_date, name, scheduled_date, km, comment, close_date, area_id, local_id) {

@@ -4,6 +4,7 @@
 -->
 <html>
     <head>
+        <meta charset="utf-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
@@ -12,9 +13,27 @@
         <link rel="stylesheet" href="jquerymobile/jquery.mobile-1.3.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Visit Optimizer : Watchwords / Infos / Consignes</title>
+        <title>Visit Optimizer - Infos / Consignes</title>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+        <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.mobile-1.3.0.min.js"></script>
+        <script type="text/javascript" src="lib/archive/archive-min.js"></script>
+        <script type="text/javascript" src="cordova-2.5.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript" src="js/webservice.js"></script>
+        <script type="text/javascript" src="js/domain.js"></script>
+        <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
+        <script type="text/javascript" src="js/controller.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui/jquery.ui.autocomplete.min.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/demo.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.services.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.extensions.js"></script>
     </head>
-    <body>
+    <body onload="app.initialize()">
         <div data-role="page" class="vrn-page" id="vrn-inform-page">
         
             <div data-role="header" class="vrn-header" id="vrn-inform-header" data-position="fixed" data-tap-toggle="false"> </div>
@@ -29,26 +48,13 @@
                             Vous n’avez pas consulté toutes les consignes ! 
                         </div>
                         <div class="ui-block-b vrn-valider-button" id="block-b">
-                            <a href="#" id="vrn-valider" data-role="button" data-transition="slidedown" data-icon="triangle_right_black_image_2" data-iconpos="right" data-inline="true">Valider</a>     
+                            <a href="homepage.html" data-url="vrn-home-page" id="vrn-valider" data-role="button" data-transition="slidedown" data-icon="triangle_right_black_image_2" data-iconpos="right" data-inline="true">Valider</a>     
                         </div>
                     </div>  
                 </div>
             </div>
             
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <!--
-                <div id="vrn-footer-navbar">
-                    <ul> 
-                      <li class="vrn-footer-navbar-li"><a href="homepage.html" id="vrn-taskboard" class="btn " data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li> 
-                      <li class="vrn-footer-navbar-liselected"><a href="inform.html" id="vrn-watchword" class="btn-selected" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-informselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="roadmap.html" id="vrn-roadmap" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="pos.html" id="vrn-pos" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="stats.html" id="vrn-stats" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li> 
-                      <li class="vrn-footer-navbar-li"><a href="params.html" id="vrn-params" class="btn" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li> 
-                    </ul>
-                </div>
-                -->
-            </div>
+            <div data-role="footer" data-id="vrn-footer" data-position="fixed"></div>
             
             <div data-role="popup" id="vrn-inform-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">
              
@@ -71,6 +77,17 @@
                         <div class="ui-grid-solo" id="ui-identity-buttons">
                             <div class="ui-block-a">
                                 <a href="#" data-rel="back" id="vrn-modify-button-return" data-role="button" data-icon="triangle_right_black_image" data-iconpos="right" data-inline="true">Retour</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </body>
+</html>
+-return" data-role="button" data-icon="triangle_right_black_image" data-iconpos="right" data-inline="true">Retour</a>
                             </div>
                         </div>
                     </div>

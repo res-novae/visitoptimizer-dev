@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+    Visit Optimizer - Res-Novae devel 2013
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <!-- Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <link rel="stylesheet" href="jquerymobile/jquery.mobile-1.3.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <title>Visit Optimizer : Roadmap</title>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+        <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.mobile-1.3.0.min.js"></script>
+        <script type="text/javascript" src="lib/archive/archive-min.js"></script>
+        <script type="text/javascript" src="cordova-2.5.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript" src="js/webservice.js"></script>
+        <script type="text/javascript" src="js/domain.js"></script>
+        <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
+        <script type="text/javascript" src="js/controller.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui/jquery.ui.autocomplete.min.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/demo.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.services.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.extensions.js"></script>
+    </head>
+    <body onload="app.initialize()">
+
+        <div data-role="page" class="vrn-page" id="vrn-roadmap-page">
+
+            <div data-role="header" class="vrn-header" data-position="fixed" data-tap-toggle="false"> </div>
+
+            <fieldset class="ui-grid-a" id="ui-grid-a-roadmap">
+                <div id="vrn-test">
+                    <div class="ui-block-a" id="vrn-filter-roadmap-div">
+                        <div id="try">
+                            <a href="#" id="vrn-filter-roadmap-button" data-role="button" data-icon="arrow_down"
+                               data-iconpos="right" data-inline="true" >Filtrer les tournées</a>
+                        </div>
+                        <div id="collapsable-header" class="dn">   
+                            <p>Par Date:</p>
+                            <fieldset class="ui-grid-a">
+                                <div class="ui-block-a" id="vrn-filter-block-a">
+                                    <input id="vrn-filter-roadmap-start-date" type="date" data-clear-btn="false" name="vrn-filter-roadmap-start-date">
+                                </div>
+                                <div class="ui-block-b" id="vrn-filter-block-b">
+                                    <label for="vrn-filter-roadmap-end-date" id="vrn-filter-roadmap-au">au</label>
+                                    <input id="vrn-filter-roadmap-end-date" type="date" data-clear-btn="true" name="vrn-filter-roadmap-end-date">
+                                </div>
+                            </fieldset>
+                            <div data-role="fieldcontain">
+                                <label for="vrn-filter-roadmap-area" id="label-secteur">Par Secteur:</label>
+                                <select id="vrn-filter-roadmap-area" name="vrn-filter-roadmap-area" data-icon="arrow_down">
+                                    <option value="option0">
+                                        TOUTES LES ZONES       
+                                    </option>       
+                                </select>
+                            </div>
+                            <fieldset class="ui-grid-a">
+                                <div class="ui-block-a" id="supprimer-filtres">
+                                    <a href="#" id="vrn-filter-roadmap-clear-button">Supprimer tous les filtres >></a>
+                                </div>
+                                <div class="ui-block-b" id="buttons">
+                                    <a href="#" id="vrn-filter-roadmap-apply-button" data-role="button" data-inline="true">Filtrer</a>
+                                    <a href="#" id="vrn-filter-roadmap-cancel-button" data-role="button" data-inline="true">Annuler</a>   
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+
+   
+                    </script> 
+                    <div class="ui-block-b" id="vrn-creer-tournee-div">
+                        <a href="roadmap_creation.html" id="vrn-create-roadmap-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus" data-inline="true">Créer une tournée</a>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Content -->
+            <div data-role="content" class="vrn-content vrn-roadmap-filter-top">
+                <div id="vrn-roadmap-div">               
+                    <ul data-role="listview" id="vrn-roadmap-list"></ul>      
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div data-role="footer" id="vrn-pos-edit-footer" data-position="fixed" data-tap-toggle="false"></div>
+
+        </div>
+    </body>
+</html>

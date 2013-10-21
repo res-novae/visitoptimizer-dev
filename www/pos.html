@@ -4,8 +4,6 @@
 -->
 <html>
     <head>
-        
-        
         <meta charset="utf-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -15,7 +13,27 @@
         <link rel="stylesheet" href="jquerymobile/jquery.mobile-1.3.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Visit Optimizer : POS / PDV</title>
+        <title>Visit Optimizer - POS / PDV</title>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+        <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
+        <script type="text/javascript" src="jquerymobile/jquery.mobile-1.3.0.min.js"></script>
+        <script type="text/javascript" src="lib/archive/archive-min.js"></script>
+        <script type="text/javascript" src="cordova-2.5.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript" src="js/webservice.js"></script>
+        <script type="text/javascript" src="js/domain.js"></script>
+        <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
+        <script type="text/javascript" src="js/controller.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui/jquery.ui.autocomplete.min.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/demo.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.services.js"></script>
+        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.extensions.js"></script>
+    </head>
+    <body onload="app.initialize()">
         <!-- Page : Pos Panel -->
         <div data-role="page" class="vrn-page" id="vrn-pos-page">
         
@@ -65,7 +83,7 @@
                             </div>
                             <div class="ui-block-b">
                                 <div class="vrn-identity-top-right"><a href="#vrn-pos-page" data-rel="back"><img alt="" src="./css/images/vrn/forma1_5.png"></a></div>
-                                <div class="vrn-identity-top-right"><span id="vrn-pos-iden-visite">Dernière visite</span><span id="vrn-pos-ident-text">J -15</span></div>
+                                <div class="vrn-identity-top-right"><span id="vrn-pos-iden-visite"></span><span id="vrn-pos-ident-text"></span></div>
                             </div>
                         </fieldset> 
                         <fieldset class="ui-grid-a" id="ui-grid-identity-body">
@@ -75,7 +93,7 @@
                                 <select id="vrn-pos-identity-tel" name="vrn-identity-tel" data-icon="arrow_down"></select>
                                 <select id="vrn-pos-identity-email" name="vrn-identity-email" data-icon="arrow_down"></select>
                                 <a href="#vrn-pos-map" id="vrn-pos-identity-map-btn" data-url="" class="pos-identity-map-lnk" data-transition="pop" data-rel="popup">
-                                    <img class="to" src="./css/images/vrn/map.jpg" style="width: 110px;">
+                                    <img class="to" src="./css/images/vrn/map.jpg" style="width: 110px; margin-top: -100px;">
                                 </a>
                             </div>
                         </fieldset> 
@@ -102,7 +120,7 @@
             <div data-role="popup" id="vrn-pos-map" data-add-back-btn="true" data-overlay-theme="a" data-theme="c" data-dismissible="true">
                     <fieldset class="ui-grid-a ui-grid-identity-top">
                         <div class="ui-block-a">
-                            <a href="#vrn-pos-identity-pop" class="button back black" data-rel="back" data-direction="reverse"><span>retour</span></a>
+                                <a href="#vrn-pos-identity-pop" data-role="button" data-icon="arrow-l" class="button back black" data-rel="back" data-direction="reverse" id="vrn-roadmap-retour-button">retour</a>
                         </div>
                         <div class="ui-block-b">
                             <div class="vrn-identity-top-right"><a href="#vrn-pos-pagel" data-rel="back"><img alt="" src="./css/images/vrn/forma1_5.png"></a></div>
@@ -140,12 +158,6 @@
                         </div>
                     </div>
                     
-                    <div class="ui-block-b">
-                        <select name="vrn-pos-type" id="vrn-pos-type">
-                            <option value="">Type de point de vente</option>
-                        </select>
-                    </div>
-                    
                     <div id="ui-block-a-fieldset">
                         <div class="ui-grid-solo">
                             <div class="ui-block-a"> <input type="text" name="vrn-pos-street" id="vrn-pos-street" placeholder="N° et Nom de la rue" value=""></div>
@@ -176,23 +188,28 @@
                     </div>
                     
                     <div class="ui-block-b">
+                        <select name="vrn-pos-type" id="vrn-pos-type">
+                            <option value="">Type de point de vente</option>
+                        </select>
+                    </div>
+             
+                    
+                    <div class="ui-block-b">
                         <select name="vrn-pos-frequency" id="vrn-pos-frequency">
                             <option value="">Fréquence</option>
                         </select>
                     </div>
-                    
+              
                     <div class="ui-block-b">
                         <select name="vrn-pos-microzone" id="vrn-pos-microzone">
                             <option value="">Microzone du point de vente</option>
                         </select>
                     </div>
-                    
-                    <br>
-                    
+                
                     <fieldset class="ui-grid-a">
-                        <div class="ui-block-a">
+                        <!--<div class="ui-block-a">
                             <a href="#" id="vrn-ajouter-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Ajouter un champs</a>
-                        </div>
+                        </div>-->
                         <div class="ui-block-b">
                             <a href="#" id="vrn-pos-edit-enregistrer-button" data-role="button" data-icon="enregistrer"
                                data-iconpos="right">Enregistrer</a>
@@ -220,29 +237,8 @@
             
         </div>
 
-
-
-
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
-        <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
-        <script type="text/javascript" src="jquerymobile/jquery.mobile-1.3.0.min.js"></script>
-        <script type="text/javascript" src="lib/archive/archive-min.js"></script>
-        <script type="text/javascript" src="cordova-2.5.0.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/utils.js"></script>
-        <script type="text/javascript" src="js/repository.js"></script>
-        <script type="text/javascript" src="js/webservice.js"></script>
-        <script type="text/javascript" src="js/domain.js"></script>
-        <script type="text/javascript" src="js/import.file.to.sqlite.js"></script>
-        <script type="text/javascript" src="js/controller.js"></script>
-        <script type="text/javascript" src="lib/jquery-ui/jquery.ui.autocomplete.min.js"></script>
-        <script type="text/javascript" src="lib/jquery-ui-map/demo.js"></script>
-        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.js"></script>
-        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.services.js"></script>
-        <script type="text/javascript" src="lib/jquery-ui-map/jquery.ui.map.extensions.js"></script>
-        <script type="text/javascript">
-            app.initialize();
+    </body>
+</html>;
             //navigator.splashscreen.hide();
             //document.addEventListener("onDeviceReady", app.initialize, false);
         </script>
