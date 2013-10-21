@@ -42,8 +42,10 @@
 			</div>
         </div>
         <script type="text/javascript">
-        	alert('index');
-        	window.addEventListener('deviceReady', app.initialize, false);
+        	$(window).load(function(){
+	        	alert('index');
+	        	$(document).bind('deviceready', app.initialize);
+        	});
         </script>
     </body>
 </html>
