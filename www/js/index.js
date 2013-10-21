@@ -33,7 +33,12 @@ var app = (function() {
     
     app_.initialize = function() {
        // alert('initialize');
-        app_.bindEvents();
+        // fake to local dev
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+            document.addEventListener("deviceready", app_.bindEvents, false);
+        } else {
+            window.addEventListener('load', app_.init, false);
+        }
     },
     app_.bindEvents = function() {
         document.addEventListener('deviceready', app_.onDeviceReady, false);
