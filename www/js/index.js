@@ -31,13 +31,14 @@ var app = (function() {
         }
     };
     
-    app_.initialize: function() {
+    app_.initialize = function() {
+        alert('initialize');
         app_.bindEvents();
     },
-    app_.bindEvents: function() {
+    app_.bindEvents = function() {
         document.addEventListener('deviceready', app_.onDeviceReady, false);
     },
-    app_.onDeviceReady: function() {
+    app_.onDeviceReady = function() {
         app_.receivedEvent('deviceready');
     },
     app_.receivedEvent = function(id) {
@@ -50,6 +51,8 @@ var app = (function() {
         app_.log("# APP Init");
         app_.loggedUser = null;
 
+        app_.controller.init();
+        /*
         // init session
         app_.testConnexion(
             function(doneCallback) {
@@ -60,7 +63,7 @@ var app = (function() {
                 );
             }
         );
-        
+        */
     };
     
     app_.testConnexion = function(doneCallback) {
