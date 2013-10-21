@@ -33,15 +33,23 @@ var app = (function() {
     
     // Application Constructor
     app_.initialize = function() {
-    
+       //app_.bindEvents();
+        
         // fake to local dev
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
             document.addEventListener("deviceready", app_.onDeviceReady, false);
         } else {
             window.addEventListener('load', app_.onDeviceReady, false);
-            //app_.onDeviceReady();
         }
         
+    };
+    
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    app_.bindEvents = function() {
+        document.addEventListener('deviceready', app_.onDeviceReady, false);
     };
     
     // deviceready Event Handler
@@ -49,11 +57,26 @@ var app = (function() {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     app_.onDeviceReady = function() {
-       // if(app_.chromeSingleton == 0){
-       //     app_.chromeSingleton = 1;
-            app_.log("# APP is ready =:)");
-            app_.controller = app_.controller.init();
-       // }
+        if(app_.chromeSingleton == 0){
+            app_.chromeSingleton = 1;
+            app.receivedEvent('deviceready');
+        }
+    };
+    
+    // Update DOM on a Received Event
+    app_.receivedEvent = function(id) {
+        var parentElement = document.getElementById(id);
+      //  var listeningElement = parentElement.querySelector('.listening');
+      //  var receivedElement = parentElement.querySelector('.received');
+
+      //  listeningElement.setAttribute('style', 'display:none;');
+      //  receivedElement.setAttribute('style', 'display:block;');
+
+        console.log('Received Event: ' + id);
+        
+        app_.log("# APP is ready =:)");
+        app_.controller = app_.controller.init();
+        
     };
     
     app_.init = function() {
@@ -65,7 +88,7 @@ var app = (function() {
             function(doneCallback) {
                 app_.initRepository(
                     function(doneCallback) {
-                        app_.initWebservice(app_.controller.init());
+                        app_.initWebservice(app_.isReady);
                     }
                 );
             }
