@@ -61,6 +61,56 @@
             
             <!-- Pop : Pos detail -->
             <div data-role="popup" id="vrn-pos-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">
+
+                <div data-role="content" class="vrn-content" id="vrn-pos-detail-content">
+                    <div id="vrn-roadmap-item-pos">
+                        <fieldset class="ui-grid-a ui-grid-identity-top" id="vrn-pos-detail-top">
+                            <div class="ui-block-a">
+                                <div id="vrn-pos-detail-top-left"></div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div id="vrn-pos-detail-top-right-div">
+                                    <div class="vrn-identity-top-right"><a href="#vrn-pos-page" data-rel="back"><img alt="" src="./css/images/vrn/forma1_5.png"></a></div>
+                                    <div class="vrn-identity-top-right"><span id="vrn-pos-detail-visite"></span><span id="vrn-pos-detail-text"></span></div>
+                                </div>
+                            </div>
+                        </fieldset> 
+                        <fieldset class="ui-grid-a" id="ui-grid-pos-body">
+                            <div class="ui-block-a">
+                                <div id="vrn-pos-detail-address"><img alt="" src="./css/images/vrn/forma2_3.png"></div>
+                                <div id="vrn-pos-detail-seller-name"><img alt="" src="./css/images/vrn/forma2_3.png"></div>
+                                <select id="vrn-pos-detail-tel" name="vrn-identity-tel" data-icon="arrow_down"></select>
+                                <select id="vrn-pos-detail-email" name="vrn-identity-email" data-icon="arrow_down"></select>
+                                
+                            </div>
+                            <div class="ui-block-b">
+                                <div id="vrn-pos-detail-map-lnk-div">
+                                    <a href="#vrn-roadmap-item-pos-map-pop" id="vrn-pos-detail-map-lnk" data-url="" class="pos-identity-map-lnk" data-transition="pop" data-rel="popup" data-position-to="window">
+                                        <img class="to" src="./css/images/vrn/map.jpg" style="width: 110px;">
+                                    </a>
+                                </div>
+                            </div>
+                        </fieldset> 
+                        <div id="ui-description">
+                            <div class="title">Description :</div>
+                            <div id="vrn-pos-detail-description" class="vrn-identity-description"></div>
+                            <div class="title">Dernier commentaire :</div>
+                            <div id="vrn-pos-detail-descriptionb" class="vrn-identity-descriptionb"> </div>
+                        </div>
+                        <div class="ui-grid-solo" id="ui-pos-buttons">
+                            <div class="ui-block-a">
+                                <a href="#" id="vrn-pos-detail-appeler-button" class="vrn-appeler-button" data-role="button" data-icon="arrow_right_white" data-iconpos="right" data-inline="true">Appeler</a>
+                                <a href="#" id="vrn-pos-detail-send-button" class="vrn-send-button" data-role="button" data-icon="arrow_right_white" data-iconpos="right" data-inline="true">Envoyer un message</a>
+                                <a href="#vrn-pos-edit-page" id="vrn-pos-detail-button" class="vrn-modify-button" data-role="button" data-icon="triangle_right_black_image" data-iconpos="right" data-inline="true">Modifier</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- 
+            <div data-role="popup" id="vrn-pos-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">
              
                 <div data-role="content" class="vrn-content" id="vrn-content-identity">
                     <div id="vrn-pos-identity">
@@ -79,7 +129,7 @@
                                 <div id="vrn-pos-identity-seller-name"><img alt="" src="./css/images/vrn/forma2_3.png"></div>
                                 <select id="vrn-pos-identity-tel" name="vrn-identity-tel" data-icon="arrow_down"></select>
                                 <select id="vrn-pos-identity-email" name="vrn-identity-email" data-icon="arrow_down"></select>
-                                <a href="#vrn-pos-map-pop" id="vrn-pos-identity-map-btn" data-url="" class="pos-identity-map-lnk" data-transition="pop" data-rel="popup">
+                                <a href="#vrn-pos-map-pop" id="vrn-pos-identity-map-btn" data-url="" class="pos-identity-map-lnk" data-transition="pop" data-rel="popup" data-position-to="window">
                                     <img class="to" src="./css/images/vrn/map.jpg" style="width: 110px; margin-top: -100px;">
                                 </a>
                             </div>
@@ -102,7 +152,7 @@
                 </div>
                 
             </div>
-
+-->
             <!-- Pop : Pos detail localisation -->
             <div data-role="popup" id="vrn-pos-map-pop" data-add-back-btn="true" data-overlay-theme="a" data-theme="c" data-dismissible="true">
                     <fieldset class="ui-grid-a ui-grid-identity-top">
@@ -114,7 +164,7 @@
                         </div>
                     </fieldset>
 
-                <div data-role="content" id="vrn-map-content"></div>
+                <div data-role="content" id="vrn-pos-map-content"></div>
             </div>
 
         </div>

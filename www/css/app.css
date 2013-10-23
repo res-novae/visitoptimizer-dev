@@ -6442,13 +6442,13 @@ position:relative;
 	height:693px;
     margin: -15px -15px 0px;
 }
-#vrn-roadmap-item-pos-top{
+#vrn-roadmap-item-pos-top, #vrn-pos-detail-top{
     padding: 15px 15px 0px;
     background-color:#d1d3d4;
     color:#414142;
     font-weight:bold;
 }
-#vrn-roadmap-item-pos-top-left{
+#vrn-roadmap-item-pos-top-left, #vrn-pos-detail-top-left{
     color:#414142;
     text-transform: uppercase;
     height: 85px;
@@ -6458,7 +6458,7 @@ position:relative;
 	font-size: 1.500em;
 }
 
-#vrn-roadmap-item-pos-top-right{
+#vrn-roadmap-item-pos-top-right, #vrn-pos-detail-top-right{
     color:#9fa1a4;
     float:right;
 	height: 85px;
@@ -6472,9 +6472,6 @@ position:relative;
     color:#414142;
     font-weight:bold;
 }
-#ui-grid-identity-body{
-    padding: 15px 15px 0px;
-}
 .title{
     padding-top:15px; 
      font-style: oblique;
@@ -6487,14 +6484,14 @@ position:relative;
     padding-right: 15px;
     font-family:Helvetica;
 }
-#vrn-roadmap-item-pos-map-lnk-div{
+#vrn-roadmap-item-pos-map-lnk-div, #vrn-pos-detail-map-lnk-div{
 	float:right;
 }
-#vrn-roadmap-item-pos-appeler-button .ui-btn-text{
+#vrn-roadmap-item-pos-appeler-button .ui-btn-text, #vrn-pos-detail-appeler-button .ui-btn-text{
     color:#fff;
     text-transform: uppercase;
 }
-#vrn-roadmap-item-pos-address, #vrn-roadmap-item-pos-seller-name{
+#vrn-roadmap-item-pos-address, #vrn-roadmap-item-pos-seller-name, #vrn-pos-detail-address, #vrn-pos-detail-seller-name{
 	padding-left: 10px;
 	font-size: 18px;
 }
@@ -6521,7 +6518,7 @@ position:relative;
     color:#414142;
     font-weight:bold;
 }
-#ui-grid-identity-body{
+#ui-grid-identity-body, #ui-grid-pos-body{
     padding: 15px 15px 0px;
 }
 .title{
@@ -6576,17 +6573,17 @@ position:relative;
     /**remove border top around ajouter button****/
     border-top:none;   
 }
-#ui-identity-buttons{
+#ui-identity-buttons, #ui-pos-buttons{
     background-color:#fff;
     margin-top:10px;
     padding-top:30px;
     padding-bottom:30px;
 }
-#vrn-content-identity{
+#vrn-content-identity, #vrn-pos-detail-content{
     background-color: #fff;
        
 }
-#ui-identity-buttons{
+#ui-identity-buttons, #ui-pos-buttons{
     margin-left:15px;
     margin-right:15px;
 }
@@ -6600,7 +6597,7 @@ position:relative;
 #vrn-identity-page .ui-select .ui-btn-text, #vrn-roadmap-item-pos-map-pop .ui-select .ui-btn-text{
     text-align: left;
 }
-#vrn-identity-page #ui-grid-identity-body .ui-block-b, #vrn-roadmap-item-pos-map-pop #ui-grid-identity-body .ui-block-b{
+#vrn-identity-page #ui-grid-identity-body .ui-block-b, #vrn-roadmap-item-pos-map-pop #ui-grid-identity-body .ui-block-b, #ui-grid-pos-body .ui-block-b{
     padding-right:2.7%;
 }
 #vrn-identity-top-left{
@@ -6728,7 +6725,7 @@ position:relative;
     color:#808285;
     float:right;
 }
-#ui-identity-buttons {
+#ui-identity-buttons, #ui-pos-buttons{
     margin: auto;
     /*position: fixed;*/
     text-align: center;
@@ -6749,7 +6746,7 @@ position:relative;
     font-style: oblique;
     font-size:1.125em;
 }
-#vrn-content-identity{
+#vrn-content-identity, #vrn-pos-detail-content{
     background-color: #fff;
     height:693px;
 }

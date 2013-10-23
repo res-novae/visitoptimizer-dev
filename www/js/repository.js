@@ -1074,14 +1074,14 @@ app.repository = (function() {
         return op_deferred.promise();
     }; 
 
-    repository.testRoadMapItemPos = function(roadmap_id,sales_point_id) {
+    repository.testRoadMapItemPos = function(roadmap_id,sales_point_id,item_index) {
         app.log('repository.testRoadMapItemPos ');
         var op_deferred = $.Deferred();
         var rsql = "SELECT * FROM sp_visit WHERE ( roadmap_id = ? AND sales_point_id = ? )";
         var param = [ roadmap_id, sales_point_id ];
         $.when(requestToDB(rsql,param)).done(function(results) {
-            if (results.rows.length != 0) op_deferred.resolve(sales_point_id, "yes");
-            else op_deferred.resolve(sales_point_id, "no");
+            if (results.rows.length != 0) op_deferred.resolve(roadmap_id,sales_point_id, item_index, "yes");
+            else op_deferred.resolve(roadmap_id,sales_point_id, item_index, "no");
         } );
         return op_deferred.promise();
     }
@@ -1089,9 +1089,9 @@ app.repository = (function() {
     repository.addRoadMapItemPos = function(param) {
         app.log('repository.addRoadMapItemPos ');
         var op_deferred = $.Deferred();
-
         var rsql = "INSERT INTO sp_visit (id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id) VALUES (?,?,?,?,?,?,?,?,?)";
         $.when(requestToDB(rsql,param)).done(function(results) {
+           
             op_deferred.resolve(null);
         } );
         return op_deferred.promise();

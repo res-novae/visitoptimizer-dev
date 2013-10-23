@@ -1,60 +1,45 @@
-'use strict';
+//var app = {};
+app.controller = (function () {
+    'use strict';
+    var controller = {},
+        trad,
+        TID,
+        loginLoadingPopup,
+        errorLoadingPopup,
+        settings,
+        last_sync,
+        messages,
+        pos,
+        daily_roadmap,
+        current_params_url = [],
+        preload;
 
-app.controller = (function() {
-
-    var controller = {};
-    
-    //var app = null;
-    var trad;
-    var TID;
-    var loginLoadingPopup;
-    var errorLoadingPopup;
-    var settings;
-    var last_sync;
-    var messages;
-    var pos;
-    var daily_roadmap;
-    
-    //var current_params_url;
-    var current_params_url = Array();
-    
-    var preload;
-    
     //controller.ajaxAsyncTask = new app.utils.AjaxAsyncTask(false);
     //controller.webservice = new app.webservice.init();
     //$( document ).unbind( "pagechange");
 
     // memento :
-    
     // 1. Utilser bind au lieu de live
-    
     // 2. Utilser tab ou lieu de click
-    
     // 3. Les transitions jQuery Mobile ne sont pas compatibles avec tous les navigateurs
-    
     // 4. ID des éléments du dom doivent être uniques même entre des pages différentes
-    
     // 5. Input text de type=”number” ne sont pas compatibles avec tous les navigateurs, à éviter
-    
-    $(window).unload( function () { alert("Bye now!"); } );
-    
-    controller.init = function() {
+
+    controller.init = function () {
         app.log("## app.controller : init", 'wip');
 
 
         //location.reload(false);
-        
+
         $.support.cors = true; // crossdomain
         $.mobile.allowCrossDomainPages = true; // crossdomain
-        
+
         $.mobile.pushStateEnabled = false; // modification du comportement de navigation
         $.mobile.page.prototype.options.domCache = true; //  mise en cache des pages (vs page dynamiques) 
-       
+
         $.mobile.ignoreContentEnabled = true;
         $.mobile.touchOverflowEnabled = true;
 
-        
-        
         //preload 
         if($.mobile.activePage.attr('id') == 'vrn-index-loading'){
             app.log('preload en cours...');
@@ -63,25 +48,6 @@ app.controller = (function() {
             $.mobile.loadPage("vrn-sync-page.html",true);
             $.mobile.loadPage("vrn-home-page.html",true);
 
-
-/*
-                    $.mobile.loadPage("vrn-inform-page.html",true);
-                    $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
-                    
-                    
-                    
-                    $.mobile.loadPage("vrn-roadmap-page.html",true);
-                    $.mobile.loadPage("vrn-roadmap-item-page.html",true);
-                    $.mobile.loadPage("vrn-roadmap-item-pos-edit-page.html",true);
-                    //$.mobile.loadPage("vrn-current-roadmap-item-list-page.html",true);
-                    $.mobile.loadPage("vrn-roadmap-visit-questionnaire-page.html",true);
-                    $.mobile.loadPage("vrn-pos-page.html",true);
-            //        $.mobile.loadPage("vrn-stats-page.html",true);
-            //        $.mobile.loadPage("vrn-params-page.html",true);
-
-
- */
-            
             // test si la db existe
             app.log("::Init:: Step 1 : DB test");
             var r1 = app.repository.checkStartDatabaseExist();
@@ -90,7 +56,7 @@ app.controller = (function() {
                 //alert(dbExist);
                 if(dbExist == 'yes') {
                     app.log("app.repository: DB : " + app.repository.databaseName + " exist");
-                    
+
                     // recup le setting (remerber me) si exist
                     var r2 = app.repository.loadSettingsB();
                     r2.done(function() {});
@@ -101,7 +67,6 @@ app.controller = (function() {
                             app.log("::Init:: Step 3 : No setting exist");
                             app.authenticatedInThisSession = false;
 
-                            
                             var r3 = app.repository.getTranslation([256,323,324,257,451,771,1155]);
                             r3.done(function(data) {
                                 trad = data;
@@ -111,7 +76,7 @@ app.controller = (function() {
                                 $.mobile.changePage('#vrn-login-page', {transition:"slidedown",changeHash:false,reverse:false,reload:true});
                             });
                             return;
-                                                      
+
                         }
                         else {
                             app.log("::Init:: Step 3 : Setting exist (remember me)");
@@ -119,17 +84,17 @@ app.controller = (function() {
                             app.authenticatedInThisSession = true;
                             app.repository.loadUser(settings.userId, function(user) {
                                 app.loggedUser = user;
-                                
+
                                 app.log("::Init:: Step 4 : Setting exist : loading success (id:"+localStorage.getItem( "current_user_id" )+")");
 
                                 app.repository.checkUserSyncData(user.id, 
                                    function() {
                                         app.log("::Init:: Step 5a : Init light DB (with login translation)");
-                                        
+
                                         app.repository.getLastSyncInfos(localStorage.getItem( "current_user_id" ), function(id, sync_id, userId, date) {
                                             app.log("getLastSyncInfos is ok : "+ date, 'success');
                                             controller.last_sync = new app.domain.sync_infos(id,sync_id,userId, date);
-                                            
+
                                             // show TASKBOARD
                                             $.mobile.changePage("#vrn-home-page", {
                                                transition:"slide",
@@ -137,7 +102,7 @@ app.controller = (function() {
                                                reverse:false,
                                                reload:true
                                             });
-                                            
+
                                         });
                                    },
                                    function() {
@@ -149,7 +114,7 @@ app.controller = (function() {
                                                 app.log("getLastSyncInfos is ok : "+ date, 'success');
                                                 controller.last_sync = new app.domain.sync_infos(id,sync_id,userId, date);
                                                 // show TASKBOARD
-                                                
+
                                                 $.mobile.changePage("#vrn-home-page", {
                                                    transition:"slide",
                                                    changeHash:false,
@@ -158,24 +123,23 @@ app.controller = (function() {
                                                 });
                                                 //controller.showVrnHomePage(); 
                                             }); 
-                                             
+
                                         });
                                    }
                                );
 
                             });
                         }
-                        
-                        
+
                     });
 
                 }else {
                     app.log("app.repository: DB : " + app.repository.databaseName + " does not exist");
-                    
+
                     var r2 = app.repository.firstInitDbApp();
                     r2.done(function(data) {});
                     $.when(r2).done(function(data) {
-                        
+
                         app.log("::Init:: Step 2 : Init light DB (with login translation only)");
                         app.authenticatedInThisSession = false;
 
@@ -194,24 +158,23 @@ app.controller = (function() {
                 }
                 app.log('preload fini.');
             });
- 
-            
+
         }   
 
-        
     };
+
+    pagebeforechange 
     
     // Before Show
     $( document ).unbind( "pagebeforeshow");
     $(document).bind("pagebeforeshow", function(e, data) {
         app.log(':: event : B : pagebeforeshow : '+$.mobile.activePage.attr('id'), 'wip');
- 
-        
+        e.preventDefault();
         var r1 = app.repository.checkDatabaseExist();
         r1.done(function() {});
         $.when(r1).done(function(dbExist) {
             //alert($.mobile.activePage.attr('id'));
-            
+
             //alert(dbExist);
             if(dbExist == 'yes' || $.mobile.activePage.attr('id') == 'vrn-login-page') {
                 // Login Panel //
@@ -252,7 +215,7 @@ app.controller = (function() {
                     controller.showVrnRoadmapItemPage(current_params_url['roadmap_id']);
                     $.mobile.loadPage("vrn-roadmap-page.html",true);
                 }
-                
+
                 /*
                 // roadmap form list ... semble ne pas etre utilisé
                 if($.mobile.activePage.attr('id') == 'vrn-form-list-page'){
@@ -270,9 +233,7 @@ app.controller = (function() {
                     controller.showVrnRoadmapVisitQuestionnairePage(localStorage.getItem('sp_visit_id'), localStorage.getItem('questionnaire_id'));
                     $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
                 }
-                
-                 
-        
+
                 // POS //
                 if($.mobile.activePage.attr('id') == 'vrn-pos-page'){
                     controller.showVrnPosPage(e,data);
@@ -298,7 +259,7 @@ app.controller = (function() {
                     $.mobile.loadPage("vrn-params-page.html",true);
                     $.mobile.loadPage("vrn-login-page.html",true);
                 }
-                
+
             }else if($.mobile.activePage.attr('id') != 'vrn-index-loading'){
                 // retour à init si pas de db
                 $.mobile.changePage('#vrn-index-loading', {transition:"pop",changeHash:false,reverse:false,reload:true});
@@ -309,45 +270,44 @@ app.controller = (function() {
 
     $( document ).unbind( "popupbeforeposition");
     $( document ).bind( "popupbeforeposition", function( e, data ){
+       // alert(current_params_url['id_parent_pop']);
         // Road map : item detail pop  //
         if(current_params_url['id_parent_pop'] == 'vrn-roadmap-item-pos-detail-pop'){
             controller.showRoadmapItemPosDetailPop(current_params_url['roadmap_id'],current_params_url['sales_point_id']);
         }
-        
+
         // Road map : item map pop  //
         if(current_params_url['id_parent_pop'] == 'vrn-roadmap-item-pos-map-pop'){
              controller.showRoadmapItemPosMapPop(current_params_url['roadmap_id'],current_params_url['sales_point_id'],current_params_url['gps_latitude'],current_params_url['gps_longitude']);
         }
-        
+
         // Road map : delete item pop  //
         if(current_params_url['id_parent_pop'] == 'vrn-roadmap-item-pos-delete-pop'){
              controller.showRoadmapItemPosDeletePop(current_params_url['roadmap_id'],current_params_url['sales_point_id']);
         }
-        
+
         // Road map : add pos item to roadmap pop  //
         if(current_params_url['id_parent_pop'] == 'vrn-roadmap-item-pos-add-pop'){
             controller.addRoadmapItemPosPop(current_params_url['roadmap_id']);
         }
-       
-        
-        
+
         // Infos / Watchwords : item detail pop //
         if(current_params_url['id_parent_pop'] == 'vrn-inform-detail-pop'){
             controller.showMessagePop(current_params_url['id']);
         }
-        
+
         // POS : item detail pop //
         if(current_params_url['id_parent_pop'] == 'vrn-pos-detail-pop'){
             controller.showVrnPosDetailPop(current_params_url['id']);
         }
-        
+
         // POS : item map pop //
         if(current_params_url['id_parent_pop'] == 'vrn-pos-map-pop'){
             controller.showVrnPosMapPop(current_params_url['id'],current_params_url['gps_latitude'],current_params_url['gps_longitude']);
         }
 
     });  
-    
+
     // parse URL to generate params values
     controller.getParamUrl = function(event){
        //alert('okzzz');
@@ -355,7 +315,7 @@ app.controller = (function() {
         var querystring = $(this).jqmData('url');
         if(querystring.indexOf('?') != -1){
             var param_url = querystring.substring(querystring.indexOf('?')+1);
-            
+
             app.log("params : "+param_url);
             if(param_url.indexOf('&') != -1){
                 var pus = param_url.split('&');
@@ -372,12 +332,11 @@ app.controller = (function() {
             }
         }
     }
-    
-    
+
     // ==> Login Panel //
     controller.showVrnLoginPage = function() {
         app.log("controller.showVrnLoginPage", 'wip');
-        
+
         // init les popups infos
         controller.loginLoadingPopup = $("#vrn-login-popup");
         controller.loginLoadingPopup.popup();
@@ -388,23 +347,22 @@ app.controller = (function() {
         $.mobile.navigate( "vrn-login-page" );
         // show header
         controller.showVrnHeader();
-        
+
         // def i18n text value$("#vrn-login-page").fadeIn('slow');
         $("#vrn-username").attr("placeholder", trad["256"]);
         $("#vrn-password").attr("placeholder", trad["323"]);
         $("#vrn-forgot-password").html(trad["324"]+ " >>");
-        
+
         $("label[for='vrn-remember-me']").text(trad["451"]).trigger("refresh");
-        
+
         $("#vrn-login .ui-btn-text").text(trad["771"]);
         $("#vrn-login-error-popup").children("[data-role=header]").html("<h1>"+trad["1155"]+"</h1>");
         $("#vrn-login-error-popup-content").children(".ui-title").html(trad["257"]);
         $('#vrn-login').show();
-        
-        
+
         $('#vrn-login').unbind('tap');
         $('#vrn-login').bind('tap', controller.authenticate );
-        
+
         $('#vrn-popup-cancel').unbind('tap');
         $('#vrn-popup-cancel').bind('tap', function() {
             /*
@@ -417,21 +375,17 @@ app.controller = (function() {
             });
         });
         $(".vrn-page").trigger('updatelayout');
-            
-
 
     };
-    
-    
+
     // message de sync WAIT !
     controller.showVrnSyncPage = function() {
         app.log("controller.showVrnSyncPage", 'wip');
         // header
         $("#vrn-sync-header").html(controller.getHeader()).trigger('refresh');
         $("#vrn-sync-page").trigger('change');  
-        
     };
-    
+
     // ==> HOMEPAGE / TaskBoard //
     controller.showVrnHomePage = function(e,data) {
         app.log("controller.showVrnHomePage", 'wip');
@@ -441,23 +395,20 @@ app.controller = (function() {
         $.mobile.navigate( "vrn-home-page" );
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-home-page');
-        
-        //$("#vrn-home-page").trigger('change');  
-        
+
         var count_infos = 0;
         var count_actions = 0;
         var count_bubble_infos = 0;
         var count_bubble_actions = 0;
         var bubble_infos = '';
         var bubble_actions = '';
-        
+
         // userInfos : infos 
         var r1 = app.repository.getUserItem(localStorage.getItem( "current_user_id" ));
         r1.done(function(user) {
             app.loggedUser = user;
         });
-        
-        
+
         // consignes (message) : infos et action
         var r2 = app.repository.getMessages(localStorage.getItem( "current_user_id" ));
         r2.done(function(messages) {
@@ -478,33 +429,30 @@ app.controller = (function() {
                 + '                 <span id="mon_lues_text"> <span id="non_lues">non lues:</span> <span id="non_lues_value">'+count_bubble_infos+'</span> </span>'
                 + '             </div>';
             } else bubble_infos = '';
-            
+
             if(count_bubble_actions != 0 ) {
                 bubble_actions = '             <div id="talkbubble">'
                 + '                 <span id="mon_lues_text"> <span id="non_lues">non lues:</span> <span id="non_lues_value">'+count_bubble_actions+'</span> </span>'
                 + '             </div>';
             } else bubble_actions = '';
-
         });
 
-        
         // test si tournee du jour (fake pour le dev : si une tournee existe)
         var r3 = app.repository.getDailyRoadmapItem();
         r3.done(function(roadmap) {
             daily_roadmap = roadmap;
-            
+
             // localstorage current data
             localStorage.setItem( "current_roadmap_id", daily_roadmap.id_roadmap );
             if(daily_roadmap.pos_list.length != 0) localStorage.setItem( "current_visit_id", daily_roadmap.pos_list[0].sp_visit__id_visit );
             else localStorage.setItem( "current_visit_id", 0 );
-            
+
         });
-        
-        
+
         // final execute
         $.when(r1, r2, r3).done(function(messages) {
             //controller.loginLoadingPopup.popup("close");
-            
+
             // infos user
             if (typeof controller.last_sync != "undefined"){
                 if (typeof controller.last_sync.date != "undefined") var date = controller.last_sync.date;
@@ -537,8 +485,7 @@ app.controller = (function() {
             + '    <div class="vrn-consignes-line3"></div>'
             + ' </div>';
             $("#vrn-home-message-data").html(code).trigger('change');
-            
-        
+
             // road map panel
             if(daily_roadmap.id_roadmap != 0) {
                 $("#roadmap_daily").show();
@@ -550,7 +497,7 @@ app.controller = (function() {
                 for (var i=0;i<daily_roadmap.pos_list.length;i++){ 
                     if(daily_roadmap.pos_list[i].sp_visit__status_visit_id != 1 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 2 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 3) 
                         nb_total_visited++;
-                    
+
                     if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 2 || daily_roadmap.pos_list[i].sp_visit__status_visit_id == 3)
                         curent_vist_id = daily_roadmap.pos_list[i].sp_visit__status_visit_id
                 }
@@ -562,30 +509,30 @@ app.controller = (function() {
                 $('#vrn-home-page-visit-pos-adress').html(daily_roadmap.pos_list[0].street +", "+ daily_roadmap.pos_list[0].postal_code + " " +daily_roadmap.pos_list[0].city);
                 $('#vrn-home-page-visit-pos-tel').html(daily_roadmap.pos_list[0].phone_number);
                 $('#vrn-home-page-visit-pos-description').html(daily_roadmap.pos_list[0].description);
-               
+
                // $('#vrn-lancer').attr("data-url", "?op=openPage&pageId=vrn-roadmap-visit-page&transition=slide&sp_visit_id="+daily_roadmap.pos_list[0].sp_visit__id_visit+"&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id+"&sales_point_id="+daily_roadmap.pos_list[0].id_sales_point);
                 $('#vrn-lancer').unbind('tap');
                 $('#vrn-lancer').bind('tap', function(){ controller.getParamUrl } );
-                
+
             }else{
                 $("#roadmap_create").show();
                 $("#roadmap_daily").hide();
             }
-            
+
         });
-        
+
     };
-    
+
     // ==> Watchwords / Infos / Consignes //
     controller.showVrnInformPage = function(e,data) {
         app.log("controller.showVrnInformPage", 'wip');
-        
+
         // header et footer
         $.mobile.navigate( "#vrn-inform-page" );
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-inform-page');
         $("#vrn-inform-page").trigger('refresh');
-                
+
         // consignes (message) : infos et action 
         var r1 = app.repository.getMessages(localStorage.getItem( "current_user_id" ));
         r1.done(function(messages) {
@@ -620,8 +567,7 @@ app.controller = (function() {
                     valid_all_infos = 0;
                 } else 
                 var ico_check = '';
-                
-                
+
                  code += '<li data-icon="check'+ico_check+'" id="vrn-inform-message-li-'+messages[i].id_message+'">'+
                  '  <a href="#vrn-inform-detail-pop" data-url="?id_parent_pop=vrn-inform-detail-pop&id='+messages[i].id_message+'" id="vrn-inform-message-'+messages[i].id_message+'" class="inform-detail-link" data-transition="pop" data-inline="true" data-rel="popup">'+
                            ico_priority+
@@ -634,7 +580,7 @@ app.controller = (function() {
             }
             code += '</ul>';
             $("#vrn-inform-div").html(code).trigger('create');
-            
+
             if(valid_all_infos == 0){
                 $("[data-role=footer]").height(161);
                 $(".vrn-inform-valider").height(81);
@@ -645,7 +591,7 @@ app.controller = (function() {
                     '       </div>'+
                     '   </div>';
                 $(".vrn-inform-valider").html(code).trigger('create').show();
-                
+
                 //alert('hopshow infos');
             }else{
                 $(".vrn-inform-valider").hide();
@@ -656,17 +602,14 @@ app.controller = (function() {
                 $('#vrn-inform-message-'+messages[i].id_message).unbind('tap');
                 $('#vrn-inform-message-'+messages[i].id_message).bind('tap', controller.getParamUrl );
             }
-            
-            
+
             $("#vrn-inform-page").trigger('refresh'); 
         });
 
-        
     };
-    
+
     controller.showMessagePop = function(id_message) {
         app.log("controller.clickMessage: "+ id_message, 'wip');
-        
 
         for (var i=0;i<controller.messages.length;i++){ 
             if(controller.messages[i].id_message == id_message){
@@ -684,9 +627,8 @@ app.controller = (function() {
                     controller.checkMessageStatus(controller.messages[i].id_message);
                     controller.messages[i].read = '1';
                     $('#vrn-inform-message-li-'+id_message+' .ui-icon.ui-icon-check2.ui-icon-shadow').css({"background-image" : "url(css/images/vrn/check1.png)"}).animate({opacity: 1});
-
                 } 
-                
+
                 $("#vrn-inform-detail-type").html(controller.messages[i].message_type);
                 $("#vrn-inform-detail-date").html(controller.messages[i].send_date);
                 $("#vrn-inform-detail-de").html(controller.messages[i].lastname);
@@ -716,22 +658,16 @@ app.controller = (function() {
             $("[data-role=footer]").height(80);
         }
     };
-    
+
     controller.checkMessageStatus = function(id_message) {
         // change le statut de la sync pour la passer en "in progress" le temps de la manip
         app.repository.checkMessageStatus(id_message,
             function() {
                 app.log("checkMessageStatus changed : "+id_message);
-                
-     
-                
             }
         );
     };
-    
 
-    
-    
       ////////////////////
      // ==> Roadmap == //
     ////////////////////
@@ -869,7 +805,7 @@ app.controller = (function() {
                 if(pos[i].sp_visit__status_visit_id == 1) codeb += code;
                 else  codea += code;
             } 
-            alert(pos.length);
+            //alert(pos.length);
             /*
             if(action == 'create') $("#vrn-roadmap-item-list").html(code).trigger('create');
             else 
@@ -884,6 +820,7 @@ app.controller = (function() {
                     }
             });
             
+            $("#vrn-roadmap-item-date").html(roadmap.scheduled_date);
             $("#vrn-roadmap-item-no-pdv").val(pos.length);
             
             $('#vrn-roadmap-item-pos-add-button').attr("data-url", "?id_parent_pop=vrn-roadmap-item-pos-add-pop&roadmap_id="+roadmap_id);
@@ -958,7 +895,7 @@ app.controller = (function() {
        });
        
        $('#vrn-roadmap-item-pos-map-lnk').unbind('tap');
-       $('#vrn-roadmap-item-pos-map-lnk').bind('tap', function(){ controller.getParamUrl } );
+       $('#vrn-roadmap-item-pos-map-lnk').bind('tap', controller.getParamUrl );
        
        $('#vrn-roadmap-item-pos-button').unbind('tap');
        $('#vrn-roadmap-item-pos-button').bind('tap', function(){ controller.getParamUrl } );
@@ -968,7 +905,15 @@ app.controller = (function() {
 
     controller.showRoadmapItemPosMapPop = function(roadmap_id, sales_point_id, gps_latitude, gps_longitude) {
         app.log("controller.showRoadmapItemPosMapPop", 'wip');
-            
+        var w = (screen.width - 200);
+        var h = (screen.height - 200);
+        $('#vrn-roadmap-item-pos-map-pop').css("width", w+"px");
+        $('#vrn-roadmap-item-pos-map-pop').css("height", h+"px");
+        $('#vrn-roadmap-item-pos-map-pop').trigger("refresh");
+        $('#vrn-roadmap-item-pos-map-content').css("width", (w-30)+"px");
+        $('#vrn-roadmap-item-pos-map-content').css("height", (h-99)+"px");
+        $('#vrn-roadmap-item-pos-map-content').trigger("refresh");
+
         if(gps_latitude != '') var lat = gps_latitude;
         else var lat = 48.826464;
         if(gps_longitude != '') var lng = gps_longitude;
@@ -979,19 +924,15 @@ app.controller = (function() {
             center : latlng, 
             mapTypeId : google.maps.MapTypeId.ROADMAP 
         };
-        var $content = $("#vrn-roadmap-item-pos-map-pop div:jqmData(role=content)");
-        $content.height (screen.height - 50);
-        $content.width (screen.width - 50);
+        var $content = $("#vrn-roadmap-item-pos-map-content");
         var map = new google.maps.Map ($content[0], options);
-
         new google.maps.Marker ( 
         { 
             map : map, 
             animation : google.maps.Animation.DROP,
             position : latlng  
-
         }); 
-            
+        $("#vrn-roadmap-item-pos-map-content").trigger("refresh");
     };
     
     // delete pos item to list
@@ -1020,9 +961,7 @@ app.controller = (function() {
     var pos_seleted;
     controller.addRoadmapItemPosPop = function(roadmap_id) {
         app.log("controller.addRoadmapItemPosPop", 'wip');
-        
-        pos_seleted = Array();
-        
+        pos_seleted = [];
         // all pos list
         var r1 = app.repository.getAllRoadmapItemPosList();
         r1.done(function(pos_listA) {
@@ -1037,13 +976,12 @@ app.controller = (function() {
 
         // final execute
         $.when(r1, r2).done(function(pos_listA,pos_listB) {
-            alert('A');
             var allpos = pos_listA;
             var pos = pos_listB;
             var code = '';
             for (var i=0;i<allpos.length;i++){ 
                 
-                pos_seleted[i]= Array();
+                pos_seleted[i]= [];
                 
                 pos_seleted[i]['id'] = allpos[i].id_sales_point;
                 
@@ -1118,22 +1056,11 @@ app.controller = (function() {
                                 $("#vrn-roadmap-item-pos-add-list").listview('refresh'); 
                             }
                     );
-                            
-                /*
-                #vrn-road-add-pos-list .ui-link-inherit{
-                    padding:0px 30px 0px 15px;
-                    height:54px;
-                }
-                #vrn-road-add-pos-list .ui-btn-inner .ui-li{
-                    height: 56px;
-                }
-                */
-                    
+                   
                 });
                 
                 $('#vrn-name-road-add-pos-radio-lnk-'+allpos[i].id_sales_point).unbind('tap');
                 $('#vrn-name-road-add-pos-radio-lnk-'+allpos[i].id_sales_point).bind('tap', function(event){
-                    alert('B');
                     var querystring = $(this).jqmData('url');
                     event.preventDefault();
                     if(querystring.indexOf('?') != -1){
@@ -1161,49 +1088,52 @@ app.controller = (function() {
         
         $('#vrn-roadmap-item-pos-add-save-btn').unbind('tap');
         $('#vrn-roadmap-item-pos-add-save-btn').bind('tap', function(event){
-            alert('op: vrn-roadmap-item-pos-add-save-btn');
+            //alert('op: vrn-roadmap-item-pos-add-save-btn');
             for (var i=0;i<pos_seleted.length;i++){ 
-                app.log(i + ': '+pos_seleted[i]['id'] + ' : '+pos_seleted[i]['value']);
-                if(pos_seleted[i]['value'] == 1) {
-                    // test si le pos existe deja en db
-                    
-                    var r1 = app.repository.testRoadMapItemPos(roadmap_id,pos_seleted[i]['id']);
-                    r1.done(function(sales_point_id, retour) {
-                        if(retour == "no"){
-                            // id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id
-                            var data = [ new Date().getTime() + i , sales_point_id, roadmap_id, 1, app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), '', 0 , '' ,0 ];
-                            app.repository.addRoadMapItemPos(data);
-                            // delete in DB
-                            var r3 = app.repository.addRoadMapItemPos(data);
-                            r3.done(function() {} );
-                            $.when(r3).done(function() {
-                                //controller.showVrnRoadmapItemPage(roadmap_id);
-                                alert('ok show...');
-                            });
-                        }
-                    });
-
-                }else{
-                    alert('delete:'+ roadmap_id +','+ pos_seleted[i]['id']);
-                    // delete in DB
-                    var r4 = app.repository.deleteRoadMapItemPos(roadmap_id,pos_seleted[i]['id']);
-                    
-                    // delete item to list
-                    $('#vrn-roadmap-edit-item-'+pos_seleted[i]['id']).remove();
-                    // refresh list
-                    $("#vrn-road_closing-list").listview('refresh');
-                    // close pop
-                    //$('#vrn-roadmap-item-pos-delete-pop').popup('close');
-                    // refresh list count
-                    $('#vrn-roadmap-item-no-pdv').val($('#vrn-road_closing-list').size());
-                    
-                }
+                app.log('i:'+ i + ' id: '+pos_seleted[i]['id'] + ' val: '+pos_seleted[i]['value']);
+                //alert(' val: '+pos_seleted[i]['value']);
+                // test if item existe
+                var r1 = app.repository.testRoadMapItemPos(roadmap_id,pos_seleted[i]['id'],i);
+                r1.done(function(roadmap_id,sales_point_id, item_index, item_exist) {} );
+                $.when(r1).done(function(roadmap_id,sales_point_id, item_index, item_exist) {
+                    //alert(roadmap_id +" "+ sales_point_id+' '+item_index+ ' '+item_exist);
+                    if(pos_seleted[item_index]['value'] == 1 && item_exist == 'no') {
+    
+                           // if(retour == "no"){
+                                // id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id
+                                var data = [ new Date().getTime() + i , sales_point_id, roadmap_id, 1, app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), '', '0' , '' ,0 ];
+                                // add in DB
+                                var r3 = app.repository.addRoadMapItemPos(data);
+                                r3.done(function() {} );
+                                $.when(r3).done(function() {
+                                    controller.showVrnRoadmapItemPage(roadmap_id);
+                                    //alert('ok show...');
+                                    
+                                    
+                                    
+                                    
+                                });
+                           // }
+   
+                    }else if (pos_seleted[item_index]['value'] == 0 && item_exist == 'yes') {
+                       // alert('delete:'+ roadmap_id +','+ pos_seleted[i]['id']);
+                        // delete in DB
+                        var r4 = app.repository.deleteRoadMapItemPos(roadmap_id,pos_seleted[item_index]['id']);
+                        
+                        // delete item to list
+                        $('#vrn-roadmap-edit-item-'+pos_seleted[item_index]['id']).remove();
+                        // refresh list
+                        $("#vrn-road_closing-list").listview('refresh');
+                        // close pop
+                        //$('#vrn-roadmap-item-pos-delete-pop').popup('close');
+                        // refresh list count
+                        $('#vrn-roadmap-item-no-pdv').val($('#vrn-road_closing-list').size());
+                        
+                    }
+                });
              }
             
-            //$('#vrn-roadmap-item-pos-add-pop').popup('close');
-            //window.setTimeout(controller.showVrnRoadmapItemPage(roadmap_id,'refresh'),1000); 
-            
-            //showRoadmapItem
+            $('#vrn-roadmap-item-pos-add-save-btn').unbind('tap');
         });
         
     };
@@ -1722,42 +1652,41 @@ app.controller = (function() {
         r1.done(function(pos) {
             //alert('retour data : '+ pos.description);
             if(pos.last_visit_id == 0){
-                $("#vrn-iden-visite").html('');
-                $("#vrn-ident-text").html('');
+                $("#vrn-pos-detail-visite").html('');
+                $("#vrn-pos-detail-text").html('');
             }else{
-                $("#vrn-iden-visite").html('Dernière visite');
-                $("#vrn-ident-text").html(pos.last_visit_id);
+                $("#vrn-pos-detail-visite").html('Dernière visite');
+                $("#vrn-pos-detail-text").html(pos.last_visit_id);
             }
-            //$("#vrn-pos-detail-pop").popup( 'reposition', 'positionTo: window' );
-            $("#vrn-pos-identity-title").html(pos.name);
-            $('#vrn-pos-identity-address').html("<img src=\"./css/images/vrn/forma2_3.png\">"+ pos.street +", "+ pos.postal_code + " " + pos.city);
-            $('#vrn-pos-identity-seller-name').html("<img src=\"./css/images/vrn/forma2_3.png\">"+pos.contact_name);
-            $('#vrn-pos-identity-tel').html("<option value=\""+pos.phone_number+"\" selected> "+pos.phone_number+" </option>");
-            $('#vrn-pos-identity-tel')[0].selectedIndex = 0;
-            $('#vrn-pos-identity-tel').selectmenu("refresh");
-            $('#vrn-pos-identity-email').html("<option value=\""+pos.email+"\" selected> "+pos.email+" </option>");
-            $('#vrn-pos-identity-email')[0].selectedIndex = 0;
-            $('#vrn-pos-identity-email').selectmenu("refresh");
-            $('#vrn-pos-identity-description').html(pos.description);
-            $('#vrn-pos-identity-map-btn').attr("data-url", "?id_parent_pop=vrn-pos-map-pop&sales_point_id="+id_sales_point+"&gps_latitude="+pos.gps_latitude+"&gps_longitude="+pos.gps_longitude+"");
-            $('#vrn-pos-identity-modify-button').attr("data-url", "?id_parent=vrn-pos-edit-page&sales_point_id="+id_sales_point+"");
+            $("#vrn-pos-detail-top-left").html(pos.name);
+            $('#vrn-pos-detail-address').html("<img src=\"./css/images/vrn/forma2_3.png\">"+ pos.street +", "+ pos.postal_code + " " + pos.city);
+            $('#vrn-pos-detail-seller-name').html("<img src=\"./css/images/vrn/forma2_3.png\">"+pos.contact_name);
+            $('#vrn-pos-detail-tel').html("<option value=\""+pos.phone_number+"\" selected> "+pos.phone_number+" </option>");
+            $('#vrn-pos-detail-tel')[0].selectedIndex = 0;
+            $('#vrn-pos-detail-tel').selectmenu("refresh");
+            $('#vrn-pos-detail-email').html("<option value=\""+pos.email+"\" selected> "+pos.email+" </option>");
+            $('#vrn-pos-detail-email')[0].selectedIndex = 0;
+            $('#vrn-pos-detail-email').selectmenu("refresh");
+            $('#vrn-pos-detail-description').html(pos.description);
+            $('#vrn-pos-detail-map-btn').attr("data-url", "?id_parent_pop=vrn-pos-map-pop&sales_point_id="+id_sales_point+"&gps_latitude="+pos.gps_latitude+"&gps_longitude="+pos.gps_longitude+"");
+            $('#vrn-pos-detail-modify-button').attr("data-url", "?id_parent=vrn-pos-edit-page&sales_point_id="+id_sales_point+"");
 
             // btn listeners
-            $('#vrn-pos-appeler-button').unbind('tap');
-            $('#vrn-pos-appeler-button').bind('tap',function (event){
+            $('#vrn-pos-detail-button').unbind('tap');
+            $('#vrn-pos-detail-button').bind('tap',function (event){
                 controller.callPhone($('#vrn-pos-identity-tel').find(":selected").val());
             });
             
-            $('#vrn-pos-send-button').unbind('tap');
-            $('#vrn-pos-send-button').bind('tap',function (event){
+            $('#vrn-pos-detail-send-button').unbind('tap');
+            $('#vrn-pos-detail-send-button').bind('tap',function (event){
                 controller.sendAMail($('#vrn-pos-identity-email').find(":selected").val());
             });
             
-            $('#vrn-pos-identity-map-btn').unbind('tap');
-            $('#vrn-pos-identity-map-btn').bind('tap', controller.getParamUrl );
+            $('#vrn-pos-detail-map-btn').unbind('tap');
+            $('#vrn-pos-detail-map-btn').bind('tap', controller.getParamUrl );
             
-            $('#vrn-pos-identity-modify-button').unbind('tap');
-            $('#vrn-pos-identity-modify-button').bind('tap', controller.getParamUrl );
+            $('#vrn-pos-detail-modify-button').unbind('tap');
+            $('#vrn-pos-detail-modify-button').bind('tap', controller.getParamUrl );
             
         });
 
@@ -1766,7 +1695,14 @@ app.controller = (function() {
     
     controller.showVrnPosMapPop = function(id_sales_point, gps_latitude, gps_longitude) {
         app.log("controller.showVrnPosMapPop : "+id_sales_point , 'wip');
-    
+        var w = (screen.width - 200);
+        var h = (screen.height - 200);
+        $('#vrn-pos-map-pop').css("width", w+"px");
+        $('#vrn-pos-map-pop').css("height", h+"px");
+        $('#vrn-pos-map-pop').trigger("refresh");
+        $('#vrn-pos-map-content').css("width", (w-30)+"px");
+        $('#vrn-pos-map-content').css("height", (h-99)+"px");
+        $('#vrn-pos-map-content').trigger("refresh");
         if(gps_latitude != '') var lat = gps_latitude;
         else var lat = 48.826464;
         if(gps_longitude != '') var lng = gps_longitude;
@@ -1777,20 +1713,13 @@ app.controller = (function() {
             center : latlng, 
             mapTypeId : google.maps.MapTypeId.ROADMAP 
         };
-        var $content = $("#vrn-pos-map-pop div:jqmData(role=content)");
-        $("#vrn-pos-map-pop").height (screen.height - 100);
-        $("#vrn-pos-map-pop").width (screen.width - 100);
+        var $content = $("#vrn-pos-map-content");
         var map = new google.maps.Map ($content[0], options);
-
-        new google.maps.Marker ( 
-        { 
+        new google.maps.Marker ({ 
             map : map, 
             animation : google.maps.Animation.DROP,
             position : latlng  
-
         }); 
-        
-        
     };
     
     // pos : pos form
