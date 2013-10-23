@@ -163,7 +163,7 @@ app.controller = (function () {
 
     };
 
-    pagebeforechange 
+    //pagebeforechange 
     
     // Before Show
     $( document ).unbind( "pagebeforeshow");
