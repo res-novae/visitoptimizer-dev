@@ -34,7 +34,7 @@ var app = (function () {
        // if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
             document.addEventListener("deviceready", app.bindEvents, false);
        // } else {
-       //     window.addEventListener('load', app.init, false);
+            window.addEventListener('load', app.init, false);
        // }
     };
     
