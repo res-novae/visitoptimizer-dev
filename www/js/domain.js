@@ -74,7 +74,7 @@ app.domain = (function() {
         this.name = name;
     };
 
-    domain.sys_users = function(id_user, parent_id, user_category_id, username, password, lastname, firstname, email, phone, preferred_language_id, target_val) {
+    domain.sys_users = function(id_user, parent_id, user_category_id, username, password, lastname, firstname, email, phone, preferred_language_id, target_val, sync_status) {
         this.id_user = id_user; 
         this.parent_id = parent_id; 
         this.user_category_id = user_category_id; 
@@ -86,7 +86,8 @@ app.domain = (function() {
         this.phone = phone; 
         this.preferred_language_id = preferred_language_id; 
         this.target_val = target_val; 
-    };
+        this.sync_status = sync_status;
+        };
 
     domain.sync_infos = function(id, sync_id, userId, date) {
         this.id = id; // int
@@ -108,7 +109,7 @@ app.domain = (function() {
         this.frq_code = frq_code;
     };
 
-    domain.message = function(id_message, message_type, send_date, start_date, end_date, subject, content, priority, attachment, id_usr_message, lastname, read) {
+    domain.message = function(id_message, message_type, send_date, start_date, end_date, subject, content, priority, attachment, id_usr_message, lastname, read_date, sync_status) {
         this.id_message = id_message; // int
         this.message_type = message_type; 
         this.send_date = send_date;
@@ -120,7 +121,8 @@ app.domain = (function() {
         this.attachment = attachment;
         this.id_usr_message = id_usr_message; // int
         this.lastname = lastname;
-        this.read = read;
+        this.read_date = read_date;
+        this.sync_status = sync_status;
     };
 
     domain.question = function(id_question, translation_id, question_type, label, rank, status) {
@@ -165,7 +167,7 @@ app.domain = (function() {
         this.status = status;
     };
         
-    domain.sp_answer = function(sales_point_id, visit_id, questionnaire_id, question_id, answer_id, answer, answer_time) {
+    domain.sp_answer = function(sales_point_id, visit_id, questionnaire_id, question_id, answer_id, answer, answer_time, sync_status) {
         this.sales_point_id = sales_point_id;
         this.visit_id = visit_id;
         this.questionnaire_id = questionnaire_id;
@@ -173,9 +175,10 @@ app.domain = (function() {
         this.answer_id = answer_id;
         this.answer = answer;
         this.answer_time = answer_time;
+        this.sync_status = sync_status;
     };
     
-    domain.roadmap = function(id_roadmap, initiating_user_id, operating_user_id, mobile_status_id, web_status_id, creation_date, name, scheduled_date, km, comment, close_date, area_id, local_id) {
+    domain.roadmap = function(id_roadmap, initiating_user_id, operating_user_id, mobile_status_id, web_status_id, creation_date, name, scheduled_date, km, comment, close_date, area_id, local_id, sync_status) {
         this.id_roadmap = id_roadmap;
         this.initiating_user_id = initiating_user_id;
         this.operating_user_id = operating_user_id;
@@ -189,9 +192,10 @@ app.domain = (function() {
         this.close_date = close_date;
         this.area_id = area_id;
         this.local_id = local_id;
+        this.sync_status = sync_status;
     };
 
-    domain.sales_point = function(id_sales_point, name, email, description, contact_name, phone_number, street, city, postal_code, gps_latitude, gps_longitude, type_id, user_id, microzone_id, last_visit_id, frequency_id, local_id) {
+    domain.sales_point = function(id_sales_point, name, email, description, contact_name, phone_number, street, city, postal_code, gps_latitude, gps_longitude, type_id, user_id, microzone_id, last_visit_id, frequency_id, local_id, photo_url, sync_status) {
         this.id_sales_point = id_sales_point;
         this.name = name;
         this.email = email;
@@ -208,7 +212,9 @@ app.domain = (function() {
         this.microzone_id = microzone_id;
         this.last_visit_id = last_visit_id;
         this.frequency_id = frequency_id;
+        this.photo_url = photo_url;
         this.local_id = local_id;
+        this.sync_status = sync_status;
     };
     
     domain.sp_type = function(id_type, name, translation_id) {
@@ -217,7 +223,7 @@ app.domain = (function() {
         this.translation_id = translation_id;
     };
 
-    domain.sp_visit = function(id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id) {
+    domain.sp_visit = function(id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id, sync_status) {
         this.id_visit = id_visit;
         this.sales_point_id = sales_point_id;
         this.roadmap_id = roadmap_id;
@@ -227,6 +233,7 @@ app.domain = (function() {
         this.rank = rank;
         this.comment = comment;
         this.local_id = local_id;
+        this.sync_status = sync_status;
     };
     
     domain.status_mobile = function(id_status_mobile, name, translation_id) {

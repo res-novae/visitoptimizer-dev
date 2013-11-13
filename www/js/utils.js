@@ -43,16 +43,44 @@ app.utils = (function() {
 	    if (minutes < 10) minutes = '0' + minutes;
 	    if (seconds < 10) seconds = '0' + seconds;
 	    return hours + ":" + minutes + ":" + seconds;
-	} ;
+	};
     
     utils.convertTimestampToDate = function(date,separator) {
         var dt = new Date(date);
         return app.utils.formatDate(dt,separator);
-    } ;
+    };
     
     utils.convertTimestampToDateIso = function(date,separator) {
         var dt = new Date(date);
         return app.utils.formatIsoDate(dt,separator);
-    } ;
+    };
+    
+    utils.getNowDate = function() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10) { dd='0'+dd; } 
+        if(mm<10) { mm='0'+mm; }
+        return yyyy+'-'+mm+'-'+dd;
+    };
+    
+    utils.getNowDatetime = function() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var hh = today.getHours();
+        var mi = today.getMinutes();
+        var se = today.getSeconds();
+        var yyyy = today.getFullYear();
+        if(dd<10) { dd='0'+dd; } 
+        if(mm<10) { mm='0'+mm; }
+        if(hh<10) { hh='0'+hh; } 
+        if(mi<10) { mi='0'+mi; }
+        if(se<10) { se='0'+se; }
+        return yyyy+'-'+mm+'-'+dd+' '+hh+':'+mi+':'+se;
+    };
+
+    
 	return utils;
 }());

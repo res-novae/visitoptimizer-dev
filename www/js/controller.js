@@ -181,12 +181,18 @@ app.controller = (function () {
                 if($.mobile.activePage.attr('id') == 'vrn-login-page'){
                     //$('#vrn-login').show();
                     controller.showVrnLoginPage();
+                    $.mobile.loadPage("vrn-sync-page.html",true);
                 }
                 // Sync Splash //
                 if($.mobile.activePage.attr('id') == 'vrn-sync-page'){
+                    //alert('hop');
                     //$('#vrn-login').hide();
-                    $("#vrn-login-page").hide();
+                    //$("#vrn-login-page").hide();
                     controller.showVrnSyncPage();
+                }
+                if($.mobile.activePage.attr('id') == 'vrn-sync-ar-page'){
+                    //$('#vrn-login').hide();
+                    controller.showVrnSyncArPage();
                 }
                 // Home / Taskboard //
                 if($.mobile.activePage.attr('id') == 'vrn-home-page'){
@@ -194,12 +200,14 @@ app.controller = (function () {
                     controller.showVrnHomePage(e,data);
                     // preload next pages
                     $.mobile.loadPage("vrn-inform-page.html",true);
+                    $.mobile.loadPage("vrn-roadmap-add-page.html",true);
                     $.mobile.loadPage("vrn-roadmap-page.html",true);
+                    $.mobile.loadPage("vrn-roadmap-item-page.html",true);
                     $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
                     $.mobile.loadPage("vrn-pos-page.html",true);
                     $.mobile.loadPage("vrn-stats-page.html",true);
                     $.mobile.loadPage("vrn-params-page.html",true);
-                    
+                    $.mobile.loadPage("vrn-sync-ar-page.html",true);
                 }
                 // Infos / Watchwords //
                 if($.mobile.activePage.attr('id') == 'vrn-inform-page'){
@@ -211,26 +219,29 @@ app.controller = (function () {
                     controller.showVrnRoadmapPage();
                     $.mobile.loadPage("vrn-roadmap-item-page.html",true);
                 }
+                if($.mobile.activePage.attr('id') == 'vrn-roadmap-add-page'){
+                    controller.showVrnRoadmapAddPage();
+                    $.mobile.loadPage("vrn-roadmap-item-page.html",true);
+                }
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-item-page'){
                     controller.showVrnRoadmapItemPage(current_params_url['roadmap_id']);
+                    $.mobile.loadPage("vrn-roadmap-item-pos-edit-page.html",true);
                     $.mobile.loadPage("vrn-roadmap-page.html",true);
+                    $.mobile.loadPage("vrn-roadmap-add-page.html",true);
                 }
-
-                /*
-                // roadmap form list ... semble ne pas etre utilisé
-                if($.mobile.activePage.attr('id') == 'vrn-form-list-page'){
-                    alert('la y a un truc pas clair...');
-                    controller.showRoadmapItem(current_params_url['roadmap_id'],'create');
-                }*/
+                if($.mobile.activePage.attr('id') == 'vrn-roadmap-item-pos-edit-page'){
+                    controller.showRoadmapItemPosEditPage( current_params_url['roadmap_id'], current_params_url['sales_point_id']);
+                //    $.mobile.loadPage("vrn-roadmap-page.html",true);
+                }
                 // roadmap / questionnaire list
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-visit-page'){
-                    controller.showVrnRoadmapVisitPage(current_params_url['sp_visit_id']);
+                    controller.showVrnRoadmapVisitPage(current_params_url['sp_visit_id'],current_params_url['current_item']);
                     $.mobile.loadPage("vrn-roadmap-visit-questionnaire-page.html",true);
                     $.mobile.loadPage("vrn-home-page.html",true);
                 }
                 // roadmap / questionnaire item form
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-visit-questionnaire-page'){
-                    controller.showVrnRoadmapVisitQuestionnairePage(localStorage.getItem('sp_visit_id'), localStorage.getItem('questionnaire_id'));
+                    controller.showVrnRoadmapVisitQuestionnairePage(current_params_url['sp_visit_id'], current_params_url['questionnaire_id']);
                     $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
                 }
 
@@ -240,6 +251,8 @@ app.controller = (function () {
                     $.mobile.loadPage("vrn-pos-edit-page.html",true);
                 }
                 if($.mobile.activePage.attr('id') == 'vrn-pos-edit-page'){
+                    //vrn-pos-edit-page&sales_point_id
+                    //alert('-id:'+current_params_url['sales_point_id']);
                     if(typeof current_params_url['sales_point_id'] != 'undefined') controller.showVrnPosEditPage( current_params_url['sales_point_id']);
                     else controller.showVrnPosEditPage(0);
                     $.mobile.loadPage("vrn-pos-page.html",true);
@@ -303,7 +316,8 @@ app.controller = (function () {
 
         // POS : item map pop //
         if(current_params_url['id_parent_pop'] == 'vrn-pos-map-pop'){
-            controller.showVrnPosMapPop(current_params_url['id'],current_params_url['gps_latitude'],current_params_url['gps_longitude']);
+            //alert('sales_point_id:'+current_params_url['sales_point_id'])
+            controller.showVrnPosMapPop(current_params_url['sales_point_id'],current_params_url['gps_latitude'],current_params_url['gps_longitude']);
         }
 
     });  
@@ -315,7 +329,7 @@ app.controller = (function () {
         var querystring = $(this).jqmData('url');
         if(querystring.indexOf('?') != -1){
             var param_url = querystring.substring(querystring.indexOf('?')+1);
-
+            //alert('param_url:'+param_url);
             app.log("params : "+param_url);
             if(param_url.indexOf('&') != -1){
                 var pus = param_url.split('&');
@@ -331,7 +345,7 @@ app.controller = (function () {
                 //app.log(current_params_url['id']);
             }
         }
-    }
+    };
 
     // ==> Login Panel //
     controller.showVrnLoginPage = function() {
@@ -386,6 +400,92 @@ app.controller = (function () {
         $("#vrn-sync-page").trigger('change');  
     };
 
+    controller.showVrnSyncArPage = function() {
+        app.log("controller.showVrnSyncArPage", 'wip');
+        // header
+		$.mobile.navigate( "vrn-sync-ar-page" );
+        controller.showVrnHeader();
+        
+        $("#vrn-sync-ar-etat").html("Synchro montante (mobile-server)<br>Prepa des datas<br>");
+        var r1 = controller.prepaDataPack();
+        r1.done(function(zip_name, zip_content) {
+        });
+        $.when(r1).done(function(zip_name, zip_content) {
+        	//alert(zip_name);
+            //alert("size:"+zip_content.byteLength);
+            //.byteLength
+            $("#vrn-sync-ar-etat").html($("#vrn-sync-ar-etat").html()+"Upload datas<br>");
+            
+			controller.ajaxAsyncTask = "";
+			
+    		//ajaxAsyncTask, userId, bytes, md5_hash, size, zip_name, successCallback, errorCallback
+    		app.webservice.syncUploadData(
+                controller.ajaxAsyncTask, 
+                app.loggedUser.id,
+                zip_content,
+                'uu',
+                '12',
+                zip_name,
+                function(sync_data) { 
+                    
+                    $("#vrn-sync-ar-etat").html($("#vrn-sync-ar-etat").html()+"AR traitement<br>");
+                    app.log('AR traitement');
+                	// AR traitement
+                	app.log(sync_data);
+                	var uar = controller.uploadAR(sync_data);
+                	uar.done(function(sync_id, sync_date) { });
+                	$.when(uar).done(function(sync_id, sync_date) {
+                	    $("#vrn-sync-ar-etat").html($("#vrn-sync-ar-etat").html()+"Scynchro montante terminée<br>");
+                	    app.log('Scynchro montante terminée');
+                	    // change le statut de la sync pour la passer en "in progress" le temps de la manip
+                        app.webservice.syncUpdateStatus(
+                            controller.ajaxAsyncTask, 
+                            app.loggedUser.id,
+                            sync_id, 
+                            'ended', 
+                            function(data) {
+                                app.log("app.webservice.syncUploadData : Sync Server statut changed : ended");
+
+                            }
+                        );
+                        //alert('data:'+sync_id);
+                        // save des infos de cette syncro et doneCallback
+                        //var last_sync = new app.domain.sync_infos(sync_data.response_list.sync_data, app.loggedUser.id, sync_data.response_list.date);
+                        app.repository.setSyncInfos(sync_id, app.loggedUser.id, sync_date,function(data) {
+                            app.log("app.webservice.syncUploadData : Sync Local statut changed : ended");
+
+                        });
+                    
+                	    
+                	});
+                }, 
+                function(sync_data) {
+                    $("#vrn-sync-ar-etat").html($("#vrn-sync-ar-etat").html()+"PB sync<br>");
+                	alert('pb sync');
+                     app.log("app.webservice.syncGetLastUpdateUrl : Sync statut changed : ended");
+                }
+            );
+               
+        });
+    };
+
+	function getUTF8Length(string) {
+    var utf8length = 0;
+    for (var n = 0; n < string.length; n++) {
+        var c = string.charCodeAt(n);
+        if (c < 128) {
+            utf8length++;
+        }
+        else if((c > 127) && (c < 2048)) {
+            utf8length = utf8length+2;
+        }
+        else {
+            utf8length = utf8length+3;
+        }
+    }
+    return utf8length;
+ };
+ 
     // ==> HOMEPAGE / TaskBoard //
     controller.showVrnHomePage = function(e,data) {
         app.log("controller.showVrnHomePage", 'wip');
@@ -414,13 +514,14 @@ app.controller = (function () {
         r2.done(function(messages) {
             controller.messages = messages;
 
-            for (var i=0;i<messages.length;i++){ 
+            for (var i=0;i<messages.length;i++){
+                 if(messages[i].read_date == null) messages[i].read_date='';
                  if(messages[i].message_type == 'information'){
-                     if(messages[i].read == '0') count_bubble_infos++;
+                     if(messages[i].read_date == '') count_bubble_infos++;
                      count_infos++;
                  }
                  if(messages[i].message_type == 'action'){
-                     if(messages[i].read == '0') count_bubble_actions++;
+                     if(messages[i].read_date == '') count_bubble_actions++;
                      count_actions++;
                  }
             }
@@ -437,20 +538,14 @@ app.controller = (function () {
             } else bubble_actions = '';
         });
 
-        // test si tournee du jour (fake pour le dev : si une tournee existe)
+        // test si tournee du jour 
         var r3 = app.repository.getDailyRoadmapItem();
         r3.done(function(roadmap) {
             daily_roadmap = roadmap;
-
-            // localstorage current data
-            localStorage.setItem( "current_roadmap_id", daily_roadmap.id_roadmap );
-            if(daily_roadmap.pos_list.length != 0) localStorage.setItem( "current_visit_id", daily_roadmap.pos_list[0].sp_visit__id_visit );
-            else localStorage.setItem( "current_visit_id", 0 );
-
         });
 
         // final execute
-        $.when(r1, r2, r3).done(function(messages) {
+        $.when(r1, r2, r3).done(function(user,roadmap,messages) {
             //controller.loginLoadingPopup.popup("close");
 
             // infos user
@@ -486,37 +581,115 @@ app.controller = (function () {
             + ' </div>';
             $("#vrn-home-message-data").html(code).trigger('change');
 
-            // road map panel
-            if(daily_roadmap.id_roadmap != 0) {
+            // roadmap create panel
+            if(daily_roadmap == null) {
+                $("#roadmap_create").show();
+                $("#roadmap_start").hide();
+                $("#roadmap_start_empty").hide();
+                $("#roadmap_daily").hide();
+            }
+            // roadmap current active roadmap panel but empty
+            else if(daily_roadmap.id_roadmap != 0 && daily_roadmap.mobile_status_id == 1 && daily_roadmap.pos_list.length == 0) {
+                $("#roadmap_start_empty").show();
+                $("#roadmap_create").hide();
+                $("#roadmap_start").hide();
+                $("#roadmap_daily").hide();
+                $('#vrn-roadmap-start-empty-btn').unbind('tap');
+                $('#vrn-roadmap-start-empty-btn').attr("data-url", "?id_parent=vrn-roadmap-item-page&roadmap_id="+daily_roadmap.id_roadmap);
+
+                $('#vrn-roadmap-start-empty-btn').unbind('tap');
+                $('#vrn-roadmap-start-empty-btn').bind('tap', function (event){
+                    current_params_url = [];
+                    current_params_url['id_parent'] = "vrn-roadmap-item-page";
+                    current_params_url['roadmap_id'] = daily_roadmap.id_roadmap;
+                    current_params_url['current_item'] = current_item;
+                });
+            }    
+            // roadmap current active roadmap panel
+            else if(daily_roadmap.id_roadmap != 0 && daily_roadmap.mobile_status_id == 1) {
+                
+                // localstorage current data
+                localStorage.setItem( "current_roadmap_id", daily_roadmap.id_roadmap );
+                if(daily_roadmap.pos_list.length != 0) localStorage.setItem( "current_visit_id", daily_roadmap.pos_list[0].sp_visit__id_visit );
+                else localStorage.setItem( "current_visit_id", 0 );
+            
                 $("#roadmap_daily").show();
+                $("#roadmap_start").hide();
+                $("#roadmap_start_empty").hide();
                 $("#roadmap_create").hide();
                 var nb_total_visit = daily_roadmap.pos_list.length;
                 var nb_total_visited = 0;
                 var curent_vist_id = 0;
-                var next_vist_id = 0
+                var next_vist_id = 0;
+                var current_item = 0;
                 for (var i=0;i<daily_roadmap.pos_list.length;i++){ 
                     if(daily_roadmap.pos_list[i].sp_visit__status_visit_id != 1 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 2 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 3) 
                         nb_total_visited++;
-
-                    if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 2 || daily_roadmap.pos_list[i].sp_visit__status_visit_id == 3)
-                        curent_vist_id = daily_roadmap.pos_list[i].sp_visit__status_visit_id
+                    if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 1){
+                        if(current_item == 0) current_item = i;
+                    }
+/*                    if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 2 || daily_roadmap.pos_list[i].sp_visit__status_visit_id == 3){
+                        curent_vist_id = daily_roadmap.pos_list[i].sp_visit__status_visit_id;
+                        if(current_item == 0) current_item = i;
+                    }*/
                 }
                 $('#vrn-home-page-visit-counter').html( nb_total_visited + " / " +nb_total_visit );
-                
-                $('#vrn-home-page-visit-title').html(daily_roadmap.pos_list[0].sp_visit__status_visit_name);
-                $('#vrn-home-page-visit-pos-name').html(daily_roadmap.pos_list[0].name +" - "+ daily_roadmap.pos_list[0].type_name);
-                $('#vrn-home-page-visit-pos-contact-name').html(daily_roadmap.pos_list[0].contact_name);
-                $('#vrn-home-page-visit-pos-adress').html(daily_roadmap.pos_list[0].street +", "+ daily_roadmap.pos_list[0].postal_code + " " +daily_roadmap.pos_list[0].city);
-                $('#vrn-home-page-visit-pos-tel').html(daily_roadmap.pos_list[0].phone_number);
-                $('#vrn-home-page-visit-pos-description').html(daily_roadmap.pos_list[0].description);
+                //alert(current_item);
+                $('#vrn-home-page-visit-title').html(daily_roadmap.pos_list[current_item].sp_visit__status_visit_name);
+                $('#vrn-home-page-visit-pos-name').html(daily_roadmap.pos_list[current_item].name +" - "+ daily_roadmap.pos_list[current_item].type_name);
+                $('#vrn-home-page-visit-pos-contact-name').html(daily_roadmap.pos_list[current_item].contact_name);
+                $('#vrn-home-page-visit-pos-adress').html(daily_roadmap.pos_list[current_item].street +", "+ daily_roadmap.pos_list[current_item].postal_code + " " +daily_roadmap.pos_list[current_item].city);
+                $('#vrn-home-page-visit-pos-tel').html(daily_roadmap.pos_list[current_item].phone_number);
+                $('#vrn-home-page-visit-pos-description').html(daily_roadmap.pos_list[current_item].description);
 
-               // $('#vrn-lancer').attr("data-url", "?op=openPage&pageId=vrn-roadmap-visit-page&transition=slide&sp_visit_id="+daily_roadmap.pos_list[0].sp_visit__id_visit+"&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id+"&sales_point_id="+daily_roadmap.pos_list[0].id_sales_point);
+                $('#vrn-lancer').attr("data-url", "?id_parent=vrn-roadmap-visit-page&sp_visit_id="+daily_roadmap.pos_list[0].sp_visit__id_visit+"&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id+"&sales_point_id="+daily_roadmap.pos_list[0].id_sales_point);
+
                 $('#vrn-lancer').unbind('tap');
-                $('#vrn-lancer').bind('tap', function(){ controller.getParamUrl } );
+                $('#vrn-lancer').bind('tap', function (event){
+                    current_params_url = [];
+                    current_params_url['id_parent'] = "vrn-roadmap-visit-page";
+                    current_params_url['sp_visit_id'] = daily_roadmap.pos_list[current_item].sp_visit__status_visit_id;
+                    current_params_url['current_item'] = current_item;
+                    current_params_url['roadmap_id'] = daily_roadmap.pos_list[current_item].roadmap_id;
+                    current_params_url['sales_point_id'] = daily_roadmap.pos_list[current_item].id_sales_point;
+                });
+                
+                $('#vrn-visites').attr("data-url", "?id_parent=vrn-roadmap-item-page&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id);
 
-            }else{
-                $("#roadmap_create").show();
+                $('#vrn-visites').unbind('tap');
+                $('#vrn-visites').bind('tap', function (event){
+                    current_params_url = [];
+                    current_params_url['id_parent'] = "vrn-roadmap-item-page";
+                    current_params_url['roadmap_id'] = daily_roadmap.id_roadmap;
+                    current_params_url['current_item'] = current_item;
+                });
+            }
+            // roadmap active roadmap panel
+            else if(daily_roadmap.id_roadmap != 0 && daily_roadmap.mobile_status_id == 5) {
+                $("#roadmap_start").show();
+                $("#roadmap_start_empty").hide();
+                $("#roadmap_create").hide();
                 $("#roadmap_daily").hide();
+                
+                $('#vrn-roadmap-start-btn').unbind('tap');
+                $('#vrn-roadmap-start-btn').bind('tap', function (event){
+                    
+                   
+                    if(daily_roadmap.sync_status == 'I') var sync_status = 'I';
+                    else var sync_status = 'U';
+                    var param = [ 1, sync_status, daily_roadmap.id_roadmap ];
+                    var r1b = app.repository.activeRoadmap(param);
+                    r1b.done(function() { });
+                    $.when(r1b).done(function() {
+                        alert('active hop !!! ');
+                        current_params_url = [];
+                        current_params_url['id_parent'] = "vrn-home-page";
+                        current_params_url['roadmap_id'] = daily_roadmap.id_roadmap;
+                        
+                        controller.showVrnHomePage(e,data);
+                        
+                    });
+                });
             }
 
         });
@@ -554,15 +727,15 @@ app.controller = (function () {
                 if(messages[i].priority == '1'){
                      var ico_priority = '<img class="ui-li-icon" alt="" src="./css/images/vrn/star.png">';
                 } else var ico_priority = '';
-                
-                if(messages[i].read == '1' && messages[i].attachment == ''){
+                if(messages[i].read_date == null) messages[i].read_date='';
+                if(messages[i].read_date != '' && messages[i].attachment == ''){
                     var ico_check = 3;                    
-                }else if(messages[i].read == '0' && messages[i].attachment == ''){
+                }else if(messages[i].read_date == '' && messages[i].attachment == ''){
                     var ico_check = 2;
                     valid_all_infos = 0;
-                }else if(messages[i].read == '1' && messages[i].attachment != ''){
+                }else if(messages[i].read_date != '' && messages[i].attachment != ''){
                     var ico_check = 1;
-                }else if(messages[i].read == '0' && messages[i].attachment != ''){
+                }else if(messages[i].read_date == '' && messages[i].attachment != ''){
                     var ico_check = 4;
                     valid_all_infos = 0;
                 } else 
@@ -613,19 +786,21 @@ app.controller = (function () {
 
         for (var i=0;i<controller.messages.length;i++){ 
             if(controller.messages[i].id_message == id_message){
-                if(controller.messages[i].read == '1' && controller.messages[i].attachment == ''){
+                var datetimeNow = app.utils.getNowDatetime();
+                if(controller.messages[i].read_date == null) messages[i].read_date='';
+                if(controller.messages[i].read_date != '' && controller.messages[i].attachment == ''){
                     // nothing
-                }else if(controller.messages[i].read == '0' && controller.messages[i].attachment == ''){
+                }else if(controller.messages[i].read_date == '' && controller.messages[i].attachment == ''){
                     // check and relaod item
-                    controller.checkMessageStatus(controller.messages[i].id_message);
-                    controller.messages[i].read = '1';
+                    controller.checkMessageStatus(controller.messages[i].id_message,datetimeNow);
+                    controller.messages[i].read_date = datetimeNow;
                     $('#vrn-inform-message-li-'+id_message+' .ui-icon.ui-icon-check2.ui-icon-shadow').css({"background-image" : "url(css/images/vrn/check3.png)"}).animate({opacity: 1});
-                }else if(controller.messages[i].read == '1' && controller.messages[i].attachment != ''){
+                }else if(controller.messages[i].read_date != '' && controller.messages[i].attachment != ''){
                     // link file
-                }else if(controller.messages[i].read == '0' && controller.messages[i].attachment != ''){
+                }else if(controller.messages[i].read_date == '' && controller.messages[i].attachment != ''){
                     // check and relaod item + link file
-                    controller.checkMessageStatus(controller.messages[i].id_message);
-                    controller.messages[i].read = '1';
+                    controller.checkMessageStatus(controller.messages[i].id_message,datetimeNow);
+                    controller.messages[i].read_date = datetimeNow;
                     $('#vrn-inform-message-li-'+id_message+' .ui-icon.ui-icon-check2.ui-icon-shadow').css({"background-image" : "url(css/images/vrn/check1.png)"}).animate({opacity: 1});
                 } 
 
@@ -646,9 +821,9 @@ app.controller = (function () {
         var valid_all_infos = 1;
         // test if all message was checked
         for (var i=0;i<controller.messages.length;i++){
-            if(controller.messages[i].read == '1'){
+            if(controller.messages[i].read != ''){
                 // nothing
-            }else if(controller.messages[i].read == '0' ){
+            }else if(controller.messages[i].read == '' ){
                 valid_all_infos = 0;
             }
         }
@@ -659,9 +834,9 @@ app.controller = (function () {
         }
     };
 
-    controller.checkMessageStatus = function(id_message) {
+    controller.checkMessageStatus = function(id_message,datetimeNow) {
         // change le statut de la sync pour la passer en "in progress" le temps de la manip
-        app.repository.checkMessageStatus(id_message,
+        app.repository.checkMessageStatus(id_message,datetimeNow,
             function() {
                 app.log("checkMessageStatus changed : "+id_message);
             }
@@ -691,14 +866,24 @@ app.controller = (function () {
          
         });
 
+        // test si tournee du jour 
+        var r2 = app.repository.getDailyRoadmapItem();
+        r2.done(function(d_roadmap) {
+            daily_roadmap = d_roadmap;
+        });
+        
         // final execute
-        $.when(r1).done(function(roadmap_list) {
+        $.when(r1,r2).done(function(roadmap_list,d_roadmap) {
             roadmap = roadmap_list;
+            daily_roadmap = d_roadmap;
             var code = '';
             for (var i=0;i<roadmap.length;i++){
                 //var visit = "09/10";
-                
-                code += '<li>'
+                if(daily_roadmap != null && roadmap[i].id_roadmap == daily_roadmap.id_roadmap) var select = " class=\"li_select\"";
+                else var select = "";
+                //if(roadmap[i].id_roadmap == daily_roadmap.id_roadmap) select = "";
+                //else select = "";
+                code += '<li'+select+'>'
                     +'    <a href="#vrn-roadmap-item-page" data-url="?roadmap_id='+roadmap[i].id_roadmap+'" id="roadmap_btn_id_'+roadmap[i].id_roadmap+'" data-transition="slide">' 
                     +'        <span class="vrn-item-title">'+roadmap[i].scheduled_date+' </span>'
                     +'        <div>' 
@@ -717,7 +902,7 @@ app.controller = (function () {
                     +'                    <span class="vrn-rm-sched-visits-part2" id="vrn-rm-sched-visits-part2">'+roadmap[i].nb_visit+'</span>'
                     +'                </div>'
                     +'                <div class="vrn-roadmap-right-div">'
-                    +'                    <span class="vrn-item-text" id="vrn-item-status">'+roadmap[i].roadmap_status_visit__name+'</span>'
+                    +'                    <span class="vrn-item-text" id="vrn-item-status">'+roadmap[i].roadmap_status_mobile__name+'</span>'
                     +'                </div>' 
                     +'            </div>' 
                     +'         </div>' 
@@ -726,6 +911,7 @@ app.controller = (function () {
 
             }
             $("#vrn-roadmap-list").html(code).listview('refresh');
+            
             
             // btn listeners
             for (var i=0;i<roadmap.length;i++){ 
@@ -742,12 +928,120 @@ app.controller = (function () {
 
     };
     
+    // Roadmap : add roadmap
+    controller.showVrnRoadmapAddPage = function() {
+        app.log("controller.showVrnRoadmapAddPage", 'wip');
+        // header et footer
+        $.mobile.navigate( "#vrn-roadmap-add-page" );
+        controller.showVrnHeader();
+        controller.showVrnFooter('vrn-roadmap-page');
+        
+        // init datepicker
+        //$( "#vrn-roadmap-date" ).datepicker();
+        $( "#vrn-roadmap-date" ).datepicker( $.datepicker.regional[ "fr" ] );
+        // get microzone
+        var r1 = app.repository.getMicroZones();
+        r1.done(function(mzs) {
+            var microzones = mzs;
+        });
+        // final execute
+        $.when(r1).done(function(mzs) {
+            var microzones = mzs;
+            var select = $('#vrn-roadmap-zone');
+            if(select.prop) {
+              var options = select.prop('options');
+            }else {
+              var options = select.attr('options');
+            }
+            $('option', select).remove();
+            for (var i=0;i<microzones.length;i++){ 
+                options[options.length] = new Option(microzones[i].name,microzones[i].id_item);
+            }
+            //select.val(pos.microzone_id); 
+        });
+        
+        // bouton pour save roadmap vers vrnRoadmapAddSave
+        $('#vrn-enregistrer-button-roadmap-creation').unbind('tap');
+        $('#vrn-enregistrer-button-roadmap-creation').bind('tap', function (event){
+            controller.vrnRoadmapAddSave(event);
+        });
+    };
+    
+    // roadmap : add roadmap save
+    controller.vrnRoadmapAddSave = function(event) {
+        app.log("controller.vrnRoadmapAddSave : " , 'wip');
+        var eve = new Date().getTime()+"";
+        eve = eve.substr(4);
+        var form_statut = "ok";
+        var message = "";
+        if($('#vrn-roadmap-date').val() == ""){
+            message += "Le champs \"date\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-zone').val() == ""){
+            message += "Le champs \"Zone géographique\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        app.log(message , 'wip');
+        
+        
+        if(form_statut == "ok"){
+            // prepa roadmap_scheduled_date et roadmap_name
+            var tt = $('#vrn-roadmap-date').val().split('/');
+            var today = new Date(tt[2]+'-'+tt[1]+'-'+tt[0]);
+            var dd = today.getDate();
+            var month=new Array();
+            month[0]="Jan";
+            month[1]="Feb";
+            month[2]="Mar";
+            month[3]="Apr";
+            month[4]="May";
+            month[5]="Jun";
+            month[6]="Jul";
+            month[7]="Aug";
+            month[8]="Sep";
+            month[9]="Oct";
+            month[10]="Nov";
+            month[11]="Dec";
+            var m = month[today.getMonth()];
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10) { dd='0'+dd; } 
+            if(mm<10) { mm='0'+mm; }
+            var roadmap_name = dd+' '+m+' '+yyyy;
+            var roadmap_scheduled_date = yyyy+'-'+mm+'-'+dd;
+            var data = [ eve, localStorage.getItem( "current_user_id"), localStorage.getItem( "current_user_id"), 5, 3, app.utils.getNowDatetime(), roadmap_name, roadmap_scheduled_date, 0, $('#vrn-roadmap-zone').val(), 0, 'I' ];
+            var r1 = app.repository.addRoadmap(data);
+            r1.done(function(data) { });
+            $.when(r1).done(function(data) {
+                // goto road map item
+                current_params_url = [];
+                current_params_url['id_parent'] = "vrn-roadmap-item-page";
+                current_params_url['roadmap_id'] = eve;
+                $.mobile.changePage("#vrn-roadmap-item-page", {
+                    transition:"slide",
+                    changeHash:false,
+                    reverse:true,
+                    reload:true
+                 });
+            });
+        }else{
+            // return error pop
+            $('#vrn-roadmap-add-error-popup').popup();
+            $("#vrn-roadmap-add-error-popup-content").children("[class='ui-title']").html(message).trigger('create');
+            $('#vrn-roadmap-add-error-popup').popup('open');
+        }
+        
+    };
+
+    
+    
     // Roadmap : show roadmap item (liste de pos)
     controller.showVrnRoadmapItemPage = function(roadmap_id) {
         app.log("controller.showVrnRoadmapItemPage", 'wip');
         
         // header et footer
-        $.mobile.navigate( "#vrn-roadmap-page" );
+        $.mobile.navigate( "#vrn-roadmap-item-page" );
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-roadmap-page');
          
@@ -781,9 +1075,6 @@ app.controller = (function () {
             var codea = '';
             var codeb = '';
             for (var i=0;i<pos.length;i++){ 
-                
-                
-                
                 if(pos[i].last_visit_id != null && pos[i].last_visit_id != 0) var last_visit = '<span class="oi-derniere-text">Dernière visite</span><span class="bold align-jour">'+pos[i].last_visit_id+'</span>';
                 else var last_visit = '';
                 
@@ -827,11 +1118,13 @@ app.controller = (function () {
             $('#vrn-roadmap-item-pos-add-button').unbind('tap');
             $('#vrn-roadmap-item-pos-add-button').bind('tap', controller.getParamUrl );
 
-            for (var i=0;i<pos.length;i++){ 
-                $("#vrn-roadmap-item-pos-detail-btn-"+pos[i].id_sales_point).unbind('tap');
-                $("#vrn-roadmap-item-pos-detail-btn-"+pos[i].id_sales_point).bind('tap', controller.getParamUrl );
-                $("#vrn-roadmap-item-pos-detail-btn-del-"+pos[i].id_sales_point).unbind('tap');
-                $("#vrn-roadmap-item-pos-detail-btn-del-"+pos[i].id_sales_point).bind('tap', controller.getParamUrl );
+            for (var i=0;i<pos.length;i++){
+                if(pos[i].sync_status != "D"){
+                    $("#vrn-roadmap-item-pos-detail-btn-"+pos[i].id_sales_point).unbind('tap');
+                    $("#vrn-roadmap-item-pos-detail-btn-"+pos[i].id_sales_point).bind('tap', controller.getParamUrl );
+                    $("#vrn-roadmap-item-pos-detail-btn-del-"+pos[i].id_sales_point).unbind('tap');
+                    $("#vrn-roadmap-item-pos-detail-btn-del-"+pos[i].id_sales_point).bind('tap', controller.getParamUrl );
+                }
             }
 
         });
@@ -851,6 +1144,10 @@ app.controller = (function () {
        // get POS item
        var r1 = app.repository.getPosItem(sales_point_id);
        r1.done(function(pos) {
+       });
+       
+       // final execute
+       $.when(r1).done(function(pos) {
            $('#vrn-identity-top-left').html(pos.name);
            // derniere visit ? last_visit_id
            if(pos.last_visit_id == "0") $('#vrn-roadmap-item-pos-top-right').hide();
@@ -869,15 +1166,7 @@ app.controller = (function () {
            $('#vrn-roadmap-item-pos-detail-pop').trigger('refresh');
            
            $('#vrn-roadmap-item-pos-map-lnk').attr("data-url", "?id_parent_pop=vrn-roadmap-item-pos-map-pop&roadmap_id="+roadmap_id+"&sales_point_id="+sales_point_id+"&gps_latitude="+pos.gps_latitude+"&gps_longitude="+pos.gps_longitude+"");
-           $('#vrn-roadmap-item-pos-button').attr("data-url", "?id_parent=vrn-pos-edit-page&roadmap_id="+roadmap_id+"&sales_point_id="+sales_point_id+"");
-
-          
-       });
-       
-       // final execute
-       $.when(r1).done(function(roadmap_retour, sp_list) {
-           
-
+           $('#vrn-roadmap-item-pos-button').attr("data-url", "?id_parent=vrn-roadmap-item-pos-edit-page&roadmap_id="+roadmap_id+"&sales_point_id="+sales_point_id+"");
        });
        
        //$( '#vrn-roadmap-item-pos-detail-pop' ).popup( 'reposition', 'positionTo: window' ).trigger('refresh');
@@ -895,12 +1184,23 @@ app.controller = (function () {
        });
        
        $('#vrn-roadmap-item-pos-map-lnk').unbind('tap');
-       $('#vrn-roadmap-item-pos-map-lnk').bind('tap', controller.getParamUrl );
+       $('#vrn-roadmap-item-pos-map-lnk').bind('tap', function (event){
+           current_params_url = [];
+           current_params_url['id_parent_pop'] = "vrn-roadmap-item-pos-map-pop";
+           current_params_url['roadmap_id'] = roadmap_id;
+           current_params_url['sales_point_id'] = sales_point_id;
+           current_params_url['gps_latitude'] = pos.gps_latitude;
+           current_params_url['gps_longitude'] = pos.gps_longitude;
+       });
        
        $('#vrn-roadmap-item-pos-button').unbind('tap');
-       $('#vrn-roadmap-item-pos-button').bind('tap', function(){ controller.getParamUrl } );
+       $('#vrn-roadmap-item-pos-button').bind('tap', function (event){
+           current_params_url = [];
+           current_params_url['id_parent'] = "vrn-roadmap-item-pos-edit-page";
+           current_params_url['roadmap_id'] = roadmap_id;
+           current_params_url['sales_point_id'] = sales_point_id;
+       });
        
-
     };
 
     controller.showRoadmapItemPosMapPop = function(roadmap_id, sales_point_id, gps_latitude, gps_longitude) {
@@ -1017,7 +1317,7 @@ app.controller = (function () {
                         '   <br/>' +
                         '   <div id="vrn-name-road-add-pos-li-detail-'+allpos[i].id_sales_point+'" style="display:none;">' +
                         '           <img alt="" src="css/images/vrn/pos_icon.png">'+      
-                        '           ' + allpos[i].street + ", " +allpos[i].postal_code+ " " +allpos[i].city
+                        '           ' + allpos[i].street + ", " +allpos[i].postal_code+ " " +allpos[i].city +
                         '   </div>' +
                         '</li>';
             } 
@@ -1080,7 +1380,7 @@ app.controller = (function () {
                         }
                     }
                     
-                    controller.addRoadmapItemPosPopChangeSetectRadio(current_params_url['roadmap_id'],current_params_url['sales_point_id'])
+                    controller.addRoadmapItemPosPopChangeSetectRadio(current_params_url['roadmap_id'],current_params_url['sales_point_id']);
                 });
             }
 
@@ -1101,7 +1401,7 @@ app.controller = (function () {
     
                            // if(retour == "no"){
                                 // id_visit, sales_point_id, roadmap_id, status_visit_id, scheduled_date, performed_date, rank, comment, local_id
-                                var data = [ new Date().getTime() + i , sales_point_id, roadmap_id, 1, app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), '', '0' , '' ,0 ];
+                                var data = [ new Date().getTime() + i , sales_point_id, roadmap_id, 1, app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), '', '0' , '' , 0, 'I' ];
                                 // add in DB
                                 var r3 = app.repository.addRoadMapItemPos(data);
                                 r3.done(function() {} );
@@ -1127,12 +1427,13 @@ app.controller = (function () {
                         // close pop
                         //$('#vrn-roadmap-item-pos-delete-pop').popup('close');
                         // refresh list count
-                        $('#vrn-roadmap-item-no-pdv').val($('#vrn-road_closing-list').size());
+                        $('#vrn-roadmap-item-no-pdv').val( $('#vrn-road_closing-list').size() );
                         
                     }
+                    
                 });
-             }
-            
+                
+			}
             $('#vrn-roadmap-item-pos-add-save-btn').unbind('tap');
         });
         
@@ -1169,7 +1470,8 @@ app.controller = (function () {
     };
     
     var current_sp_visit_id;
-    controller.showVrnRoadmapVisitPage = function(sp_visit_id) {
+    controller.showVrnRoadmapVisitPage = function(sp_visit_id,current_item) {
+        //alert("visit_idA:"+sp_visit_id);
         app.log("controller.showVrnRoadmapVisitPage", 'wip');
 
         // header et footer
@@ -1186,16 +1488,16 @@ app.controller = (function () {
         
         $.when(r1).done(function(roadmap) {
             daily_roadmap = roadmap;
-            
-            current_sp_visit_id = daily_roadmap.pos_list[0].sp_visit__id_visit;
-            
+            //alert("visit_itemB:"+current_item);
+            current_sp_visit_id = daily_roadmap.pos_list[current_item].sp_visit__id_visit;
+            //alert("visit_idC:"+current_sp_visit_id);
             // test si tournee du jour (fake pour le dev : si une tournee existe)
-            var r2 = app.repository.getPosVisit(daily_roadmap.pos_list[0].sp_visit__id_visit);
+            var r2 = app.repository.getPosVisit(daily_roadmap.pos_list[current_item].sp_visit__id_visit);
             r2.done(function(data_r2) {
                 var pos = data_r2;
             });
     
-            var r3 = app.repository.getQuestionnaires(daily_roadmap.pos_list[0].sp_visit__id_visit);
+            var r3 = app.repository.getQuestionnaires(daily_roadmap.pos_list[current_item].sp_visit__id_visit);
             r3.done(function(data_r3) {
                 var questionnaires = data_r3;
             });
@@ -1225,7 +1527,7 @@ app.controller = (function () {
                     if(questionnaires[i].nb_question_mandatory){
                         nb_questionnaires_obligat++;
                         code += '<li class="ui-corner-all" data-icon="arrow-r-white">'
-                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
+                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[current_item].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
                             
                             // +'        <a href="#" data-url="?op=openPage&pageId=vrn-roadmap-visit-questionnaire-page&transition=slide&sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk" data-ajax="true">'
                             +'        '+img
@@ -1235,7 +1537,7 @@ app.controller = (function () {
                             +'</li>';
                     }else{
                         codeB += '<li class="ui-corner-all" data-icon="arrow-r-white">'
-                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
+                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[current_item].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
                             
                             //+'        <a href="#" data-url="?op=openPage&pageId=vrn-roadmap-visit-questionnaire-page&transition=slide&sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk" data-ajax="true">'
                             +'        '+img
@@ -1288,7 +1590,7 @@ app.controller = (function () {
     controller.closeRoadmapVisit = function() {
         app.log("controller.closeRoadmapVisit", 'wip');
         
-        var data = [ $('#vrn-comment-cloturee-type').val(), app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), $('#textarea-comment-cloture').val(), current_sp_visit_id ];
+        var data = [ $('#vrn-comment-cloturee-type').val(), app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), $('#textarea-comment-cloture').val(), 'U', current_sp_visit_id ];
         
         var r100 = app.repository.closeRoadmapVisit(data);
         
@@ -1299,7 +1601,7 @@ app.controller = (function () {
                 reverse:true,
                 reload:true
              });
-        })
+        });
         
         
     };
@@ -1320,7 +1622,7 @@ app.controller = (function () {
         $("#vrn-roadmap-visit-questionnaire-page").trigger('refresh');
     
         current_sp_visit_id = sp_visit_id;
-        
+
         var r1 = app.repository.getQuestionnaire(questionnaire_id);
         r1.done(function(data_r1) {
             questionnaire = data_r1;
@@ -1358,7 +1660,7 @@ app.controller = (function () {
             for (var i=0;i<questions.length;i++){ 
                 num_question++;
                 code += '<div class="quest-fieldset">'
-                        +'  <div class="ui-grid-solo">'
+                     +'  <div class="ui-grid-solo">';
                   
                 if(questions[i].question_type == "list"){
                     code += '<div class="ui-grid-solo">'
@@ -1490,7 +1792,7 @@ app.controller = (function () {
                         }
                     }
                    // alert('quest:'+questions[i].id_question+' - rep:'+$("#select-choice-"+questions[i].id_question).val());
-                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, $("#select-choice-"+questions[i].id_question).val(), text_answer, app.utils.convertTimestampToDateIso(new Date(),'/') ]
+                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, $("#select-choice-"+questions[i].id_question).val(), text_answer, app.utils.convertTimestampToDateIso(new Date(),'/'), 'I' ];
                     var rsql = app.repository.addQuestionnaireSpAnswer(data);
                     rsql.done(function() {});
                     
@@ -1509,7 +1811,7 @@ app.controller = (function () {
                         }
                     }
                     //alert('quest:'+questions[i].id_question+' - rep:'+$("[name='radio-choice-"+questions[i].id_question+"']:checked").val());
-                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, $("[name='radio-choice-"+questions[i].id_question+"']:checked").val(), text_answer, app.utils.convertTimestampToDateIso(new Date(),'/') ]
+                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, $("[name='radio-choice-"+questions[i].id_question+"']:checked").val(), text_answer, app.utils.convertTimestampToDateIso(new Date(),'/'), 'I' ];
                     var rsql = app.repository.addQuestionnaireSpAnswer(data);
                     rsql.done(function() {});
                  
@@ -1520,7 +1822,7 @@ app.controller = (function () {
                     //form_statut = "non ok";
                     
                     //alert('quest:'+questions[i].id_question+' - rep:'+$("#text-"+questions[i].id_question).val());
-                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, 0, $("#text-"+questions[i].id_question).val(), app.utils.convertTimestampToDateIso(new Date(),'/') ]
+                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, 0, $("#text-"+questions[i].id_question).val(), app.utils.convertTimestampToDateIso(new Date(),'/'), 'I' ];
                     var rsql = app.repository.addQuestionnaireSpAnswer(data);
                     rsql.done(function() {});
                 }else if(questions[i].question_type == "satisfaction"){
@@ -1529,7 +1831,7 @@ app.controller = (function () {
                     //form_statut = "non ok";
                     
                    // alert('quest:'+questions[i].id_question+' - rep:'+$("#slider-"+questions[i].id_question).val());
-                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, 0, $("#slider-"+questions[i].id_question).val(), app.utils.convertTimestampToDateIso(new Date(),'/') ]
+                    var data = [ sp_visit.id_sales_point , current_sp_visit_id, questionnaire.id_questionnaire, questions[i].id_question, 0, $("#slider-"+questions[i].id_question).val(), app.utils.convertTimestampToDateIso(new Date(),'/'), 'I' ];
                     var rsql = app.repository.addQuestionnaireSpAnswer(data);
                     rsql.done(function() {});
                 }
@@ -1565,6 +1867,16 @@ app.controller = (function () {
             }
             
             $('#vrn-question-valider-button').click();
+            /*
+            $('#vrn-lancer').bind('tap', function (event){
+                current_params_url = [];
+                current_params_url['id_parent'] = "vrn-roadmap-visit-page";
+                current_params_url['sp_visit_id'] = daily_roadmap.pos_list[current_item].sp_visit__status_visit_id;
+                current_params_url['current_item'] = current_item;
+                current_params_url['roadmap_id'] = daily_roadmap.pos_list[current_item].roadmap_id;
+                current_params_url['sales_point_id'] = daily_roadmap.pos_list[current_item].id_sales_point;
+            });
+            */
             $.mobile.changePage("#vrn-roadmap-visit-page", {
                 transition:"slide",
                 changeHash:false,
@@ -1574,7 +1886,148 @@ app.controller = (function () {
         });
     };
 
+    // roadmap detail : pos : pos form
+    controller.showRoadmapItemPosEditPage = function(id_roadmap, id_sales_point) {  
+        app.log("controller.showRoadmapItemPosEditPage : "+id_roadmap+" : "+id_sales_point , 'wip');
+        
+        $.mobile.navigate( "#vrn-roadmap-item-pos-edit-page" );
+        
+        controller.showVrnHeader();
+        //alert(id_sales_point);
+        var pos_id = id_sales_point;
+        var r1 = app.repository.getPosTypes();
+        r1.done(function(spt) {
+            var sp_types = spt;
+        });    
+        var r2 = app.repository.getFrequencies();
+        r2.done(function(f) {
+            var frequencies = f;
+        });
+        var r3 = app.repository.getMicroZones();
+        r3.done(function(mzs) {
+            var microzones = mzs;
+        });
+        
+        $.when(r1, r2, r3).done(function(sp_types, frequencies, microzones) {    
+            var r4 = app.repository.getPosItem(id_sales_point);
+            r4.done(function(pos) {
+                $("#vrn-roadmap-item-pos-edit-title").html("MODIFIER UN POINT DE VENTE");
+                $("#vrn-roadmap-item-pos-id").val(pos.id_sales_point);
+                if(pos.sync_status == "I") $("#vrn-roadmap-item-pos-sync-status").val('I');
+                else $("#vrn-roadmap-item-pos-sync-status").val('U');
+                $("#vrn-roadmap-item-pos-name").val(pos.name); 
+                var select = $('#vrn-roadmap-item-pos-type');
+                if(select.prop) {
+                  var options = select.prop('options');
+                }else {
+                  var options = select.attr('options');
+                }
+                $('option', select).remove();
+                for (var i=0;i<sp_types.length;i++){ 
+                    options[options.length] = new Option(sp_types[i].name,sp_types[i].id_type);
+                }
+                select.val(pos.type_id);           
+                $("#vrn-roadmap-item-pos-street").val(pos.street); 
+                $("#vrn-roadmap-item-pos-cp").val(pos.postal_code); 
+                $("#vrn-roadmap-item-pos-city").val(pos.city); 
+                $("#vrn-roadmap-item-pos-contact-name").val(pos.contact_name); 
+                $("#vrn-roadmap-item-pos-telephone").val(pos.phone_number); 
+                $("#vrn-roadmap-item-pos-mail").val(pos.email); 
+                $("#vrn-roadmap-item-pos-descriptif").val(pos.description); 
+                $("#vrn-roadmap-item-pos-gps_latitude").val(pos.gps_latitude); 
+                $("#vrn-roadmap-item-pos-gps_longitude").val(pos.gps_longitude); 
+                var selectb = $('#vrn-roadmap-item-pos-frequency');
+                if(selectb.prop) {
+                  var options = selectb.prop('options');
+                }else {
+                  var options = selectb.attr('options');
+                }
+                $('option', selectb).remove();
+                for (var i=0;i<frequencies.length;i++){ 
+                    options[options.length] = new Option(frequencies[i].label,frequencies[i].id_frequency);
+                }
+                selectb.val(pos.frequency_id);           
+                var selectc = $('#vrn-roadmap-item-pos-microzone');
+                if(selectc.prop) {
+                  var options = selectc.prop('options');
+                }else {
+                  var options = selectc.attr('options');
+                }
+                $('option', selectc).remove();
+                for (var i=0;i<microzones.length;i++){ 
+                    options[options.length] = new Option(microzones[i].name,microzones[i].id_item);
+                }
+                selectb.val(pos.microzone_id);           
+                
+            //    Manque les champs suivant :
+            //    results.rows.item(i).last_visit_id,
+            //    results.rows.item(i).local_id
+            
+            });
+
+        });
+        
+        $('#vrn-roadmap-item-pos-edit-enregistrer-button').unbind('tap');
+        $('#vrn-roadmap-item-pos-edit-enregistrer-button').bind('tap',function (event){
+            controller.RoadmapItemPosSave(event,id_roadmap,id_sales_point);
+        });
+        
+    };
     
+    // roadmap detail : pos : edit pos save
+    controller.RoadmapItemPosSave = function(event,id_roadmap,id_sales_point) {
+        app.log("controller.editPosSave : " , 'wip');
+        
+        var form_statut = "ok";
+        var message = "";
+        if($('#vrn-roadmap-item-pos-name').val() == ""){
+            message += "Le champs \"nom\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-item-pos-street').val() == ""){
+            message += "Le champs \"adresse\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-item-pos-cp').val() == ""){
+            message += "Le champs \"code postal\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-item-pos-city').val() == ""){
+            message += "Le champs \"ville\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-pos-contact-name').val() == ""){
+            message += "Le champs \"nom du contact\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-item-pos-telephone').val() == ""){
+            message += "Le champs \"téléphone\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        if($('#vrn-roadmap-item-pos-email').val() == ""){
+            message += "Le champs \"email\" ne peut être vide.<br>";
+            form_statut = "non ok";
+        } 
+        app.log(message , 'wip');
+        
+        if(form_statut == "ok"){
+            var data = [ $('#vrn-roadmap-item-pos-id').val(), $('#vrn-roadmap-item-pos-name').val(), $('#vrn-roadmap-item-pos-street').val(), $('#vrn-roadmap-item-pos-cp').val(), $('#vrn-roadmap-item-pos-city').val(), $('#vrn-roadmap-item-pos-contact-name').val(), $('#vrn-roadmap-item-pos-email').val(), $('#vrn-roadmap-item-pos-telephone').val(), $('#vrn-roadmap-item-pos-type').val() , localStorage.getItem( "current_user_id"), $('#vrn-roadmap-item-pos-description').val(), $('#vrn-roadmap-item-pos-gps_latitude').val(), $('#vrn-roadmap-item-pos-gps_longitude').val(), $('#vrn-roadmap-item-pos-microzone').val(), $('#vrn-roadmap-item-pos-frequency').val() , 0, $('#vrn-roadmap-item-pos-sync-status').val(), $('#vrn-roadmap-item-pos-id').val() ];
+            var r1 = app.repository.editPosSave(data);
+            r1.done(function(pos) {
+                $.mobile.changePage("#vrn-roadmap-item-page", {
+                    transition:"slide",
+                    changeHash:false,
+                    reverse:false,
+                    reload:true
+                 });
+            });
+        }else{
+            // return error pop
+            $('#vrn-roadmap-item-pos-edit-error-popup').popup();
+            $("#vrn-roadmap-item-pos-edit-error-popup-content").children("[class='ui-title']").html(message).trigger('create');
+            $('#vrn-roadmap-item-pos-edit-error-popup').popup('open');
+        }
+    };
     
       ////////////////////
      // ==>   POS   == //
@@ -1644,11 +2097,11 @@ app.controller = (function () {
 
     };
     
-    controller.showVrnPosDetailPop = function(id_sales_point) {
-        app.log("controller.showVrnPosDetailPop : "+id_sales_point , 'wip');
+    controller.showVrnPosDetailPop = function(sales_point_id) {
+        app.log("controller.showVrnPosDetailPop : "+sales_point_id , 'wip');
 
         // get POS item
-        var r1 = app.repository.getPosItem(id_sales_point);
+        var r1 = app.repository.getPosItem(sales_point_id);
         r1.done(function(pos) {
             //alert('retour data : '+ pos.description);
             if(pos.last_visit_id == 0){
@@ -1668,12 +2121,12 @@ app.controller = (function () {
             $('#vrn-pos-detail-email')[0].selectedIndex = 0;
             $('#vrn-pos-detail-email').selectmenu("refresh");
             $('#vrn-pos-detail-description').html(pos.description);
-            $('#vrn-pos-detail-map-btn').attr("data-url", "?id_parent_pop=vrn-pos-map-pop&sales_point_id="+id_sales_point+"&gps_latitude="+pos.gps_latitude+"&gps_longitude="+pos.gps_longitude+"");
-            $('#vrn-pos-detail-modify-button').attr("data-url", "?id_parent=vrn-pos-edit-page&sales_point_id="+id_sales_point+"");
+            $('#vrn-pos-detail-map-btn').attr("data-url", "?id_parent_pop=vrn-pos-map-pop&sales_point_id="+sales_point_id+"&gps_latitude="+pos.gps_latitude+"&gps_longitude="+pos.gps_longitude+"");
+            $('#vrn-pos-detail-button').attr("data-url", "?id_parent=vrn-pos-edit-page&sales_point_id="+sales_point_id+"");
 
             // btn listeners
-            $('#vrn-pos-detail-button').unbind('tap');
-            $('#vrn-pos-detail-button').bind('tap',function (event){
+            $('#vrn-pos-detail-appeler-button').unbind('tap');
+            $('#vrn-pos-detail-appeler-button').bind('tap',function (event){
                 controller.callPhone($('#vrn-pos-identity-tel').find(":selected").val());
             });
             
@@ -1683,18 +2136,28 @@ app.controller = (function () {
             });
             
             $('#vrn-pos-detail-map-btn').unbind('tap');
-            $('#vrn-pos-detail-map-btn').bind('tap', controller.getParamUrl );
+            $('#vrn-pos-detail-map-btn').bind('tap', function (event){
+                current_params_url = [];
+                current_params_url['id_parent_pop'] = "vrn-pos-map-pop";
+                current_params_url['sales_point_id'] = sales_point_id;
+                current_params_url['gps_latitude'] = pos.gps_latitude;
+                current_params_url['gps_longitude'] = pos.gps_longitude;
+            });
             
-            $('#vrn-pos-detail-modify-button').unbind('tap');
-            $('#vrn-pos-detail-modify-button').bind('tap', controller.getParamUrl );
+            $('#vrn-pos-detail-button').unbind('tap');
+            $('#vrn-pos-detail-button').bind('tap', function (event){
+                current_params_url = [];
+                current_params_url['id_parent'] = "vrn-pos-edit-page";
+                current_params_url['sales_point_id'] = sales_point_id;
+            });
             
         });
 
     };
 
     
-    controller.showVrnPosMapPop = function(id_sales_point, gps_latitude, gps_longitude) {
-        app.log("controller.showVrnPosMapPop : "+id_sales_point , 'wip');
+    controller.showVrnPosMapPop = function(sales_point_id, gps_latitude, gps_longitude) {
+        app.log("controller.showVrnPosMapPop : "+sales_point_id , 'wip');
         var w = (screen.width - 200);
         var h = (screen.height - 200);
         $('#vrn-pos-map-pop').css("width", w+"px");
@@ -1723,11 +2186,12 @@ app.controller = (function () {
     };
     
     // pos : pos form
-    controller.showVrnPosEditPage = function(id_sales_point) {  
-        app.log("controller.showVrnPosEditPage : " , 'wip');
+    controller.showVrnPosEditPage = function(sales_point_id) {  
+        app.log("controller.showVrnPosEditPage : "+sales_point_id , 'wip');
+
         controller.showVrnHeader();
-        
-        var pos_id = id_sales_point;
+        //alert(sales_point_id);
+        var pos_id = sales_point_id;
         var r1 = app.repository.getPosTypes();
         r1.done(function(spt) {
             var sp_types = spt;
@@ -1742,11 +2206,10 @@ app.controller = (function () {
         });
         
         $.when(r1, r2, r3).done(function(sp_types, frequencies, microzones) {    
-            
-        
             if(pos_id == 0) {
                 $("#vrn-pos-edit-title").html("CRÉER UN POINT DE VENTE");
                 $("#vrn-pos-id").val("0");
+                $("#vrn-pos-sync-status").val('I');
                 $("#vrn-pos-name").val("");
                 var select = $('#vrn-pos-type');
                 if(select.prop) {
@@ -1791,10 +2254,12 @@ app.controller = (function () {
                     options[options.length] = new Option(microzones[i].name,microzones[i].id_item);
                 }
             }else{
-                var r4 = app.repository.getPosItem(id_sales_point);
+                var r4 = app.repository.getPosItem(sales_point_id);
                 r4.done(function(pos) {
                     $("#vrn-pos-edit-title").html("MODIFIER UN POINT DE VENTE");
-                    $("#vrn-pos-id").val(pos.id_sales_point); 
+                    $("#vrn-pos-id").val(pos.id_sales_point);
+                    if(pos.sync_status == "I") $("#vrn-pos-sync-status").val('I');
+                    else $("#vrn-pos-sync-status").val('U');
                     $("#vrn-pos-name").val(pos.name); 
                     var select = $('#vrn-pos-type');
                     if(select.prop) {
@@ -1851,15 +2316,16 @@ app.controller = (function () {
         
         $('#vrn-pos-edit-enregistrer-button').unbind('tap');
         $('#vrn-pos-edit-enregistrer-button').bind('tap',function (event){
-            controller.PosSave(event,id_sales_point);
+            controller.PosSave(event,sales_point_id);
         });
     };
     
     // pos : edit pos save
-    controller.PosSave = function(event,id_sales_point) {
-        if(id_sales_point == 0) app.log("controller.addPosSave : " , 'wip');
+    controller.PosSave = function(event,sales_point_id) {
+        if(sales_point_id == 0) app.log("controller.addPosSave : " , 'wip');
         else app.log("controller.editPosSave : " , 'wip');
-        
+        var eve = new Date().getTime()+"";
+        eve = eve.substr(4);
         var form_statut = "ok";
         var message = "";
         if($('#vrn-pos-name').val() == ""){
@@ -1892,21 +2358,16 @@ app.controller = (function () {
         } 
         app.log(message , 'wip');
         
-        
         if(form_statut == "ok"){
-            
-            if(id_sales_point == 0) {
-                var data = [ event.timeStamp, $('#vrn-pos-name').val(), $('#vrn-pos-street').val(), $('#vrn-pos-cp').val(), $('#vrn-pos-city').val(), $('#vrn-pos-contact-name').val(), $('#vrn-pos-telephone').val(), $('#vrn-pos-email').val(), 1 , localStorage.getItem( "current_user_id"), $('#vrn-pos-description').val(), $('#vrn-pos-gps_latitude').val(), $('#vrn-pos-gps_longitude').val(), $('#vrn-pos-microzone').val(), 0,  $('#vrn-pos-frequency').val() ,0 ];
+            if(sales_point_id == 0) {
+                var data = [ eve, $('#vrn-pos-name').val(), $('#vrn-pos-street').val(), $('#vrn-pos-cp').val(), $('#vrn-pos-city').val(), $('#vrn-pos-contact-name').val(), $('#vrn-pos-email').val(), $('#vrn-pos-telephone').val(), $('#vrn-pos-type').val() , localStorage.getItem( "current_user_id"), $('#vrn-pos-description').val(), $('#vrn-pos-gps_latitude').val(), $('#vrn-pos-gps_longitude').val(), $('#vrn-pos-microzone').val(), 0,  $('#vrn-pos-frequency').val() , 0, $('#vrn-pos-sync-status').val() ];
                 var r1 = app.repository.addPosSave(data);
             }else {
-                var data = [ $('#vrn-pos-id').val(), $('#vrn-pos-name').val(), $('#vrn-pos-street').val(), $('#vrn-pos-cp').val(), $('#vrn-pos-city').val(), $('#vrn-pos-contact-name').val(), $('#vrn-pos-telephone').val(), $('#vrn-pos-email').val(), 1 , localStorage.getItem( "current_user_id"), $('#vrn-pos-description').val(), $('#vrn-pos-gps_latitude').val(), $('#vrn-pos-gps_longitude').val(), $('#vrn-pos-microzone').val(), $('#vrn-pos-frequency').val(), $('#vrn-pos-id').val() ];
+                var data = [ $('#vrn-pos-id').val(), $('#vrn-pos-name').val(), $('#vrn-pos-street').val(), $('#vrn-pos-cp').val(), $('#vrn-pos-city').val(), $('#vrn-pos-contact-name').val(), $('#vrn-pos-email').val(), $('#vrn-pos-telephone').val(), $('#vrn-pos-type').val() , localStorage.getItem( "current_user_id"), $('#vrn-pos-description').val(), $('#vrn-pos-gps_latitude').val(), $('#vrn-pos-gps_longitude').val(), $('#vrn-pos-microzone').val(), $('#vrn-pos-frequency').val() , 0, $('#vrn-pos-sync-status').val(), $('#vrn-pos-id').val() ];
                 var r1 = app.repository.editPosSave(data);
             }
-            
-            
-            
             r1.done(function(pos) {
-                $.mobile.changePage("#vrn-pos-page", {
+               $.mobile.changePage("#vrn-pos-page", {
                     transition:"slide",
                     changeHash:false,
                     reverse:false,
@@ -2105,12 +2566,14 @@ app.controller = (function () {
         app.log("# app.controller : getHeader");
         var nav = navigator.userAgent; 
         var ischrome = nav.indexOf("Chrome") ? true : false;
-        if (ischrome) var network = "<img src=\"css/images/vrn/on_button.png\"/>";
+        if (ischrome) var network = "<a href=\"#vrn-sync-ar-page\"><img src=\"css/images/vrn/on_button.png\"/></a>";
         else{
             if(app.testNetwork() != Connection.NONE) var network = "<img src=\"css/images/vrn/on_button.png\"/>";
             else var network = "<img src=\"css/images/vrn/off_button.png\"/>";
         }
         //alert(app.authenticatedInThisSession);
+        if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
+        else var title = "<span class=\"ui-title\">Visit Optimizer</span>";
         if(app.authenticatedInThisSession == true) var help = "<a href=\"#help-popup\"><img src=\"css/images/vrn/help.png\"/></a>";
         else var help = "";
         if(app.authenticatedInThisSession == true) var settings = "<a href=\"#vrn-params-page\"><img src=\"css/images/vrn/icon_settings_pressed.png\"/></a>";
@@ -2119,7 +2582,7 @@ app.controller = (function () {
         + " <div id=\"vrn-settings\">"+settings+"</div>"
         + " <div id=\"vrn-network\">"+network+"</div>"
         + " <div id=\"vrn-company\">Orange</div>"
-        + "<span class=\"ui-title\">Visit Optimizer</span>"
+        + ""+title+"";
         return header;
     };
     
@@ -2135,39 +2598,39 @@ app.controller = (function () {
         footer += '<ul>';
         // homepage.html : vrn-home-page
         if (pageId == "vrn-home-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-taskselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-taskselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-home-page" id="vrn-taskboard" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-home-page" id="vrn-taskboard" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li>';
         }
         // inform.html : vrn-inform-page
         if (pageId == "vrn-inform-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-informselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-informselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-inform-page" id="vrn-watchword" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-inform-page" id="vrn-watchword" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li>';
         }
         // roadmap.html : vrn-roadmap-page
         if (pageId == "vrn-roadmap-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-roadmap-page" id="vrn-roadmap" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-roadmap-page" id="vrn-roadmap" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li>';
         }
         // pos.html : vrn-pos-page
         if (pageId == "vrn-pos-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-posselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-posselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-pos-page" id="vrn-pos" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-pos-page" id="vrn-pos" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li>';
         }
         // stats.html : vrn-stats-page
         if (pageId == "vrn-stats-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-statsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-statsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-stats-page" id="vrn-stats" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-stats-page" id="vrn-stats" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li>';
         }
         // params.html : vrn-params-page
         if (pageId == "vrn-params-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-paramsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></li>' 
+            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-paramsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-params-page" id="vrn-params" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li>' 
+            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-params-page" id="vrn-params" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li>';
         }
         footer += '</ul>'; 
         footer += '</div>';
@@ -2198,12 +2661,13 @@ app.controller = (function () {
         $("#vrn-login-popup").children("[data-role=header]").attr("data-theme", "a").trigger('create');
         $("#vrn-login-popup").children("[data-role=header]").attr("class", "ui-corner-top ui-header ui-bar-a").trigger('create');
         $("#vrn-login-popup").children("[data-role=header]").html("<h1>"+trad["1155"]+"</h1>").trigger('create');
-    }
+    };
+    
     controller.prepaPopupError = function() {
         $("#vrn-login-popup").children("[data-role=header]").attr("data-theme", "e").trigger('create');
         $("#vrn-login-popup").children("[data-role=header]").attr("class", "ui-corner-top ui-header ui-bar-e").trigger('create');
         $("#vrn-login-popup").children("[data-role=header]").html("<h1>"+trad["1155"]+"</h1>").trigger('create');
-    }
+    };
     
     
     
@@ -2326,7 +2790,7 @@ app.controller = (function () {
                             controller.errorLoadingPopup.popup("open", {
                                 dataPositionTo : "window",
                                 dataTransition : "pop"
-                            })
+                            });
                         }, 100);
     
                     }
@@ -2429,10 +2893,20 @@ app.controller = (function () {
                             if(field != '') field += ", ";
                             field += indexC;
                             if(val != '') val += ", ";
-                            if(valueC != null) valueC = valueC.replace('"','&acute;&acute;')
+                            if(valueC != null) valueC = valueC.replace('"','&acute;&acute;');
                             else valueC = '';
                             val += '"'+valueC+'"';
                         });
+                        if(data[i]["entity_type"] == "sys_users" || 
+                           data[i]["entity_type"] == "message" || 
+                           data[i]["entity_type"] == "sales_point" || 
+                           data[i]["entity_type"] == "roadmap" || 
+                           data[i]["entity_type"] == "sp_answer" || 
+                           data[i]["entity_type"] == "sp_visit" 
+                           ){
+                            field += ", sync_status";
+                            val += ',"S"';
+                        }
                         rsql += field + ") VALUES (" + val + ")";
                         //app.log(rsql);
                         // insert la requette
@@ -2468,6 +2942,243 @@ app.controller = (function () {
             window.location ='mailto:'+mail;
         }
     };
+    
+    var upload_deferred;
+    
+    controller.prepaDataPack = function() {
+        app.log("webservice.prepaDataPack",'wip');
+        
+        upload_deferred = $.Deferred();
+        
+        var tb_name = 'sys_users';
+        var fields_to_export = ['id_user', 'lastname', 'firstname', 'email', 'phone', 'preferred_language_id', 'target_val', 'sync_status'];
+        var sync_status = "all";
+        var r1 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r1.done(function(json_data) {} );
+        
+        var tb_name = 'message';
+        var fields_to_export = ['id_message', 'read_date', 'sync_status'];
+        var sync_status = "all";
+        var r2 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r2.done(function(json_data) {} );
+        
+        var tb_name = 'sales_point';
+        var fields_to_export = ['id_sales_point', 'name', 'contact_name', 'phone_number', 'street', 'city', 'postal_code', 'email', 'description', 'gps_latitude', 'gps_longitude', 'type_id', 'user_id', 'microzone_id', 'last_visit_id', 'frequency_id', 'photo_url', 'local_id', 'sync_status'];
+        var sync_status = "all";
+        var r3 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r3.done(function(json_data) {} );
+        
+        var tb_name = 'sp_visit';
+        var fields_to_export = ['id_visit', 'sales_point_id', 'roadmap_id', 'status_visit_id', 'scheduled_date', 'performed_date', 'rank', 'comment', 'local_id', 'sync_status'];
+        var sync_status = "all";
+        var r4 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r4.done(function(json_data) {} );
+        
+        var tb_name = 'sp_answer';
+        var fields_to_export = ['sales_point_id', 'visit_id', 'questionnaire_id', 'question_id', 'answer_id', 'answer', 'answer_time', 'sync_status'];
+        var sync_status = "all";
+        var r5 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r5.done(function(json_data) {} );
+        
+        var tb_name = 'roadmap';
+        var fields_to_export = ['id_roadmap', 'initiating_user_id', 'operating_user_id', 'mobile_status_id', 'web_status_id', 'creation_date', 'name', 'scheduled_date', 'km', 'comment', 'close_date', 'area_id', 'local_id', 'sync_status'];
+        var sync_status = "all";
+        var r6 = app.repository.sqlite2json(tb_name,fields_to_export,sync_status);
+        r6.done(function(json_data) {} );
+        
+        $.when(r1,r2,r3,r4,r5,r6).done(function(r1v,r2v,r3v,r4v,r5v,r6v) {
+            var json_data = "["
+                + r1v +","
+                + r2v +","
+                + r3v +","
+                + r4v +","
+                + r5v +","
+                + r6v
+                +"]";
+            app.log(json_data);
+            var file_name = new Date().getTime() +'-'+ app.loggedUser.id;
+            var zip = new JSZip();
+            zip.file(file_name+".txt", json_data);
+            var zip_content = zip.generate();
+            //location.href="data:application/zip;base64,"+content;
+            upload_deferred.resolve(file_name+'.zip', zip_content);
+        } );
+        
+        return upload_deferred.promise();        
+    };
+    
+    var uploadAR_deferred;
+    
+    controller.uploadAR = function(sync_data) {
+        app.log("webservice.uploadAR",'wip');
+        uploadAR_deferred = $.Deferred();
+        sync_data = $.parseJSON(sync_data);
+        
+        for (var i=0;i<sync_data.length;i++){
+            
+            var tb_name = sync_data[i].entity_type;
+            
+            // sys_users
+            if(sync_data[i].entity_type == 'sys_users'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_user = ?";
+                        var params = [ "S", sync_data[i].content[j].id_user ];
+                        //alert('param'+sync_data[i].content[j].id_user);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                    }
+                }
+            }
+         // message
+            if(sync_data[i].entity_type == 'message'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_message = ?";
+                        var params = [ "S", sync_data[i].content[j].id_message ];
+                        //alert('param'+sync_data[i].content[j].id_message);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                    }
+                }
+            }
+         // sales_point
+            if(sync_data[i].entity_type == 'sales_point'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                        var rsql = "UPDATE "+tb_name+" SET id_sales_point = ?, sync_status = ? WHERE id_sales_point = ?";
+                        var params = [ sync_data[i].content[j].new_id, "S", sync_data[i].content[j].id_sales_point ];
+                        var r = app.repository.requestSQL(rsql,params);
+                        // maj id to other table
+                        var rsql = "UPDATE sp_visit SET sales_point_id = ? WHERE sales_point_id = ?";
+                        var params = [ sync_data[i].content[j].new_id, sync_data[i].content[j].id_sales_point ];
+                        var r = app.repository.requestSQL(rsql,params);
+                        var rsql = "UPDATE sp_answer SET sales_point_id = ? WHERE sales_point_id = ?";
+                        var params = [ sync_data[i].content[j].new_id, sync_data[i].content[j].id_sales_point ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_sales_point = ?";
+                        var params = [ "S", sync_data[i].content[j].id_sales_point ];
+                        //alert('param'+sync_data[i].content[j].id_sales_point);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                        /*var rsql = "DELETE FROM "+tb_name+" WHERE ( id_sales_point = ? )";
+                        var params = [ sync_data[i].content[j].id_sales_point ];
+                        var r = app.repository.requestSQL(rsql,params);*/
+                    }
+                }
+            }
+            // sp_visit
+            if(sync_data[i].entity_type == 'sp_visit'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                        var rsql = "UPDATE "+tb_name+" SET id_visit = ?, sync_status = ? WHERE id_visit = ?";
+                        var params = [ sync_data[i].content[j].new_id, "S", sync_data[i].content[j].id_visit ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_visit = ?";
+                        var params = [ "S", sync_data[i].content[j].id_visit ];
+                        //alert('param'+sync_data[i].content[j].id_visit);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                        var rsql = "DELETE FROM "+tb_name+" WHERE ( id_visit = ? )";
+                        var params = [ sync_data[i].content[j].id_visit ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }
+                }
+            }
+            // sp_answer
+            if(sync_data[i].entity_type == 'sp_answer'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                        var rsql = "UPDATE "+tb_name+" SET sales_point_id = ?, visit_id = ?, questionnaire_id = ?, question_id = ?, answer_id = ?, sync_status = ? WHERE sales_point_id = ? AND visit_id = ? AND questionnaire_id = ? AND question_id = ? AND answer_id = ?";
+                        var params = [ sync_data[i].content[j].sales_point_id, sync_data[i].content[j].visit_id, sync_data[i].content[j].questionnaire_id, sync_data[i].content[j].question_id, sync_data[i].content[j].answer_id , "S", sync_data[i].content[j].sales_point_id, sync_data[i].content[j].visit_id, sync_data[i].content[j].questionnaire_id, sync_data[i].content[j].question_id, sync_data[i].content[j].answer_id ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE sales_point_id = ? AND visit_id = ? AND questionnaire_id = ? AND question_id = ? AND answer_id = ?";
+                        var params = [ "S", sync_data[i].content[j].sales_point_id, sync_data[i].content[j].visit_id, sync_data[i].content[j].questionnaire_id, sync_data[i].content[j].question_id, sync_data[i].content[j].answer_id ];
+                        //alert('param'+sync_data[i].content[j].id_visit);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                        var rsql = "DELETE FROM "+tb_name+" WHERE ( sales_point_id = ? AND visit_id = ? AND questionnaire_id = ? AND question_id = ? AND answer_id = ? )";
+                        var params = [ sync_data[i].content[j].sales_point_id, sync_data[i].content[j].visit_id, sync_data[i].content[j].questionnaire_id, sync_data[i].content[j].question_id, sync_data[i].content[j].answer_id ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }
+                }
+            }
+            // roadmap
+            if(sync_data[i].entity_type == 'roadmap'){
+                for (var j=0;j<sync_data[i].content.length;j++){
+                    if(sync_data[i].content[j].sync_status == "I"){
+                        var rsql = "UPDATE "+tb_name+" SET id_roadmap = ?, sync_status = ? WHERE id_roadmap = ?";
+                        var params = [ sync_data[i].content[j].new_id, "S", sync_data[i].content[j].id_roadmap ];
+                        var r = app.repository.requestSQL(rsql,params);
+                        // maj id to other table
+                        var rsql = "UPDATE sp_visit SET roadmap_id = ? WHERE roadmap_id = ?";
+                        var params = [ sync_data[i].content[j].new_id, sync_data[i].content[j].id_roadmap ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "U"){
+                        var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_roadmap = ?";
+                        var params = [ "S", sync_data[i].content[j].id_roadmap ];
+                        //alert('param'+sync_data[i].content[j].id_visit);
+                        var r = app.repository.requestSQL(rsql,params);
+                    }else if(sync_data[i].content[j].sync_status == "D"){
+                        var rsql = "DELETE FROM "+tb_name+" WHERE ( id_roadmap = ? )";
+                        var params = [ sync_data[i].content[j].id_roadmap ];
+                        var r = app.repository.requestSQL(rsql,params);
+                    }
+                }
+            }
+            // end
+            if(sync_data.length-1 == i) uploadAR_deferred.resolve(sync_data[0].sync_id,sync_data[0].sync_date);
+            //alert('OK');
+        }      
+        return uploadAR_deferred.promise();        
+    };
+    
+   function uploadWin(r) {
+        console.log("Code = " + r.responseCode);
+        console.log("Response = " + r.response);
+        console.log("Sent = " + r.bytesSent);
+    }
+
+    function uploadFail(error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+    }
+    
+	function checksumGen(str) {
+        var crc = 0; 
+        var n = 0; //a number between 0 and 255 
+        var x = 0; //an hex number 
+    	var table = "00000000 77073096 EE0E612C 990951BA 076DC419 706AF48F E963A535 9E6495A3 0EDB8832 79DCB8A4 E0D5E91E 97D2D988 09B64C2B 7EB17CBD E7B82D07 90BF1D91 1DB71064 6AB020F2 F3B97148 84BE41DE 1ADAD47D 6DDDE4EB F4D4B551 83D385C7 136C9856 646BA8C0 FD62F97A 8A65C9EC 14015C4F 63066CD9 FA0F3D63 8D080DF5 3B6E20C8 4C69105E D56041E4 A2677172 3C03E4D1 4B04D447 D20D85FD A50AB56B 35B5A8FA 42B2986C DBBBC9D6 ACBCF940 32D86CE3 45DF5C75 DCD60DCF ABD13D59 26D930AC 51DE003A C8D75180 BFD06116 21B4F4B5 56B3C423 CFBA9599 B8BDA50F 2802B89E 5F058808 C60CD9B2 B10BE924 2F6F7C87 58684C11 C1611DAB B6662D3D 76DC4190 01DB7106 98D220BC EFD5102A 71B18589 06B6B51F 9FBFE4A5 E8B8D433 7807C9A2 0F00F934 9609A88E E10E9818 7F6A0DBB 086D3D2D 91646C97 E6635C01 6B6B51F4 1C6C6162 856530D8 F262004E 6C0695ED 1B01A57B 8208F4C1 F50FC457 65B0D9C6 12B7E950 8BBEB8EA FCB9887C 62DD1DDF 15DA2D49 8CD37CF3 FBD44C65 4DB26158 3AB551CE A3BC0074 D4BB30E2 4ADFA541 3DD895D7 A4D1C46D D3D6F4FB 4369E96A 346ED9FC AD678846 DA60B8D0 44042D73 33031DE5 AA0A4C5F DD0D7CC9 5005713C 270241AA BE0B1010 C90C2086 5768B525 206F85B3 B966D409 CE61E49F 5EDEF90E 29D9C998 B0D09822 C7D7A8B4 59B33D17 2EB40D81 B7BD5C3B C0BA6CAD EDB88320 9ABFB3B6 03B6E20C 74B1D29A EAD54739 9DD277AF 04DB2615 73DC1683 E3630B12 94643B84 0D6D6A3E 7A6A5AA8 E40ECF0B 9309FF9D 0A00AE27 7D079EB1 F00F9344 8708A3D2 1E01F268 6906C2FE F762575D 806567CB 196C3671 6E6B06E7 FED41B76 89D32BE0 10DA7A5A 67DD4ACC F9B9DF6F 8EBEEFF9 17B7BE43 60B08ED5 D6D6A3E8 A1D1937E 38D8C2C4 4FDFF252 D1BB67F1 A6BC5767 3FB506DD 48B2364B D80D2BDA AF0A1B4C 36034AF6 41047A60 DF60EFC3 A867DF55 316E8EEF 4669BE79 CB61B38C BC66831A 256FD2A0 5268E236 CC0C7795 BB0B4703 220216B9 5505262F C5BA3BBE B2BD0B28 2BB45A92 5CB36A04 C2D7FFA7 B5D0CF31 2CD99E8B 5BDEAE1D 9B64C2B0 EC63F226 756AA39C 026D930A 9C0906A9 EB0E363F 72076785 05005713 95BF4A82 E2B87A14 7BB12BAE 0CB61B38 92D28E9B E5D5BE0D 7CDCEFB7 0BDBDF21 86D3D2D4 F1D4E242 68DDB3F8 1FDA836E 81BE16CD F6B9265B 6FB077E1 18B74777 88085AE6 FF0F6A70 66063BCA 11010B5C 8F659EFF F862AE69 616BFFD3 166CCF45 A00AE278 D70DD2EE 4E048354 3903B3C2 A7672661 D06016F7 4969474D 3E6E77DB AED16A4A D9D65ADC 40DF0B66 37D83BF0 A9BCAE53 DEBB9EC5 47B2CF7F 30B5FFE9 BDBDF21C CABAC28A 53B39330 24B4A3A6 BAD03605 CDD70693 54DE5729 23D967BF B3667A2E C4614AB8 5D681B02 2A6F2B94 B40BBE37 C30C8EA1 5A05DF1B 2D02EF8D"; 
+        crc = crc ^ (-1); 
+        for( var i = 0, iTop = str.length; i < iTop; i++ ) { 
+            n = ( crc ^ str.charCodeAt( i ) ) & 0xFF; 
+            x = "0x" + table.substr( n * 9, 8 ); 
+            crc = ( crc >>> 8 ) ^ x; 
+        } 
+        return crc ^ (-1);
+	}
+    
+     function checkLength(str) {
+		  i;
+		  chk = "";
+		
+		  for (i = 0; str[i] != '\0'; i++) {
+		    chk += ((int)(str[i]) * (i + 1));
+		  }
+		
+		  return chk;
+     };
+	
+    function fail(error) {
+        console.log(error.code);
+    }
+    
     
     
     controller.nullfunc = function() {};

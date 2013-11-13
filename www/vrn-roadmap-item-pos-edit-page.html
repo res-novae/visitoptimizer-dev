@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
         <link rel="stylesheet" href="jquerymobile/jquery.mobile-1.3.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/app.css" />
-        <title>Visit Optimizer : Roadmap</title>
+        <title>Visit Optimizer - ROADMAP : POS / PDV édition</title>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
         <script type="text/javascript" src="jquerymobile/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="jquerymobile/jquery.md5.min.js"></script>
@@ -36,74 +36,75 @@
 
         <!-- Page : Raodmap item Pos edit form -->
         <div data-role="page" class="vrn-page" id="vrn-roadmap-item-pos-edit-page" data-url="vrn-roadmap-item-pos-edit-page" data-dom-cache="false">
-            <div data-role="header" class="vrn-header" id="vrn-roadmap-item-pos-edit-header" data-position="fixed" data-tap-toggle="false"> </div>
+            <div data-role="header" class="vrn-header" data-position="fixed" data-tap-toggle="false"> </div>
             <!-- Content -->
             <div data-role="content" class="vrn-content">
                 <div id="vrn-roadmap-item-pos-edit-div">
                     <fieldset class="ui-grid-a" id="ui-grid-a-pos">
                         <!--<a href="#" class="try back black">Back</a>-->
                        <div class="ui-block-a">
-                            <a href="pos.html" id="vrn-retour-button" data-role="button" data-theme="f">Retour</a>
-                        </div>
+                           <a href="#vrn-roadmap-item-page" id="vrn-roadmap-item-pos-retour-button" data-transition="slide" data-direction="reverse" data-role="button" data-theme="f">Retour</a>
+                       </div>
                         <div class="ui-block-b" id="vrn-create-pdv">
-                            <p id="vrn-roadmap-item-pos-edit-title">CRÉER UN POINT DE VENTE</p>
-                            <input type="hidden" name="vrn-pos-id" id="vrn-pos-id" value="0">
+                            <p id="vrn-roadmap-item-pos-edit-title">MODIFIER UN POINT DE VENTE</p>
+                            <input type="hidden" name="vrn-roadmap-item-pos-id" id="vrn-roadmap-item-pos-id" value="0">
+                            <input type="hidden" name="vrn-roadmap-item-pos-sync-status" id="vrn-roadmap-item-pos-sync-status" value="">
                         </div> 
                     </fieldset>
 
                     <div class="ui-grid-a">
-                        <div class="ui-block-a" id="ui-block-a-form3">
+                        <div class="ui-block-a ui-block-a-form3b">
                             <img alt="" src="css/images/vrn/forma3.png" style="padding-top: 5px;"> 
                         </div>
-                        <div class="ui-block-b"  id="ui-block-nom-pdv">
-                            <input type="text" name="vrn-pos-name" id="vrn-pos-name" placeholder="Nom du point de vente" value="">
+                        <div class="ui-block-b ui-block-nom-pdvb">
+                            <input type="text" name="vrn-roadmap-item-pos-name" id="vrn-roadmap-item-pos-name" placeholder="Nom du point de vente" value="">
                         </div>
                     </div>
                     
-                    <div id="ui-block-a-fieldset">
+                    <div class="ui-block-a-fieldset">
                         <div class="ui-grid-solo">
-                            <div class="ui-block-a"> <input type="text" name="vrn-pos-street" id="vrn-pos-street" placeholder="N° et Nom de la rue" value=""></div>
+                            <div class="ui-block-a"> <input type="text" name="vrn-roadmap-item-pos-street" id="vrn-roadmap-item-pos-street" placeholder="N° et Nom de la rue" value=""></div>
                         </div>    
                         <div class="ui-grid-a">
-                            <div class="ui-block-a" id="ui-block-code-postal"> <input type="text" name="vrn-pos-cp" id="vrn-pos-cp" placeholder="Code postal" value=""></div>
-                            <div class="ui-block-b" id="ui-block-city"> <input type="text" name="vrn-pos-city" id="vrn-pos-city" placeholder="Nom de la ville" value=""></div>     
+                            <div class="ui-block-a" id="ui-block-code-postal"> <input type="text" name="vrn-roadmap-item-pos-cp" id="vrn-roadmap-item-pos-cp" placeholder="Code postal" value=""></div>
+                            <div class="ui-block-b" id="ui-block-city"> <input type="text" name="vrn-roadmap-item-pos-city" id="vrn-roadmap-item-pos-city" placeholder="Nom de la ville" value=""></div>     
                         </div>
                     </div>
 
-                    <div id="ui-block-b-fieldset">
+                    <div class="ui-block-b-fieldset">
                         <div class="ui-grid-solo">
-                            <div class="ui-block-a"> <input type="text" name="vrn-pos-contact-name" id="vrn-pos-contact-name" placeholder="Nom du contact" value=""></div>
+                            <div class="ui-block-a"> <input type="text" name="vrn-roadmap-item-pos-contact-name" id="vrn-roadmap-item-pos-contact-name" placeholder="Nom du contact" value=""></div>
                         </div>    
                         <div class="ui-grid-a">
-                            <div class="ui-block-a" id="ui-block-telephone"> <input type="text" name="vrn-pos-telephone" id="vrn-pos-telephone" placeholder="Téléphone" value=""></div>
-                            <div class="ui-block-b" id="ui-block-email"> <input type="text" name="vrn-pos-email" id="vrn-pos-email" placeholder="Adresse email" value=""></div>    
+                            <div class="ui-block-a" id="ui-block-telephone"> <input type="text" name="vrn-roadmap-item-pos-telephone" id="vrn-roadmap-item-pos-telephone" placeholder="Téléphone" value=""></div>
+                            <div class="ui-block-b" id="ui-block-email"> <input type="text" name="vrn-roadmap-item-pos-mail" id="vrn-roadmap-item-pos-mail" placeholder="Adresse email" value=""></div>    
                         </div>
                     </div>
 
-                    <textarea name="vrn-pos-description" id="vrn-pos-description"> Description </textarea>
+                    <textarea name="vrn-roadmap-item-pos-descriptif" id="vrn-roadmap-item-pos-descriptif"> Description </textarea>
                     
-                    <div id="ui-block-a-fieldset">
+                    <div class="ui-block-a-fieldset">
                         <div class="ui-grid-a">
-                            <div class="ui-block-a"> <input type="text" name="vrn-pos-gps_latitude" id="vrn-pos-gps_latitude" placeholder="Latitude" value=""></div>
-                            <div class="ui-block-b"> <input type="text" name="vrn-pos-gps_longitude" id="vrn-pos-gps_longitude" placeholder="Longitude" value=""></div>     
+                            <div class="ui-block-a"> <input type="text" name="vrn-roadmap-item-pos-gps_latitude" id="vrn-roadmap-item-pos-gps_latitude" placeholder="Latitude" value=""></div>
+                            <div class="ui-block-b"> <input type="text" name="vrn-roadmap-item-pos-gps_longitude" id="vrn-roadmap-item-pos-gps_longitude" placeholder="Longitude" value=""></div>     
                         </div>
                     </div>
                     
                     <div class="ui-block-b">
-                        <select name="vrn-pos-type" id="vrn-pos-type">
+                        <select name="vrn-roadmap-item-pos-type" id="vrn-roadmap-item-pos-type">
                             <option value="">Type de point de vente</option>
                         </select>
                     </div>
              
                     
                     <div class="ui-block-b">
-                        <select name="vrn-pos-frequency" id="vrn-pos-frequency">
+                        <select name="vrn-roadmap-item-pos-frequency" id="vrn-roadmap-item-pos-frequency">
                             <option value="">Fréquence</option>
                         </select>
                     </div>
               
                     <div class="ui-block-b">
-                        <select name="vrn-pos-microzone" id="vrn-pos-microzone">
+                        <select name="vrn-roadmap-item-pos-microzone" id="vrn-roadmap-item-pos-microzone">
                             <option value="">Microzone du point de vente</option>
                         </select>
                     </div>
@@ -113,8 +114,7 @@
                             <a href="#" id="vrn-ajouter-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Ajouter un champs</a>
                         </div>-->
                         <div class="ui-block-b">
-                            <a href="#" id="vrn-roadmap-item-pos-edit-enregistrer-button" data-role="button" data-icon="enregistrer"
-                               data-iconpos="right">Enregistrer</a>
+                            <a href="#" id="vrn-roadmap-item-pos-edit-enregistrer-button" data-role="button" data-icon="enregistrer" data-iconpos="right">Enregistrer</a> 
                         </div>
                     </fieldset>  
                     
@@ -122,7 +122,7 @@
                      
                 </div>
             </div>
-            <div data-role="footer" id="vrn-roadmap-item-pos-edit-footer" data-position="fixed" data-tap-toggle="false"></div>
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false"></div>
             
             <!-- pop : error -->
             <div data-role="popup" data-url="vrn-roadmap-item-pos-edit-error-popup" id="vrn-roadmap-item-pos-edit-error-popup" data-overlay-theme="a" data-theme="c" data-dismissible="true" class="ui-corner-all">
@@ -130,7 +130,7 @@
                     <h1>Erreurs</h1>
                 </div>
                 <div data-role="content" data-theme="c" class="ui-corner-bottom ui-content">
-                    <div id="vrn-pos-edit-error-popup-content">
+                    <div id="vrn-roadmap-item-pos-edit-error-popup-content">
                         <h3 class="ui-title"> </h3>
                         <br> <a href="#" data-rel="back" data-role="button" data-inline="true" data-theme="c">Cancel</a>
                     </div>

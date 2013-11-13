@@ -74,13 +74,13 @@
                 </div>
 
                 <div id="roadmap_create">
-                    <p>
-                        Tournée
-                    </p>
-                    <a href="roadmap_add.html">
+                    <div class="ui-grid-b">
+                        <div class="ui-block-a"><p>Tournée</p></div>
+                    </div>
+                    <a href="#vrn-roadmap-add-page">
                         <div class="vrn-tournee-circle">
                             <p>
-                                <span class="bold">créer</span> une tournée
+                                <span class="bold">créer<br>une<br>tournée</span>
                             </p>
                         </div>
                         <div id="omulet">
@@ -88,22 +88,62 @@
                         </div>
                     </a>
                 </div>
-        		
-        		<div id="roadmap_daily" style="display:none;">
+                
+               <div id="roadmap_start" style="display:none;">
+                    <div class="ui-grid-b">
+                        <div class="ui-block-a"><p>Tournée</p></div>
+                    </div>
+                    <a href="#" id="vrn-roadmap-start-btn">
+                        <div class="vrn-tournee-circle">
+                            <p>
+                                <span class="bold">Activer<br>la<br>tournée</span> 
+                            </p>
+                        </div>
+                        <div id="omuletB">
+                            <img src="css/images/vrn/omulet.png" id="omB">
+                        </div>
+                    </a>
+                </div>
+                
+               <div id="roadmap_start_empty" style="display:none;">
+                    <div class="ui-grid-b">
+                        <div class="ui-block-a"><p>Tournée</p></div>
+                    </div>
+                    <a href="#vrn-roadmap-item-page" id="vrn-roadmap-start-empty-btn">
+                        <div class="vrn-tournee-circle">
+                            <p>
+                                <span class="bold">Ajouter<br>des<br>visites</span> 
+                            </p>
+                        </div>
+                        <div id="omuletB">
+                            <img src="css/images/vrn/omulet.png" id="omB">
+                        </div>
+                    </a>
+                </div>
+            	<div id="roadmap_daily" style="display:none;">
                     <div id="roadmap_daily_top">
-                        <p>Tournée du jour</p>
-                        <img alt="" src="css/images/vrn/om.png" id="men">   
+                        <div class="ui-grid-b">
+                            <div class="ui-block-a"><p>Tournée du jour</p></div>
+                            <div class="ui-block-b"><img alt="" src="css/images/vrn/om.png" id="men"> </div>
+                            <div class="ui-block-c" style="text-algin:center;">
+                                    <a href="#vrn-roadmap-item-page" id="vrn-visites" data-role="button" data-inline="true" data-transition="slide" data-icon="triangle_right" data-iconpos="right">
+                                        <span>Liste </span>
+                                    </a>
+                            </div>
+                        </div>
+                        
+                          
                         <!-- List des visites button-->
                         <div class="ui-grid-solo">
-                            <div class="ui-block-a vrn-visites-button">
-                                <a href="#current-roadmap-item-page" id="vrn-visites" data-role="button" data-inline="true" data-transition="slide" data-icon="triangle_right" data-iconpos="right">
-                                    <span>Liste </span>
-                                </a>
-                            </div>
+
                         </div>
                         <div id="vrn-journey-progress" data-role="fieldcontain" data-theme="journey_progress">  
                             <label for="visite"> Visite</label>
-                            <input id="vrn-journey-progress" name="slider" value="50" min="0" max="100" data-highlight="false" type="range">
+                            <div>
+                                <img src="css/">    
+                            </div>
+                            
+                            <!--<input id="vrn-journey-progress" name="slider" value="50" min="0" max="100" data-highlight="false" type="range">-->
                               
                         </div>
                         <div id="vrn-home-page-visit-counter"></div> 

@@ -87,8 +87,8 @@ app.webservice = (function() {
     };
     
     webservice.syncGetLastUpdateUrl = function(ajaxAsyncTask, userId, successCallback, errorCallback) {
-        app.log("webservice.syncGetLastUpdateUrl",'wip')
-        app.log("= = = = SYNC LAST UPDATE = = = = > > >")
+        app.log("webservice.syncGetLastUpdateUrl",'wip');
+        app.log("= = = = SYNC LAST UPDATE = = = = > > >");
         executePost(webservice.SYNC_LAST_UPDATE_SERVICE_NAME,ajaxAsyncTask, {
             last_download_date : '',
             user_id : userId, 
@@ -101,7 +101,7 @@ app.webservice = (function() {
     };
 
     webservice.syncUpdateStatus = function(ajaxAsyncTask, userId, sync_id, status_code, successCallback, errorCallback) {
-        app.log("webservice.syncUpdateStatus : " + status_code)
+        app.log("webservice.syncUpdateStatus : " + status_code);
         executePost(webservice.SYNC_UPDATE_STATUS_SERVICE_NAME,ajaxAsyncTask, {
             sync_id : sync_id,
             user_id : userId, 
@@ -114,5 +114,21 @@ app.webservice = (function() {
         });
     };
     
+    webservice.syncUploadData = function(ajaxAsyncTask, userId, bytes, md5_hash, size, zip_name, successCallback, errorCallback) {
+        app.log("webservice.syncUploadDataServiceName : ");
+        executePost(webservice.SYNC_UPLOAD_DATA_SERVICE_NAME,ajaxAsyncTask, {
+            user_id : userId, 
+            bytes : bytes, 
+            md5_hash : md5_hash, 
+            size : size, 
+            zip_name : zip_name, 
+            debug : true
+        }, function(sync_data) {
+            successCallback(sync_data);
+        }, function(err) {
+            app.log(err,'err');
+        });
+    };
+
 	return webservice;
 }());

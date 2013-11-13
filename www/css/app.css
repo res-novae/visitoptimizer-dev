@@ -664,7 +664,10 @@ a.ui-link-inherit {
 	padding: 0 !important;
 	text-align: left !important;
 }
-
+.ui-title a {
+	color:#FFFFFF !important;
+	text-decoration:none;
+}
 .ui-footer .ui-title {
     margin:.6em 15px .8em;
 }
@@ -3328,11 +3331,10 @@ input.ui-mini,.ui-mini input,textarea.ui-mini,.ui-slider-switch.ui-mini .ui-slid
     visibility: hidden;
 }
 
-body,.vrn-page {
-    background: rgb(250, 250, 250); /* Old browsers */
+body, .vrn-page {
+    background: #ececec; /* Old browsers */
     background: -moz-linear-gradient(top, rgba(250, 250, 250, 1) 0%, rgba(224, 224, 224, 1) 100% ); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(250, 250, 250, 1) ), color-stop(100%, rgba(224, 224, 224, 1)
-        ) ); /* Chrome,Safari4+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(250, 250, 250, 1) ), color-stop(100%, rgba(224, 224, 224, 1) ) ); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, rgba(250, 250, 250, 1) 0%, rgba(224, 224, 224, 1) 100% ); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, rgba(250, 250, 250, 1) 0%, rgba(224, 224, 224, 1) 100% ); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, rgba(250, 250, 250, 1) 0%, rgba(224, 224, 224, 1) 100% ); /* IE10+ */
@@ -3526,7 +3528,7 @@ body,.vrn-page {
 }*/
 
 .vrn-content {
-
+	background: #ececec;
 }
 
 .vrn-content div[data-vrn-html="true"] {
@@ -4027,40 +4029,37 @@ p.brown{
 /***remove the padding made by ui-content from homepage only*****/
 #vrn-home-page .ui-content{
     padding:0;
-    background-color:#fff;
 }
 .vrn-tournee-circle{
     border-radius: 50%;
-    width:260px;
-    height:/*154px;*/ 260px;
+    width:180px;
+    height:/*154px;*/ 180px;
     background: #58595b;
     background-image: -o-radial-gradient(center center, circle cover, #7e8082, #545456);
     background-image: -ms-radial-gradient(center center, circle cover, #7e8082, #545456);
     background-image: -moz-radial-gradient(center center, circle cover, #7e8082, #545456);
     background-image: -webkit-radial-gradient(center center, circle cover, #7e8082, #545456);
     z-index: 2;
-    border: 10px solid #bcbec0;
-    box-shadow: 
-        0 0 0 15px #6d6f71,
-        0 0 0 25px #f1f1f2;
+    border: 6px solid #bcbec0;
+    box-shadow: 0 0 0 10px #6d6f71, 0 0 0 15px #f1f1f2;
     top:0;
     right:15px;
     /*float:left;*/
-    font-size:2.3em;
+    font-size: 1.438em;
     display:inline-block;
     vertical-align:top;
     margin-top:30px;
 }
 .vrn-tournee-circle p{
    /* padding: 0.2em 0.5em 0;*/
-    line-height:260px;
-    margin:0;
+    line-height:35px;
+    margin:30px 0 0 0;
     color:#fff!important;
-    font-size:0.6em;
+    font-size:0.8em;
     text-align:center!important;
 }
 
-#omulet{
+#omulet, #omuletB{
     display:inline-block;
     height:260px;
 }
@@ -4075,7 +4074,7 @@ p.brown{
     color:#949698;
     text-align:left;
 }
-#om{
+#om, #omB{
     vertical-align:bottom;
 }
 #talkbubble:before {
@@ -4091,16 +4090,27 @@ p.brown{
 }
 
 /*****homepage details****/
-#roadmap_daily{
+#roadmap_daily, #roadmap_start, #roadmap_start_empty, #roadmap_create{
     /* height:500px;*/
     text-align:center;
+    height: 350px;
+	text-align: center;
+	margin-left: 15px;
 }
-#roadmap_daily p{ 
+#roadmap_daily p, #roadmap_start p, #roadmap_start_empty p, #roadmap_create p{ 
     margin-bottom:0;
     text-transform:uppercase;
     color:#414142;
     text-align:left;
-    font-size:1.438em;
+    font-size: 1.4em;
+}
+#vrn-roadmap-start-btn, #vrn-roadmap-start-empty-btn{
+    width:192px;
+    height:192px;
+}
+#vrn-roadmap-start-btn, #vrn-roadmap-start-empty-btn{
+    width:192px;
+    height:192px;
 }
 .ui-icon-triangle_right {
     height:0;
@@ -4171,10 +4181,14 @@ p.brown{
     float:left; 
     display:block; /*margin:10px; padding:0; width:200px; height:380px; background:#ccc;*/ 
 }
+#roadmap_daily_top .ui-block-b {
+	text-align:center;
+}
 #men { 
-    float:left;
     display:block;
-    padding-top:15px;  /*padding:0; width:200px; height:380px; background:#eaeaea;*/ 
+    padding-top:15px;  /*padding:0; width:200px; height:380px; background:#eaeaea;*/
+	margin: 0 auto 0 auto; 
+    
 }
 #vrn-visites {
     float:right; 
@@ -4182,6 +4196,7 @@ p.brown{
     text-transform:uppercase;
     margin-right:15px;
     margin-top:25px;
+    width:125px;
 }
 #vrn-journey-progress{
 
@@ -4195,6 +4210,11 @@ p.brown{
     text-align: center;
     background-color:#d9dbdc;
 }
+
+#roadmap_daily_top .ui-block-b{
+    text-align:center;
+}
+
 /*.ui-slider-track, .ui-slider-switch{
     overflow:hidden;
     /*margin: 0 2% 0 20px;*/ /***marginea intre input si slider****/   
@@ -4825,6 +4845,14 @@ position:absolute;
     -webkit-background-size:100% 100px;/* webkit */  
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7e8e9', endColorstr='#f8f8f9',GradientType=0 ); /* ie */   
 }
+#vrn-roadmap-list .li_select{
+    background:#5c5c5f;
+    color:#FFF;
+}
+#vrn-roadmap-list .li_select a{
+    color:#FFF;
+}
+
 /****change font color when click an item of the listview****/
 .ui-btn-down-c:visited, .ui-btn-down-c:hover, .ui-btn-down-c a.ui-link-inherit {
     color: white;
@@ -5016,11 +5044,11 @@ position:absolute;
 }
 
 /******pos(creation mode) page*******/
-#vrn-retour-button{
+#vrn-retour-button, #vrn-roadmap-item-pos-retour-button{
     text-transform: uppercase;
     margin: 0;
 }
-#vrn-retour-button .ui-btn-inner{
+#vrn-retour-button .ui-btn-inner, #vrn-roadmap-item-pos-retour-button .ui-btn-inner{
     background-image: url("images/vrn/forma3_2.png");
     background-repeat: no-repeat;
     border:0;
@@ -5028,7 +5056,7 @@ position:absolute;
     min-width: 12%;
     float:left;
 } 
-#vrn-retour-button .ui-btn-text{
+#vrn-retour-button .ui-btn-text, #vrn-roadmap-item-pos-retour-button .ui-btn-text{
    float: left; 
    width: 100px; 
    color:#414142;
@@ -5054,7 +5082,13 @@ position:absolute;
 #ui-block-a-form3{
     width:12%;
 }
+.ui-block-a-form3{
+    width:12%;
+}
 #ui-block-nom-pdv{
+    width:88%;
+}
+.ui-block-nom-pdv{
     width:88%;
 }
 #textarea-description{
@@ -5089,8 +5123,27 @@ position:absolute;
     border-top-width: 14px;
     border-bottom-width: 14px;
 }
+.ui-block-a-fieldset{
+    background-color:#a7a9ac;
+    border:4px solid #a7a9ac;
+    margin-top: 15px;
+    border-left-width: 12px;
+    border-right-width: 12px;
+}
+.ui-block-b-fieldset{
+    background-color:#a7a9ac;
+    border:5px solid #a7a9ac;
+    margin-top:20px;
+    border-left-width: 12px;
+    border-right-width: 12px;
+}
+.ui-block-nom-pdv div.ui-input-text{
+    border:12px solid #a7a9ac;
+    border-top-width: 14px;
+    border-bottom-width: 14px;
+}
 /****set the background color for pos(creation mode) page****/
-#vrn-pos-details-page, #vrn-pos-edit-page{
+#vrn-pos-details-page, #vrn-pos-edit-page, #vrn-roadmap-item-pos-edit-page{
     background:#939598!important;
 }
 /****align textarea description with the input text*****/
@@ -5694,6 +5747,30 @@ color: #fff;
 }
 
 /****roadmap creation page******/
+#vrn-roadmap-add-content {
+    padding:0;
+    background-color:#f1f1f2;
+}
+#additional-header-roadmap-add{
+    background-color: #939598;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    height: 230px;
+}
+#ui-grid-roadmap-add-a{
+  padding:15px;
+}
+#ui-grid-roadmap-add-a .ui-block-a{
+    padding-top:9px;
+}
+#ui-grid-roadmap-add-a2{
+  margin: 0;
+  padding: 5px 80px 0 15px;
+}
+#ui-grid-roadmap-add-a2 .ui-block-a{
+
+}
 #ui-create-roadmap{
     text-align:right;
     text-transform: uppercase;
@@ -5709,7 +5786,7 @@ color: #fff;
     background-image:url("../css/images/vrn/icon_calendar.png")!important;
     background-repeat:no-repeat!important;
     background-position:right;  
-    padding-right:40px;
+    padding-right:60px;
 }
 #vrn-roadmap-creation-page .ui-select{
     margin-left:15px;
@@ -5977,6 +6054,7 @@ input::-moz-placeholder{
     border:none;
     color:#414142;
     text-transform: uppercase;
+    width:120px;
 }
 #vrn-enregistrer-button-roadmap-creation{
     float:right;
@@ -7090,16 +7168,7 @@ position:relative;
 #vrn-road_closing-list li{
     height:70px;
 }
-#vrn-roadmap-creation-page  .ui-listview .ui-li-icon {
-    max-height: 80%;
-    max-width: 80%;
-}  
-#vrn-roadmap-creation-page .ui-li{
-   /* min-height:50px!important;*/
-   padding-top:1px;
-   padding-bottom:1px;
-   padding-left: 40px
-}
+
 
 #vrn-roadmap-closing-page .oi-li-heading {
     font-size: 1.688em;
@@ -7109,11 +7178,6 @@ position:relative;
     text-transform: uppercase;
 }
 /*change the font-size and color of the increment number***/
-#vrn-roadmap-creation-page ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui-li-dec{
-    color:#a7a9ac;
-    font-size:1.5em;
-    font-weight:bold;
-}
 .oi-li-inform{
     top:0;
     bottom:0;
@@ -7150,6 +7214,12 @@ position:relative;
   padding:15px;
 }
 #ui-grid-roadmap-closing-a .ui-block-a{
+    padding-top:9px;
+}
+#ui-grid-roadmap-crea-a{
+  padding:15px;
+}
+#ui-grid-roadmap-crea-a .ui-block-a{
     padding-top:9px;
 }
 #ui-block-add-pdv{
@@ -7220,7 +7290,7 @@ position:relative;
     height:149px;
     position:relative;
 }
-#vrn-roadmap-back-to-roadmap-button .ui-btn-inner{
+#vrn-roadmap-back-to-roadmap-button .ui-btn-inner, #vrn-roadmap-back-to-roadmap-add-button .ui-btn-inner{
     text-transform: uppercase;
     background-image: url("images/vrn/forma3_2.png");
     background-repeat: no-repeat;
@@ -7229,10 +7299,10 @@ position:relative;
     min-width: 12%;
     float:left;
 }
-#vrn-roadmap-back-to-roadmap-button{
+#vrn-roadmap-back-to-roadmap-button, #vrn-roadmap-back-to-roadmap-add-button{
     margin:0;
 }
-#vrn-roadmap-back-to-roadmap-button .ui-btn-text{
+#vrn-roadmap-back-to-roadmap-button .ui-btn-text, #vrn-roadmap-back-to-roadmap-add-button .ui-btn-text{
    float: left; 
    width: 100px;
    color:#414142;
@@ -8310,3 +8380,6 @@ position:relative;
 	float: right;
 	margin: 3px 8px 1px 0;
 }
+.li_select{
+	background:#dedfe0; 
+}	
