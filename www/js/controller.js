@@ -1448,7 +1448,7 @@ app.controller = (function () {
             var code = '';
             alert('pos nb:'+allpos.length);
             for (var i=0;i<allpos.length;i++){ 
-                
+                alert('hop');
                 pos_seleted[i]= [];
                 
                 pos_seleted[i]['id'] = allpos[i].id_sales_point;
