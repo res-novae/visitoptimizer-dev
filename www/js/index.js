@@ -31,11 +31,12 @@ var app = (function () {
     app.initialize = function () {
        // alert('initialize');
         // fake to local dev
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        /*if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
             document.addEventListener("deviceready", app.bindEvents, false);
         } else {
             window.addEventListener('load', app.init, false);
-        }
+        }*/
+        document.addEventListener("deviceready", app.onDeviceReady, false);
     };
     
     app.bindEvents = function () {
@@ -43,7 +44,7 @@ var app = (function () {
     };
     
     app.onDeviceReady = function () {
-        app.receivedEvent('deviceready');
+        app.controller = app.controller.init();
     };
     
     app.receivedEvent = function (id) {
