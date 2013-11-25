@@ -36,22 +36,13 @@ var app = (function () {
         } else {
             window.addEventListener('load', app.init, false);
         }*/
-        document.addEventListener("deviceready", app.onDeviceReady, false);
-    };
-    
-    app.bindEvents = function () {
-        document.addEventListener('deviceready', app.onDeviceReady, false);
+        window.addEventListener('load', app.init, false);
     };
     
     app.onDeviceReady = function () {
         app.controller = app.controller.init();
     };
     
-    app.receivedEvent = function (id) {
-        //alert('id:'+id)
-            app.log("# APP is ready =:)");
-            app.controller = app.controller.init();
-    };
 
     app.init = function () {
         app.log("# APP Init");
