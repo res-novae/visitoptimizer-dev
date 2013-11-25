@@ -34,9 +34,9 @@
     </head>
     <body onload="app.initialize()">
         <!-- Page : vrn-home-page -->
-        <div data-role="page" class="vrn-page" id="vrn-home-page">
+        <div data-role="page" id="vrn-home-page">
 		
-			<div data-role="header" class="vrn-header" id="vrn-home-header" data-position="fixed" data-tap-toggle="false"> </div>
+			<div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
 	   		<div data-role="content" class="vrn-content" role="main">
                 <div id="vrn-home-div">
@@ -75,11 +75,11 @@
 
                 <div id="roadmap_create">
                     <div class="ui-grid-b">
-                        <div class="ui-block-a"><p>Tournée</p></div>
+                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
                     </div>
                     <a href="#vrn-roadmap-add-page">
                         <div class="vrn-tournee-circle">
-                            <p>
+                            <p class="vrn-tournee-circle-lnk">
                                 <span class="bold">créer<br>une<br>tournée</span>
                             </p>
                         </div>
@@ -91,11 +91,11 @@
                 
                <div id="roadmap_start" style="display:none;">
                     <div class="ui-grid-b">
-                        <div class="ui-block-a"><p>Tournée</p></div>
+                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
                     </div>
                     <a href="#" id="vrn-roadmap-start-btn">
                         <div class="vrn-tournee-circle">
-                            <p>
+                            <p class="vrn-tournee-circle-lnk">
                                 <span class="bold">Activer<br>la<br>tournée</span> 
                             </p>
                         </div>
@@ -107,11 +107,11 @@
                 
                <div id="roadmap_start_empty" style="display:none;">
                     <div class="ui-grid-b">
-                        <div class="ui-block-a"><p>Tournée</p></div>
+                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
                     </div>
                     <a href="#vrn-roadmap-item-page" id="vrn-roadmap-start-empty-btn">
                         <div class="vrn-tournee-circle">
-                            <p>
+                            <p class="vrn-tournee-circle-lnk">
                                 <span class="bold">Ajouter<br>des<br>visites</span> 
                             </p>
                         </div>
@@ -123,62 +123,33 @@
             	<div id="roadmap_daily" style="display:none;">
                     <div id="roadmap_daily_top">
                         <div class="ui-grid-b">
-                            <div class="ui-block-a"><p>Tournée du jour</p></div>
+                            <div class="ui-block-a vrn-dayly-title"><p>Tournée du jour</p></div>
                             <div class="ui-block-b"><img alt="" src="css/images/vrn/om.png" id="men"> </div>
-                            <div class="ui-block-c" style="text-algin:center;">
+                            <div class="ui-block-c">
                                     <a href="#vrn-roadmap-item-page" id="vrn-visites" data-role="button" data-inline="true" data-transition="slide" data-icon="triangle_right" data-iconpos="right">
-                                        <span>Liste </span>
+                                        <span>Liste des visites</span>
                                     </a>
                             </div>
                         </div>
-                        
-                          
-                        <!-- List des visites button-->
-                        <div class="ui-grid-solo">
 
-                        </div>
-                        <div id="vrn-journey-progress" data-role="fieldcontain" data-theme="journey_progress">  
-                            <label for="visite"> Visite</label>
-                            <div>
-                                <img src="css/">    
-                            </div>
-                            
-                            <!--<input id="vrn-journey-progress" name="slider" value="50" min="0" max="100" data-highlight="false" type="range">-->
+                        <div id="vrn-journey-progress">  
+                            <div class="vrn-progresbar-l"><img id="vrn-progresbar-l-a" src="css/images/vrn/vrn-progresbar-l-off.png"></div><div id="vrn-progresbar-c" class="vrn-progresbar-c" data-inline="true"><img id="vrn-progresbar-c-a" src="css/images/vrn/vrn-progresbar-c-on.png"><img id="vrn-progresbar-c-b" src="css/images/vrn/vrn-progresbar-c-off.png"></div><div class="vrn-progresbar-r"><img id="vrn-progresbar-r-a" src="css/images/vrn/vrn-progresbar-r-off.png"></div>
+                            <br>
+                            <label for="visite"> <div id="vrn-home-page-visit-counter"></div> </label>
                               
                         </div>
-                        <div id="vrn-home-page-visit-counter"></div> 
+                        
                     </div>
 
                     <div id="vrn-details">
-                        <div id="vrn-details-left">
-                            <p><span id="vrn-home-page-visit-title">Visite en cours</span></p>
-                            <p><span id="vrn-home-page-visit-pos-name"></span></p>
-                            <a href="#" id="vrn-men" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false"
-                               data-icon="men" data-iconpos="left"  data-theme="without_border" class="app-theme-none"></a>
-                            <span id="vrn-home-page-visit-pos-contact-name"></span><br/>
-                            <a href="#" id="vrn-pdv" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false"
-                               data-icon="pdv" data-iconpos="left"  data-theme="without_border" class="app-theme-none"></a>
-                            <span id="vrn-home-page-visit-pos-adress"></span><br/>
-                            <a href="#" id="vrn-home-page-visit-pos-contact-telephone-lnk" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false"
-                               data-icon="telephone" data-iconpos="left"  data-theme="without_border" class="app-theme-none"></a>
-                            <span id="vrn-home-page-visit-pos-tel"></span>
-                        </div>
-                        <div id="vrn-details-right">
-                            <span class="vrn-retenir">A retenir :</span><br/>
-                            <span id="vrn-home-page-visit-pos-description"></span>
-                            
-                            <div class="ui-grid-solo">
-                                <div class="ui-block-a vrn-lancer-button">
-                                    <a href="#vrn-roadmap-visit-page" id="vrn-lancer" data-transition="slide" class="ui-state-persist" data-role="button" data-icon="triangle_right_black" data-iconpos="right" data-inline="true">LANCER LE QUESTIONNAIRE</a>
-                                </div>
-                            </div>  
-                        </div>
+
                     </div>
+                    
                 </div>
 		
 					
 			</div>
 			
-    		<div data-role="footer" data-id="vrn-footerA" data-position="fixed"></div>
+    		<div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
 
 		</div>

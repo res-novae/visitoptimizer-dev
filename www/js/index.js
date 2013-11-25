@@ -31,11 +31,11 @@ var app = (function () {
     app.initialize = function () {
        // alert('initialize');
         // fake to local dev
-       // if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
             document.addEventListener("deviceready", app.bindEvents, false);
-       // } else {
+        } else {
             window.addEventListener('load', app.init, false);
-       // }
+        }
     };
     
     app.bindEvents = function () {

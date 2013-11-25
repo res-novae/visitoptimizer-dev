@@ -897,6 +897,46 @@ app.repository = (function() {
         } );
         return op_deferred.promise();
     }; 
+    
+    repository.getActiveRoadmapItem = function() {
+        app.log('repository.getActiveRoadmapItem');
+        //alert('date:'+app.utils.convertTimestampToDateIso(new Date(),'-'));
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM roadmap WHERE scheduled_date = ? AND mobile_status_id = ? LIMIT 0, 1";
+        var param = [ app.utils.convertTimestampToDateIso(new Date(),'-'), 1 ];
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            if (results.rows.length != 0) {
+                var i = 0;
+                var roadmap = new app.domain.roadmap(
+                    results.rows.item(i).id_roadmap,
+                    results.rows.item(i).initiating_user_id, 
+                    results.rows.item(i).operating_user_id, 
+                    results.rows.item(i).mobile_status_id, 
+                    results.rows.item(i).web_status_id, 
+                    results.rows.item(i).creation_date, 
+                    results.rows.item(i).name, 
+                    results.rows.item(i).scheduled_date, 
+                    results.rows.item(i).km, 
+                    results.rows.item(i).comment,
+                    results.rows.item(i).close_date,
+                    results.rows.item(i).area_id,
+                    results.rows.item(i).local_id,
+                    results.rows.item(i).sync_status
+                );
+                
+                // get pos 
+                var r2 = app.repository.getRoadmapItemPosListAllData(results.rows.item(i).id_roadmap);
+                $.when(r2).done(function(pos_list) {
+                    roadmap.pos_list = pos_list;
+                    //end return
+                    op_deferred.resolve(roadmap);
+                } );
+                
+                
+            } else op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
 
     repository.getRoadmapItemPosListAllData = function(roadmap_id) {
         app.log('repository.getRoadmapItemPosListAllData : ');
@@ -1418,11 +1458,45 @@ app.repository = (function() {
         return op_deferred.promise();
     };
     
+    repository.getStatusMobile = function() {
+        app.log('repository.getStatusRoadmap  ');
+        var op_deferred = $.Deferred();
+        var rsql = "SELECT * FROM status_mobile";
+        var param = null;
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            var status_mobile = Array();
+            if (results.rows.length != 0) {
+                for (var i=0;i<results.rows.length;i++){ 
+                    var stm = new app.domain.status_mobile(
+                        results.rows.item(i).id_status_mobile,
+                        results.rows.item(i).name, 
+                        results.rows.item(i).translation_id
+                    );
+                    status_mobile[i] = stm;
+                }
+                op_deferred.resolve(status_mobile);
+            }
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    };
+    
     repository.closeRoadmapVisit = function(param) {
         app.log("repository.closeRoadmapVisit");
         var op_deferred = $.Deferred();
 
         var rsql = "UPDATE sp_visit SET status_visit_id = ?, performed_date = ?, comment = ?, sync_status = ? WHERE id_visit = ?";
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
+    repository.closeRoadmap = function(param) {
+        app.log("repository.closeRoadmap");
+        var op_deferred = $.Deferred();
+
+        var rsql = "UPDATE roadmap SET mobile_status_id = ?, close_date = ?, comment = ?, sync_status = ? WHERE id_roadmap = ?";
         $.when(requestToDB(rsql,param)).done(function(results) {
             op_deferred.resolve(null);
         } );

@@ -28,7 +28,11 @@ app.controller = (function () {
     controller.init = function () {
         app.log("## app.controller : init", 'wip');
 
-
+        // no rotation
+        window.addEventListener('orientationchange', function(e){
+            var isUpright = (window.orientation == 'portrait');
+        });
+        
         //location.reload(false);
 
         $.support.cors = true; // crossdomain
@@ -174,7 +178,7 @@ app.controller = (function () {
         r1.done(function() {});
         $.when(r1).done(function(dbExist) {
             //alert($.mobile.activePage.attr('id'));
-
+            //alert('ok2');
             //alert(dbExist);
             if(dbExist == 'yes' || $.mobile.activePage.attr('id') == 'vrn-login-page') {
                 // Login Panel //
@@ -205,7 +209,7 @@ app.controller = (function () {
                     $.mobile.loadPage("vrn-roadmap-item-page.html",true);
                     $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
                     $.mobile.loadPage("vrn-pos-page.html",true);
-                    $.mobile.loadPage("vrn-stats-page.html",true);
+                    $.mobile.loadPage("vrn-stats-semaine-page.html",true);
                     $.mobile.loadPage("vrn-params-page.html",true);
                     $.mobile.loadPage("vrn-sync-ar-page.html",true);
                 }
@@ -258,8 +262,17 @@ app.controller = (function () {
                     $.mobile.loadPage("vrn-pos-page.html",true);
                 }
                 // Stats //
-                if($.mobile.activePage.attr('id') == 'vrn-stats-page'){
-                    controller.showVrnStatsPage();
+                if($.mobile.activePage.attr('id') == 'vrn-stats-semaine-page'){
+                    controller.showVrnStatsSemainePage();
+                    $.mobile.loadPage("vrn-stats-mois-page.html",true);
+                    $.mobile.loadPage("vrn-stats-annee-page.html",true);
+                    
+                }
+                if($.mobile.activePage.attr('id') == 'vrn-stats-mois-page'){
+                    controller.showVrnStatsMoisPage();
+                }
+                if($.mobile.activePage.attr('id') == 'vrn-stats-annee-page'){
+                    controller.showVrnStatsAnneePage();
                 }
                 // Params //
                 if($.mobile.activePage.attr('id') == 'vrn-params-page'){
@@ -279,6 +292,7 @@ app.controller = (function () {
             }
             
         });
+        
     });
 
     $( document ).unbind( "popupbeforeposition");
@@ -495,7 +509,7 @@ app.controller = (function () {
         $.mobile.navigate( "vrn-home-page" );
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-home-page');
-
+        
         var count_infos = 0;
         var count_actions = 0;
         var count_bubble_infos = 0;
@@ -545,9 +559,10 @@ app.controller = (function () {
         });
 
         // final execute
-        $.when(r1, r2, r3).done(function(user,roadmap,messages) {
+        $.when(r1, r2, r3).done(function(user,messages,roadmap) {
             //controller.loginLoadingPopup.popup("close");
-
+            daily_roadmap = roadmap;
+//alert(daily_roadmap.id_roadmap);
             // infos user
             if (typeof controller.last_sync != "undefined"){
                 if (typeof controller.last_sync.date != "undefined") var date = controller.last_sync.date;
@@ -621,38 +636,38 @@ app.controller = (function () {
                 var nb_total_visited = 0;
                 var curent_vist_id = 0;
                 var next_vist_id = 0;
-                var current_item = 0;
+                var current_item = 999;
                 for (var i=0;i<daily_roadmap.pos_list.length;i++){ 
                     if(daily_roadmap.pos_list[i].sp_visit__status_visit_id != 1 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 2 && daily_roadmap.pos_list[i].sp_visit__status_visit_id != 3) 
                         nb_total_visited++;
                     if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 1){
-                        if(current_item == 0) current_item = i;
+                        if(current_item == 999) {
+                            current_item = i;
+                        }
                     }
-/*                    if(daily_roadmap.pos_list[i].sp_visit__status_visit_id == 2 || daily_roadmap.pos_list[i].sp_visit__status_visit_id == 3){
-                        curent_vist_id = daily_roadmap.pos_list[i].sp_visit__status_visit_id;
-                        if(current_item == 0) current_item = i;
-                    }*/
                 }
-                $('#vrn-home-page-visit-counter').html( nb_total_visited + " / " +nb_total_visit );
-                //alert(current_item);
-                $('#vrn-home-page-visit-title').html(daily_roadmap.pos_list[current_item].sp_visit__status_visit_name);
-                $('#vrn-home-page-visit-pos-name').html(daily_roadmap.pos_list[current_item].name +" - "+ daily_roadmap.pos_list[current_item].type_name);
-                $('#vrn-home-page-visit-pos-contact-name').html(daily_roadmap.pos_list[current_item].contact_name);
-                $('#vrn-home-page-visit-pos-adress').html(daily_roadmap.pos_list[current_item].street +", "+ daily_roadmap.pos_list[current_item].postal_code + " " +daily_roadmap.pos_list[current_item].city);
-                $('#vrn-home-page-visit-pos-tel').html(daily_roadmap.pos_list[current_item].phone_number);
-                $('#vrn-home-page-visit-pos-description').html(daily_roadmap.pos_list[current_item].description);
-
-                $('#vrn-lancer').attr("data-url", "?id_parent=vrn-roadmap-visit-page&sp_visit_id="+daily_roadmap.pos_list[0].sp_visit__id_visit+"&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id+"&sales_point_id="+daily_roadmap.pos_list[0].id_sales_point);
-
-                $('#vrn-lancer').unbind('tap');
-                $('#vrn-lancer').bind('tap', function (event){
-                    current_params_url = [];
-                    current_params_url['id_parent'] = "vrn-roadmap-visit-page";
-                    current_params_url['sp_visit_id'] = daily_roadmap.pos_list[current_item].sp_visit__status_visit_id;
-                    current_params_url['current_item'] = current_item;
-                    current_params_url['roadmap_id'] = daily_roadmap.pos_list[current_item].roadmap_id;
-                    current_params_url['sales_point_id'] = daily_roadmap.pos_list[current_item].id_sales_point;
-                });
+                if(current_item == 999) current_item = 0;
+                $('#vrn-home-page-visit-counter').html( "Visite " + nb_total_visited + " / " +nb_total_visit );
+                
+                //pourcent calcul
+                if(nb_total_visited != 0){
+                    var p = (100 / nb_total_visit);
+                    var pve = (p * nb_total_visited);
+                    $('#vrn-progresbar-c-a').width(pve+'%');
+                    $('#vrn-progresbar-c-b').width((100 - pve)+'%');
+                    $('#vrn-progresbar-l-a').attr("src", "css/images/vrn/vrn-progresbar-l-on.png");
+                    if(pve == 100 ) $('#vrn-progresbar-r-a').attr("src", "css/images/vrn/vrn-progresbar-r-on.png");
+                    else $('#vrn-progresbar-r-a').attr("src", "css/images/vrn/vrn-progresbar-r-off.png");
+                    $('#vrn-progresbar-c-a').show();
+                    $('#vrn-progresbar-c-b').show();
+                }else{
+                    $('#vrn-progresbar-l-a').attr("src", "css/images/vrn/vrn-progresbar-l-off.png");
+                    $('#vrn-progresbar-r-a').attr("src", "css/images/vrn/vrn-progresbar-r-off.png");
+                    $('#vrn-progresbar-c-a').hide();
+                    $('#vrn-progresbar-c-b').width('100%');
+                    $('#vrn-progresbar-c-a').show();
+                }
+                 
                 
                 $('#vrn-visites').attr("data-url", "?id_parent=vrn-roadmap-item-page&roadmap_id="+daily_roadmap.pos_list[0].roadmap_id);
 
@@ -663,6 +678,51 @@ app.controller = (function () {
                     current_params_url['roadmap_id'] = daily_roadmap.id_roadmap;
                     current_params_url['current_item'] = current_item;
                 });
+                
+                var code = '<ul id="vrn-details-pos-slider" class="bxslider">\n';
+                for (var i=0;i<daily_roadmap.pos_list.length;i++){
+                    var visit_title = daily_roadmap.pos_list[i].sp_visit__status_visit_name;
+                    //if(i == current_item) var visit_title = "Visite en cours";
+                    code += '<li>'+
+                    '    <div class="vrn-details-left">'+
+                    '        <p><span class="vrn-detail-title">'+visit_title+'</span></p>'+
+                    '        <p><div class="vrn-detail-agence-name">'+daily_roadmap.pos_list[i].name +' - '+ daily_roadmap.pos_list[i].type_name+'</div></p>'+
+                    '        <div class="vrn-detail-agence-lnk">'+
+                    '           <a href="#" class="vrn-men" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false" data-icon="men" data-iconpos="left" data-theme="without_border" class="app-theme-none">'+
+                    '           '+daily_roadmap.pos_list[i].contact_name +
+                    '           </a>'+
+                    '           <a href="#" class="vrn-pdv" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false" data-icon="pdv" data-iconpos="left" data-theme="without_border" class="app-theme-none">'+
+                    '           '+daily_roadmap.pos_list[i].street +",<br>"+ daily_roadmap.pos_list[i].postal_code + " " +daily_roadmap.pos_list[i].city+
+                    '           </a>'+
+                    '           <a href="#" class="vrn-home-page-visit-pos-contact-telephone-lnk" data-role="button" data-inline="true" data-mini="true" data-shadow="false" data-iconshadow="false" data-icon="telephone" data-iconpos="left"  data-theme="without_border" class="app-theme-none">'+
+                    '           '+daily_roadmap.pos_list[i].phone_number+
+                    '           </a>'+
+                    '       </div>'+
+                    '    </div>'+
+                    '    <div class="vrn-details-right">'+
+                    '        <div class="vrn-retenir">A retenir :</div><br/>'+
+                    '        <span>'+daily_roadmap.pos_list[i].description+'</span>'+
+                   // '        <div class="ui-grid-solo">'+
+                    '            <div class="vrn-lancer-visit-button">'+
+                    '                <a href="#vrn-roadmap-visit-page" id="vrn-lancer-'+i+'" data-url="?id_parent=vrn-roadmap-visit-page&sp_visit_id='+daily_roadmap.pos_list[i].sp_visit__id_visit+'&current_item='+i+'" data-role="button" data-icon="triangle_right_black" data-iconpos="right" data-inline="true">LANCER LE QUESTIONNAIRE</a>'+
+                    //'            </div>'+
+                    '        </div>'+  
+                    '    </div>'+
+                    '</li>';
+                }
+                code += '</ul>\n';
+                // data-transition="slide" class="ui-state-persist"
+                $("#vrn-details").html(code).trigger('create');
+                //alert('current_item:'+current_item);
+                
+                $('#vrn-details-pos-slider').bxSlider({startSlide: current_item});
+                
+                for (var j=0;j<daily_roadmap.pos_list.length;j++){
+                    //alert('init');
+                    $('#vrn-lancer-'+j).unbind('tap');
+                    $('#vrn-lancer-'+j).bind('tap', controller.getParamUrl ); 
+                    
+                }
             }
             // roadmap active roadmap panel
             else if(daily_roadmap.id_roadmap != 0 && daily_roadmap.mobile_status_id == 5) {
@@ -681,7 +741,7 @@ app.controller = (function () {
                     var r1b = app.repository.activeRoadmap(param);
                     r1b.done(function() { });
                     $.when(r1b).done(function() {
-                        alert('active hop !!! ');
+                        //alert('active hop !!! ');
                         current_params_url = [];
                         current_params_url['id_parent'] = "vrn-home-page";
                         current_params_url['roadmap_id'] = daily_roadmap.id_roadmap;
@@ -1035,6 +1095,7 @@ app.controller = (function () {
     };
 
     
+    var current_roadmap_id;
     
     // Roadmap : show roadmap item (liste de pos)
     controller.showVrnRoadmapItemPage = function(roadmap_id) {
@@ -1057,6 +1118,8 @@ app.controller = (function () {
         var roadmap;
         var pos;
         
+        current_roadmap_id = roadmap_id;
+        
         var r1 = app.repository.getRoadmapItem(roadmap_id);
         r1.done(function(roadmap_retour) {
             roadmap = roadmap_retour;
@@ -1065,18 +1128,28 @@ app.controller = (function () {
         r2.done(function(sp_list) {
             pos = sp_list;
         });
-
+        
+        var r3 = app.repository.getStatusMobile();
+        r3.done(function(data_r3) {
+            var status_roadmap = data_r3;
+        });
+         
         // final execute
-        $.when(r1, r2).done(function(roadmap_retour, sp_list) {
+        $.when(r1, r2, r3).done(function(data_r1, data_r2, data_r3) {
             
-
-            roadmap = roadmap_retour;
-            pos = sp_list;
+            roadmap = data_r1;
+            pos = data_r2;
+            var status_roadmap = data_r3;
+            
             var codea = '';
             var codeb = '';
+            var nb_visits = pos.length;
+            var nb_visits_finish = 0;
             for (var i=0;i<pos.length;i++){ 
                 if(pos[i].last_visit_id != null && pos[i].last_visit_id != 0) var last_visit = '<span class="oi-derniere-text">Dernière visite</span><span class="bold align-jour">'+pos[i].last_visit_id+'</span>';
                 else var last_visit = '';
+                
+                if(pos[i].sp_visit__status_visit_id != 1) nb_visits_finish++;
                 
                // if(pos[i].sp_visit__status_visit_id == "1") var ico_status_visit = "<a href=\"#vrn-roadmap-item-pos-delete-pop\" data-url=\"?mode_edit=add&id_parent_pop=vrn-roadmap-item-pos-delete-pop&roadmap_id="+pos[i].roadmap_id+"&sales_point_id="+pos[i].id_sales_point+"\" data-transition=\"pop\" data-rel=\"popup\" class=\"vrn-roadmap-list-item-pos-delete-lnk\"><img src=\"./css/images/vrn/x-ul-ala.png\"></a>";
                // else var ico_status_visit = "<img class=\"ui-li-icon ui-li-thumb\" alt=\"\" src=\"./css/images/vrn/bifa.png\">";
@@ -1126,10 +1199,102 @@ app.controller = (function () {
                     $("#vrn-roadmap-item-pos-detail-btn-del-"+pos[i].id_sales_point).bind('tap', controller.getParamUrl );
                 }
             }
+            
+            if(roadmap.mobile_status_id == 1){
+                var code = '<div id="vrn-circle-roadmap">' +
+                '    <a href="#" id="vrn-btn-close-roadmap">' +
+                '        <div class="vrn-cloturer-roadmap-circle">' +
+                '            <p>' +
+                '                <span class="bold">clôturer<br/>la tournée</span>' +
+                '            </p>' +
+                '        </div>' +
+                '    </a>' +
+                '    <div id="vrn-comment-cloture-roadmap-form">' +
+                '        <div id="vrn-comment-cloture-roadmap">' +
+                '            <div id="vrn-comment-cloture-roadmap-alert">' +
+                '            Vous n\'avez pas complété toutes les visites !' +
+                '            </div>' +
+                '            <select id="vrn-comment-cloture-roadmap-type" name="vrn-comment-cloture-roadmap-type" data-icon="arrow_down" data-theme="f">' +
+                '                <option value=""> Type de cloture </option>' +
+                '            </select>' +
+                '            <div id="vrn-comment-cloture-roadmap-title_comm">' +
+                '                Commentaire de clôture' +
+                '            </div>' +
+                '            <textarea name="comment-cloture-roadmap" id="textarea-comment-cloture-roadmap"> Tapez votre commentaire...</textarea>' +
+                '        </div>' +
+                '        <div class="ui-grid-solo" id="ui-form-list-buttons-roadmap">' +
+                '            <div class="ui-block-a">' +
+                '                <a href="#" id="vrn-comment-cloture-roadmap-form-cancel-button" data-role="button" data-icon="false" data-inline="true" data-theme="f">Annuler</a>' +
+                '                <a href="#" id="vrn-comment-cloture-roadmap-form-valider-button" data-role="button" data-icon="arrow_right_white" data-iconpos="right" data-inline="true" data-theme="a">Valider</a>' +
+                '            </div>' +
+                '            <br/><br/><br/><br/><br/><br/><br/><br/>' +
+                '            <div id="vrn-comment-cloture-roadmap-form-bottom"></div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>';
+                
+                $('#vrn-roadmap-item-page .vrn-visit-valider').html(code).trigger("create");
+                $('#vrn-roadmap-item-page .vrn-visit-valider').show();
+                
+                for (var i=0;i<status_roadmap.length;i++){
+                    
+                    if(roadmap.mobile_status_id == status_roadmap[i].id_status_roadmap) var selected = " selected";
+                    else if(status_roadmap[i].id_status_mobile == 6) var selected = " selected";
+                    else var selected = "";
+                    
+                    $('#vrn-comment-cloture-roadmap-type').append('<option value="'+status_roadmap[i].id_status_mobile+'"'+selected+'>'+status_roadmap[i].name+'</option>');
+                } 
+                
+                if(pos.sp_visit__comment != "") $('#textarea-comment-cloture-roadmap').val(roadmap.comment);
+                else $('#textarea-comment-cloture-roadmap').val(" Tapez votre commentaire...");
+                
+                $('#vrn-btn-close-roadmap').unbind('tap');
+                $('#vrn-btn-close-roadmap').bind('tap', function(){ 
+                    
+                    if(nb_visits == nb_visits_finish) {
+                       $('#vrn-comment-cloture-roadmap-alert').show();
+                       $('#textarea-comment-cloture-roadmap').css('height', '107px');
+                    }else{
+                       $('#vrn-comment-cloture-roadmap-alert').hide();
+                       $('#textarea-comment-cloture-roadmap').css('height', '142px');
+                    }
+                    $("#vrn-roadmap-item-page .vrn-visit-valider").animate({ 
+                            height: "450px"
+                        },
+                        1500
+                    );
 
+                });
+                $('#vrn-comment-cloture-roadmap-form-cancel-button').bind('tap', function(){ 
+                    $("#vrn-roadmap-item-page .vrn-visit-valider").animate({ 
+                            height: "108px"
+                        },
+                        1500
+                );
+                });
+
+                $('#vrn-comment-cloture-roadmap-form-valider-button').unbind('tap');
+                $('#vrn-comment-cloture-roadmap-form-valider-button').bind('tap', function(){controller.closeRoadmap();});
+
+            }
+            
         });
     };
     
+    controller.closeRoadmap = function() {
+        app.log("controller.closeRoadmap", 'wip');
+        var data = [ $('#vrn-comment-cloture-roadmap-type').val(), app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), $('#textarea-comment-cloture-roadmap').val(), 'U', current_roadmap_id ];
+        
+        var r100 = app.repository.closeRoadmap(data);
+        r100.done(function(pos) {
+            $.mobile.changePage("#vrn-home-page", {
+                transition:"slide",
+                changeHash:false,
+                reverse:true,
+                reload:true
+             });
+        });
+    };
     
     controller.showRoadmapItemPosDetailPop = function(roadmap_id, sales_point_id) {
        app.log("controller.showRoadmapItemPosDetailPop", 'wip');
@@ -1471,7 +1636,8 @@ app.controller = (function () {
     
     var current_sp_visit_id;
     controller.showVrnRoadmapVisitPage = function(sp_visit_id,current_item) {
-        //alert("visit_idA:"+sp_visit_id);
+        //alert("hop:"+current_params_url['current_item']);
+        //alert("visit_idA:"+sp_visit_id+" - current_item:"+current_item);
         app.log("controller.showVrnRoadmapVisitPage", 'wip');
 
         // header et footer
@@ -1480,24 +1646,23 @@ app.controller = (function () {
         controller.showVrnFooter('vrn-roadmap-page');
         //$("vrn-roadmap-visit-page").trigger('refresh');
 
-        // test si tournee du jour (fake pour le dev : si une tournee existe)
-        var r1 = app.repository.getDailyRoadmapItem();
+        // get active tournee data
+        var r1 = app.repository.getActiveRoadmapItem();
         r1.done(function(roadmap) {
             daily_roadmap = roadmap;
         });
         
         $.when(r1).done(function(roadmap) {
             daily_roadmap = roadmap;
-            //alert("visit_itemB:"+current_item);
-            current_sp_visit_id = daily_roadmap.pos_list[current_item].sp_visit__id_visit;
-            //alert("visit_idC:"+current_sp_visit_id);
+            //alert("current_item:"+current_item);
+           // alert("visit_idC:"+current_sp_visit_id);
             // test si tournee du jour (fake pour le dev : si une tournee existe)
-            var r2 = app.repository.getPosVisit(daily_roadmap.pos_list[current_item].sp_visit__id_visit);
+            var r2 = app.repository.getPosVisit(sp_visit_id);
             r2.done(function(data_r2) {
                 var pos = data_r2;
             });
     
-            var r3 = app.repository.getQuestionnaires(daily_roadmap.pos_list[current_item].sp_visit__id_visit);
+            var r3 = app.repository.getQuestionnaires(sp_visit_id);
             r3.done(function(data_r3) {
                 var questionnaires = data_r3;
             });
@@ -1506,12 +1671,14 @@ app.controller = (function () {
             r4.done(function(data_r4) {
                 var status_visit = data_r4;
             });
-             
+
             $.when(r2,r3,r4).done(function(data_r2,data_r3,data_r4) {
                 
                 var pos = data_r2;
                 var questionnaires = data_r3;
                 var status_visit = data_r4;
+                
+                current_sp_visit_id = pos.sp_visit__id_visit;
                 
                 $('#vrn-form-pos-name').html(pos.name);
                             
@@ -1527,7 +1694,7 @@ app.controller = (function () {
                     if(questionnaires[i].nb_question_mandatory){
                         nb_questionnaires_obligat++;
                         code += '<li class="ui-corner-all" data-icon="arrow-r-white">'
-                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[current_item].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
+                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+sp_visit_id+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
                             
                             // +'        <a href="#" data-url="?op=openPage&pageId=vrn-roadmap-visit-questionnaire-page&transition=slide&sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk" data-ajax="true">'
                             +'        '+img
@@ -1537,7 +1704,7 @@ app.controller = (function () {
                             +'</li>';
                     }else{
                         codeB += '<li class="ui-corner-all" data-icon="arrow-r-white">'
-                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+daily_roadmap.pos_list[current_item].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
+                            +'        <a href="#vrn-roadmap-visit-questionnaire-page" data-url="?sp_visit_id='+sp_visit_id+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk">'
                             
                             //+'        <a href="#" data-url="?op=openPage&pageId=vrn-roadmap-visit-questionnaire-page&transition=slide&sp_visit_id='+daily_roadmap.pos_list[0].sp_visit__id_visit+'&questionnaire_id='+questionnaires[i].id_questionnaire+'" id="questionnaire_btn_'+questionnaires[i].id_questionnaire+'" class="vrn-form-list-page-lnk" data-ajax="true">'
                             +'        '+img
@@ -1551,36 +1718,90 @@ app.controller = (function () {
                 $("#vrn-form-list").html(code).listview('refresh');
                 $("#vrn-form-optional-list").html(codeB).listview('refresh');
                 
-                for (var i=0;i<status_visit.length;i++){
-                    if(nb_questionnaires_obligat == nb_questionnaires_obligat_valid && status_visit[i].id_status_visit == 6) var selected = " selected";
-                    else var selected = "";
-                    $('#vrn-comment-cloturee-type').append('<option value="'+status_visit[i].id_status_visit+'"'+selected+'>'+status_visit[i].name+'</option>');
-                } 
-                
                 // btn listeners
                 for (var i=0;i<questionnaires.length;i++){ 
                     $('#questionnaire_btn_'+questionnaires[i].id_questionnaire).unbind('tap');
                     $('#questionnaire_btn_'+questionnaires[i].id_questionnaire).bind('tap', controller.getParamUrl );
                 }
                 
+                var code = '<div id="vrn-circle">' +
+                '    <a href="#" id="vrn-btn-close-visit">' +
+                '        <div class="vrn-cloturer-circle">' +
+                '            <p>' +
+                '                <span class="bold">clôturer<br/>la Visite</span>' +
+                '            </p>' +
+                '        </div>' +
+                '    </a>' +
+                '    <div id="vrn-comment-cloturee-form">' +
+                '        <div id="vrn-comment-cloturee">' +
+                '            <div id="vrn-comment-cloturee-alert">' +
+                '            Vous n\'avez pas complété toutes les rubriques !' +
+                '            </div>' +
+                '            <select id="vrn-comment-cloturee-type" name="vrn-comment-cloturee-type" data-icon="arrow_down" data-theme="f">' +
+                '                <option value=""> Type de cloture </option>' +
+                '            </select>' +
+                '            <div id="vrn-comment-cloturee-title_comm">' +
+                '                Commentaire de clôture' +
+                '            </div>' +
+                '            <textarea name="comment-cloture" id="textarea-comment-cloture"> Tapez votre commentaire...</textarea>' +
+                '        </div>' +
+                '        <div class="ui-grid-solo" id="ui-form-list-buttons">' +
+                '            <div class="ui-block-a">' +
+                '                <a href="#" id="vrn-comment-cloturee-form-cancel-button" data-role="button" data-icon="false" data-inline="true" data-theme="f">Annuler</a>' +
+                '                <a href="#" id="vrn-comment-cloturee-form-valider-button" data-role="button" data-icon="arrow_right_white" data-iconpos="right" data-inline="true" data-theme="a">Valider</a>' +
+                '            </div>' +
+                '            <br/><br/><br/><br/><br/><br/><br/><br/>' +
+                '            <div id="vrn-comment-cloturee-form-bottom"></div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>';
+                
+                $('#vrn-roadmap-visit-page .vrn-visit-valider').html(code).trigger("create");
+                //$(".vrn-visit-valider").height(81);
+                //$("[data-role=footer]").height(161);
+                $('#vrn-roadmap-visit-page .vrn-visit-valider').show();
+                
+                for (var i=0;i<status_visit.length;i++){
+                    
+                    if(pos.sp_visit__status_visit_id == status_visit[i].id_status_visit) var selected = " selected";
+                    else if(status_visit[i].id_status_visit == 6) var selected = " selected";
+                    else var selected = "";
+                    
+                    $('#vrn-comment-cloturee-type').append('<option value="'+status_visit[i].id_status_visit+'"'+selected+'>'+status_visit[i].name+'</option>');
+                } 
+                
+                if(pos.sp_visit__comment != "") $('#textarea-comment-cloture').val(pos.sp_visit__comment);
+                else $('#textarea-comment-cloture').val(" Tapez votre commentaire...");
+                
                 $('#vrn-btn-close-visit').unbind('tap');
                 $('#vrn-btn-close-visit').bind('tap', function(){ 
                     
                     if(nb_questionnaires_obligat == nb_questionnaires_obligat_valid) {
-                        $('#vrn-comment-cloturee-alert').show();
+                       $('#vrn-comment-cloturee-alert').show();
+                       $('#textarea-comment-cloture').css('height', '107px');
                     }else{
-                        $('#vrn-comment-cloturee-alert').hide();
+                       $('#vrn-comment-cloturee-alert').hide();
+                       $('#textarea-comment-cloture').css('height', '142px');
                     }
-                    
-                    $('#vrn-comment-cloturee-form').toggle("slide"); 
+                    $("#vrn-roadmap-visit-page .vrn-visit-valider").animate({ 
+                            height: "450px"
+                        },
+                        1500
+                    );
 
                 });
                 $('#vrn-comment-cloturee-form-cancel-button').bind('tap', function(){ 
-                    $('#vrn-comment-cloturee-form').toggle("slide");
+                    $("#vrn-roadmap-visit-page .vrn-visit-valider").animate({ 
+                            height: "108px"
+                        },
+                        1500
+                );
                 });
 
                 $('#vrn-comment-cloturee-form-valider-button').unbind('tap');
                 $('#vrn-comment-cloturee-form-valider-button').bind('tap', function(){controller.closeRoadmapVisit();});
+
+                
             });
         
         });
@@ -1589,11 +1810,9 @@ app.controller = (function () {
     
     controller.closeRoadmapVisit = function() {
         app.log("controller.closeRoadmapVisit", 'wip');
-        
         var data = [ $('#vrn-comment-cloturee-type').val(), app.utils.convertTimestampToDateIso(new Date().getTime(),'-'), $('#textarea-comment-cloture').val(), 'U', current_sp_visit_id ];
         
         var r100 = app.repository.closeRoadmapVisit(data);
-        
         r100.done(function(pos) {
             $.mobile.changePage("#vrn-home-page", {
                 transition:"slide",
@@ -1602,8 +1821,6 @@ app.controller = (function () {
                 reload:true
              });
         });
-        
-        
     };
     
     
@@ -1614,7 +1831,7 @@ app.controller = (function () {
 
     controller.showVrnRoadmapVisitQuestionnairePage = function(sp_visit_id, questionnaire_id) {
         app.log("controller.showVrnRoadmapVisitQuestionnairePage", 'wip');
- 
+        alert(sp_visit_id+' : '+questionnaire_id);
         // header et footer
         $.mobile.navigate( "#vrn-roadmap-visit-questionnaire-page" );
         controller.showVrnHeader();
@@ -2385,17 +2602,118 @@ app.controller = (function () {
         
     };
     
-    // ==> Stats //
-    controller.showVrnStatsPage = function() {
-       app.log("controller.showVrnStatsPage", 'wip');
+    ///////////////////////
+    // ==>   STATS   == //
+   //////////////////////
+    
+    controller.showVrnStatsSemainePage = function() {
+       app.log("controller.showVrnStatsSemainePage", 'wip');
         // header et footer
-        $.mobile.navigate( "#vrn-stats-page" );
+        $.mobile.navigate( "#vrn-stats-semaine-page" );
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-stats-page');
-        $("#vrn-stats-page").trigger('refresh');
+        $("#vrn-stats-semaine-page").trigger('refresh');
+
+        
+        function AnimationRectangleStatsSemaine( opt ) {
+            var context = opt.canvas.getContext("2d");
+            var handle = 0;
+            var current = 0;
+            var percent = 0;
+
+            this.start = function( percentage ) {
+                percent = percentage;
+                // start the interval
+                handle = setInterval( draw, opt.interval );
+            }
+            function draw() {
+
+                // make a rectangular clipping region
+                context.beginPath();
+                context.rect(0,0, opt.width / 3.5, opt.height/2 );
+                context.clip();
+
+
+                // draw the current rectangle
+                var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
+                context.fillStyle = opt.fillcolor;
+                context.fillRect( 0, height, opt.width, opt.radius*2 );
+
+                // clear the interval when the animation is over
+                if ( current < percent ) current+=opt.step;
+                else clearInterval(handle);
+            }
+            
+
+            
+            
+        }
+        
+        
+        /* $('input[type=button]#percent').click(function(e){
+            e.preventDefault();
+            drawTimer($('input[type=text]#percent').val());
+        });*/
+        $('input[type=button]#size').click(function(e){
+            e.preventDefault();
+            $('.timer').css('font-size',$('input[type=text]#size').val()+'px');
+        });
+        /*$('input[type=button]#watch').click(function(e){
+            e.preventDefault();
+            if($('input[type=button]#watch').val() == 'Start'){
+                $('input[type=button]#watch').val('Stop');*/
+        timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
+        timerCurrent = 0;
+        timerFinish = new Date().getTime()+(timerSeconds*1000);
+        timer = setInterval('stopWatch()',50);
+        // }else{
+        //$('input[type=button]#watch').val('Start');
+        // clearInterval(timer);
+        // }
+        // });
+            $('input[type=button]#watch').click();
+        
+            
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("myCanvas_semaine");
+        new AnimationRectangleStatsSemaine({
+            'canvas': canvas,
+            'width': canvas.width,
+            'height': canvas.height,
+            'radius': 100,
+            'linewidth': 10,        
+            'interval': 20,
+            'step': 1,
+            'backcolor': '#666',
+            'fillcolor': '#6d6f71'
+        }).start(100);
+        
+    };
+
+
+    controller.showVrnStatsMoisPage = function() {
+       app.log("controller.showVrnStatsMoisPage", 'wip');
+        // header et footer
+        $.mobile.navigate( "#vrn-stats-mois-page" );
+        controller.showVrnHeader();
+        controller.showVrnFooter('vrn-stats-page');
+        $("#vrn-stats-mois-page").trigger('refresh');
         
     };
     
+
+    controller.showVrnStatsAnneePage = function() {
+       app.log("controller.showVrnStatsAnneePage", 'wip');
+        // header et footer
+        $.mobile.navigate( "#vrn-stats-annee-page" );
+        controller.showVrnHeader();
+        controller.showVrnFooter('vrn-stats-page');
+        $("#vrn-stats-annee-page").trigger('refresh');
+        
+    };
+
+
+
     // ==> Params / settings //
     controller.showVrnParamsPage = function() {
        app.log("controller.showVrnParamsPage", 'wip');
@@ -2564,6 +2882,7 @@ app.controller = (function () {
     
     controller.getHeader = function() {
         app.log("# app.controller : getHeader");
+        
         var nav = navigator.userAgent; 
         var ischrome = nav.indexOf("Chrome") ? true : false;
         if (ischrome) var network = "<a href=\"#vrn-sync-ar-page\"><img src=\"css/images/vrn/on_button.png\"/></a>";
@@ -2571,6 +2890,14 @@ app.controller = (function () {
             if(app.testNetwork() != Connection.NONE) var network = "<img src=\"css/images/vrn/on_button.png\"/>";
             else var network = "<img src=\"css/images/vrn/off_button.png\"/>";
         }
+        
+        if (navigator.onLine){
+               // alert("Internet connection is up!");
+            } else  {
+               // alert("Internet connection is down!");
+            }
+
+        
         //alert(app.authenticatedInThisSession);
         if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
         else var title = "<span class=\"ui-title\">Visit Optimizer</span>";
@@ -2587,50 +2914,52 @@ app.controller = (function () {
     };
     
     controller.showVrnHeader = function() {
-        $(".vrn-header").html(controller.getHeader()).trigger('create');
+        $("[data-id=vrn-header-nav]").html(controller.getHeader()).trigger('create');
     };
     
     controller.getFooter = function(pageId) {
         app.log("# app.controller : getFooter");
     
         var footer = '<div class="vrn-inform-valider" style="display:none;"></div>';
+        footer += '<div class="vrn-visit-valider" style="display:none;"></div>';
+        footer += '<div class="vrn-roadmap-valider" style="display:none;"></div>';
         footer += '<div id="vrn-footer-navbar">';
         footer += '<ul>';
         // homepage.html : vrn-home-page
         if (pageId == "vrn-home-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-taskselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-taskselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-home-page" id="vrn-taskboard" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-home-page" id="vrn-taskboard" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-task">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Taskboard</span></span></a></div></li>';
         }
         // inform.html : vrn-inform-page
         if (pageId == "vrn-inform-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-informselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-informselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-inform-page" id="vrn-watchword" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-inform-page" id="vrn-watchword" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></div></li>';
         }
         // roadmap.html : vrn-roadmap-page
         if (pageId == "vrn-roadmap-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-roadmap-page" id="vrn-roadmap" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-roadmap-page" id="vrn-roadmap" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></div></li>';
         }
         // pos.html : vrn-pos-page
         if (pageId == "vrn-pos-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-posselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-posselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-pos-page" id="vrn-pos" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-pos-page" id="vrn-pos" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-pos">&nbsp;</div><span class="vrn-footer-navbar-btn-text">POS</span></span></a></div></li>';
         }
         // stats.html : vrn-stats-page
         if (pageId == "vrn-stats-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-statsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-statsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-stats-page" id="vrn-stats" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-stats-semaine-page" id="vrn-stats" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-stats">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Stats</span></span></a></div></li>';
         }
         // params.html : vrn-params-page
         if (pageId == "vrn-params-page") {
-            footer += '  <li class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-paramsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></li>';
+            footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-paramsselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></div></li>';
         } else {
-            footer += '  <li class="vrn-footer-navbar-li"><a href="#vrn-params-page" id="vrn-params" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></li>';
+            footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-params-page" id="vrn-params" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-params">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Param</span></span></a></div></li>';
         }
         footer += '</ul>'; 
         footer += '</div>';
@@ -2653,7 +2982,7 @@ app.controller = (function () {
     
     controller.showVrnFooter = function(active_sector) {
         $("[data-role=footer]").html(controller.getFooter(active_sector)).trigger('create');
-        $("[data-role=footer]").height(80);
+        $("[data-role=footer]").height(79);
     };
     
     
