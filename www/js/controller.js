@@ -1235,8 +1235,8 @@ app.controller = (function () {
                 '    </div>' +
                 '</div>';
                 
-                $('#vrn-roadmap-item-page .vrn-visit-valider').html(code).trigger("create");
-                $('#vrn-roadmap-item-page .vrn-visit-valider').show();
+                $('.vrn-visit-valider').html(code).trigger("create");
+                $('.vrn-visit-valider').show();
                 
                 for (var i=0;i<status_roadmap.length;i++){
                     
@@ -1260,7 +1260,7 @@ app.controller = (function () {
                        $('#vrn-comment-cloture-roadmap-alert').hide();
                        $('#textarea-comment-cloture-roadmap').css('height', '142px');
                     }
-                    $("#vrn-roadmap-item-page .vrn-visit-valider").animate({ 
+                    $(".vrn-visit-valider").animate({ 
                             height: "450px"
                         },
                         1500
@@ -1268,7 +1268,7 @@ app.controller = (function () {
 
                 });
                 $('#vrn-comment-cloture-roadmap-form-cancel-button').bind('tap', function(){ 
-                    $("#vrn-roadmap-item-page .vrn-visit-valider").animate({ 
+                    $(".vrn-visit-valider").animate({ 
                             height: "108px"
                         },
                         1500
@@ -1446,6 +1446,7 @@ app.controller = (function () {
             var allpos = pos_listA;
             var pos = pos_listB;
             var code = '';
+            alert('pos nb:'+allpos.length);
             for (var i=0;i<allpos.length;i++){ 
                 
                 pos_seleted[i]= [];
@@ -1802,7 +1803,7 @@ app.controller = (function () {
 
                 $('#vrn-comment-cloturee-form-valider-button').unbind('tap');
                 $('#vrn-comment-cloturee-form-valider-button').bind('tap', function(){controller.closeRoadmapVisit();});
-
+                alert('hop');
                 
             });
         
