@@ -5097,6 +5097,7 @@ position:absolute;
 }
 
 /******pos(creation mode) page*******/
+
 #vrn-retour-button, #vrn-roadmap-item-pos-retour-button{
     text-transform: uppercase;
     margin: 0;
@@ -6352,8 +6353,8 @@ input::-moz-placeholder{
     font-weight:normal;
     width:47%;
     background-color:#f1f1f2;
-    height:54px;
-    line-height:50px;
+    /*height:54px;
+    line-height:50px;*/
 }
 #vrn-road-add-pos-list {
   margin:0;
@@ -6523,7 +6524,7 @@ input::-moz-placeholder{
   0 0 0 1px #f6f6f7,
   0 0 0 2px #dedfe1,
   0 0 0 3px #c1c3c5;
-height:58px;
+/*height:58px;*/
 padding-right:0px;
 position:relative;
 }
@@ -8466,6 +8467,18 @@ position:relative;
 	width:872px;
 	height:693px;
     margin: -15px -15px 0px;
+}
+#vrn-roadmap-item-pos-add-list{
+	height:573px;
+	overflow-x: hidden;
+}
+#vrn-roadmap-item-pos-add-annuler-button{
+	width:42%;
+	margin: 0 15px 0 15px;
+}
+#vrn-roadmap-item-pos-add-save-btn{
+	width:42%;
+	margin: 0 15px 0 15px;
 }
 .float-right-icon{
 	float: right;

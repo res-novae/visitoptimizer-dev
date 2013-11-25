@@ -664,6 +664,8 @@ app.controller = (function () {
                     $('#vrn-progresbar-l-a').attr("src", "css/images/vrn/vrn-progresbar-l-off.png");
                     $('#vrn-progresbar-r-a').attr("src", "css/images/vrn/vrn-progresbar-r-off.png");
                     $('#vrn-progresbar-c-a').hide();
+                    $('#vrn-progresbar-c-a').width('0%');
+                    $('#vrn-progresbar-c-b').show();
                     $('#vrn-progresbar-c-b').width('100%');
                     $('#vrn-progresbar-c-a').show();
                 }
@@ -1425,7 +1427,7 @@ app.controller = (function () {
     
     var pos_seleted;
     controller.addRoadmapItemPosPop = function(roadmap_id) {
-        app.log("controller.addRoadmapItemPosPop", 'wip');
+        app.log("controller.addRoadmapItemPosPop:"+roadmap_id, 'wip');
         pos_seleted = [];
         // all pos list
         var r1 = app.repository.getAllRoadmapItemPosList();
@@ -1476,7 +1478,7 @@ app.controller = (function () {
                         '               <div class="float-right-icon">' +
                         '                   <a href="#" data-url="?roadmap_id='+roadmap_id+'&sales_point_id='+allpos[i].id_sales_point+'" id="vrn-name-road-add-pos-detail-lnk-'+allpos[i].id_sales_point+'"><img alt="" src="css/images/vrn/forma1_4.png"></a>' +
                         '               </div>' +
-                        '               <div class="five_stars"></div>' +
+                       // '               <div class="five_stars"></div>' +
                         '       </h3>' +
                         '   </div>' +
                         '   <br/>' +
@@ -1512,14 +1514,14 @@ app.controller = (function () {
                         }
                     }
                     $("#vrn-name-road-add-pos-li-detail-"+current_params_url['sales_point_id']).toggle(
-                            function(){
+/*                            function(){
                                 $("#vrn-name-road-add-pos-li-"+current_params_url['sales_point_id']).css("height", "56px").trigger("refresh");
                                 $("#vrn-roadmap-item-pos-add-list").listview('refresh'); 
                             },
                             function(){
                                 $("#vrn-name-road-add-pos-li-"+current_params_url['sales_point_id']).css("height", "112px").trigger("refresh");
                                 $("#vrn-roadmap-item-pos-add-list").listview('refresh'); 
-                            }
+                            }*/
                     );
                    
                 });
@@ -1831,7 +1833,7 @@ app.controller = (function () {
 
     controller.showVrnRoadmapVisitQuestionnairePage = function(sp_visit_id, questionnaire_id) {
         app.log("controller.showVrnRoadmapVisitQuestionnairePage", 'wip');
-        alert(sp_visit_id+' : '+questionnaire_id);
+        //alert(sp_visit_id+' : '+questionnaire_id);
         // header et footer
         $.mobile.navigate( "#vrn-roadmap-visit-questionnaire-page" );
         controller.showVrnHeader();
