@@ -1121,7 +1121,7 @@ app.controller = (function () {
         var pos;
         
         current_roadmap_id = roadmap_id;
-        alert('current_roadmap_id:'+current_roadmap_id);
+       // alert('current_roadmap_id:'+current_roadmap_id);
         var r1 = app.repository.getRoadmapItem(roadmap_id);
         r1.done(function(roadmap_retour) {
             roadmap = roadmap_retour;
@@ -1428,20 +1428,20 @@ app.controller = (function () {
     var pos_seleted;
     controller.addRoadmapItemPosPop = function(roadmap_id) {
         app.log("controller.addRoadmapItemPosPop:"+roadmap_id, 'wip');
-        alert('add pos:'+roadmap_id);
+       // alert('add pos:'+roadmap_id);
         pos_seleted = [];
         // all pos list
         var r1 = app.repository.getAllRoadmapItemPosList();
         r1.done(function(pos_listA) {
             var allpos = pos_listA;
-            alert('list A');
+           // alert('list A');
         });
         
         // roadmap pos list
         var r2 = app.repository.getRoadmapItemPosList(roadmap_id);
         r2.done(function(pos_listB) {
             var pos = pos_listB;
-            alert('list B');
+           // alert('list B');
         });
 
         // final execute
@@ -1449,7 +1449,7 @@ app.controller = (function () {
             var allpos = pos_listA;
             var pos = pos_listB;
             var code = '';
-            alert('pos nb:'+allpos.length);
+           // alert('pos nb:'+allpos.length);
             for (var i=0;i<allpos.length;i++){ 
                 //alert('hop');
                 pos_seleted[i]= [];
