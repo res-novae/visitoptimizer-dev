@@ -1497,6 +1497,29 @@ app.repository = (function() {
         return op_deferred.promise();
     }; 
     
+    repository.closeAllActivesRoadmapI = function(param) {
+        app.log("repository.closeAllActivesRoadmap");
+        var op_deferred = $.Deferred();
+
+        var rsql = "UPDATE roadmap SET mobile_status_id = 3, close_date = ?, sync_status = 'I' WHERE mobile_status_id = 1 and sync_status = 'I'";
+
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    repository.closeAllActivesRoadmapU = function(param) {
+        app.log("repository.closeAllActivesRoadmap");
+        var op_deferred = $.Deferred();
+
+        var rsql = "UPDATE roadmap SET mobile_status_id = 3, close_date = ?, sync_status = 'U' WHERE mobile_status_id = 1 and ( sync_status = 'U' OR sync_status = 'S' )";
+
+        $.when(requestToDB(rsql,param)).done(function(results) {
+            op_deferred.resolve(null);
+        } );
+        return op_deferred.promise();
+    }; 
+    
     //// ## PARAMS ## ////
     repository.getUserItem = function(id_user) {
         app.log('repository.getUserItem : '+ id_user);
