@@ -818,18 +818,18 @@ app.controller = (function () {
 
             if(valid_all_infos == 0){
                 $("[data-role=footer]").height(161);
-                $(".vrn-inform-valider").height(81);
+                $("#vrn-inform-valider").height(81);
                 var code = '<div class="ui-grid-a" id="custom-grid-a">'+
                     '       <div class="ui-block-a vrn-inform-valider-text">Vous n’avez pas consulté toutes les consignes !</div>'+
                     '       <div class="ui-block-b vrn-valider-button">'+
                     '           <a href="#vrn-home-page" data-url="vrn-home-page" id="vrn-valider" data-role="button" data-transition="slidedown" data-icon="triangle_right_black_image_2" data-iconpos="right" data-inline="true">Valider</a>'+     
                     '       </div>'+
                     '   </div>';
-                $(".vrn-inform-valider").html(code).trigger('create').show();
+                $("#vrn-inform-valider").html(code).trigger('create').show();
 
                 //alert('hopshow infos');
             }else{
-                $(".vrn-inform-valider").hide();
+                $("#vrn-inform-valider").hide();
                 $("[data-role=footer]").height(80);
             }
 
@@ -891,7 +891,7 @@ app.controller = (function () {
         }
        // alert('val:'+valid_all_infos);
         if(valid_all_infos == 1){
-            $(".vrn-inform-valider").hide();
+            $("#vrn-inform-valider").hide();
             $("[data-role=footer]").height(80);
         }
     };
@@ -1106,7 +1106,7 @@ app.controller = (function () {
         // header et footer
         $.mobile.navigate( "#vrn-roadmap-item-page" );
         controller.showVrnHeader();
-        controller.showVrnFooter('vrn-roadmap-page');
+        controller.showVrnFooter('vrn-roadmap-item-page');
          
         /*
         if(action == 'create'){
@@ -1235,8 +1235,8 @@ app.controller = (function () {
                 '    </div>' +
                 '</div>';
                 
-                $('.vrn-visit-valider').html(code).trigger("create");
-                $('.vrn-visit-valider').show();
+                $('#vrn-visit-valider').html(code).trigger("create");
+                $('#vrn-visit-valider').show();
                 
                 for (var i=0;i<status_roadmap.length;i++){
                     
@@ -1250,9 +1250,9 @@ app.controller = (function () {
                 if(pos.sp_visit__comment != "") $('#textarea-comment-cloture-roadmap').val(roadmap.comment);
                 else $('#textarea-comment-cloture-roadmap').val(" Tapez votre commentaire...");
                 
-                $('#vrn-btn-close-roadmap').unbind('tap');
-                $('#vrn-btn-close-roadmap').bind('tap', function(){ 
-                    
+                $('#vrn-home-page #vrn-btn-close-roadmap').unbind('tap');
+                $('#vrn-home-page #vrn-btn-close-roadmap').bind('tap', function(){ 
+                    alert('hop2');
                     if(nb_visits == nb_visits_finish) {
                        $('#vrn-comment-cloture-roadmap-alert').show();
                        $('#textarea-comment-cloture-roadmap').css('height', '107px');
@@ -1260,7 +1260,7 @@ app.controller = (function () {
                        $('#vrn-comment-cloture-roadmap-alert').hide();
                        $('#textarea-comment-cloture-roadmap').css('height', '142px');
                     }
-                    $(".vrn-visit-valider").animate({ 
+                    $("#vrn-visit-valider").animate({ 
                             height: "450px"
                         },
                         1500
@@ -1268,7 +1268,7 @@ app.controller = (function () {
 
                 });
                 $('#vrn-comment-cloture-roadmap-form-cancel-button').bind('tap', function(){ 
-                    $(".vrn-visit-valider").animate({ 
+                    $("#vrn-visit-valider").animate({ 
                             height: "108px"
                         },
                         1500
@@ -1428,6 +1428,7 @@ app.controller = (function () {
     var pos_seleted;
     controller.addRoadmapItemPosPop = function(roadmap_id) {
         app.log("controller.addRoadmapItemPosPop:"+roadmap_id, 'wip');
+        alert('add pos');
         pos_seleted = [];
         // all pos list
         var r1 = app.repository.getAllRoadmapItemPosList();
@@ -1646,7 +1647,7 @@ app.controller = (function () {
         // header et footer
         $.mobile.navigate( "#vrn-roadmap-visit-page" );
         controller.showVrnHeader();
-        controller.showVrnFooter('vrn-roadmap-page');
+        controller.showVrnFooter('vrn-roadmap-visit-page');
         //$("vrn-roadmap-visit-page").trigger('refresh');
 
         // get active tournee data
@@ -1759,10 +1760,10 @@ app.controller = (function () {
                 '    </div>' +
                 '</div>';
                 
-                $('#vrn-roadmap-visit-page .vrn-visit-valider').html(code).trigger("create");
+                $('#vrn-visit-valider').html(code).trigger("create");
                 //$(".vrn-visit-valider").height(81);
                 //$("[data-role=footer]").height(161);
-                $('#vrn-roadmap-visit-page .vrn-visit-valider').show();
+                $('#vrn-visit-valider').show();
                 
                 for (var i=0;i<status_visit.length;i++){
                     
@@ -1786,7 +1787,7 @@ app.controller = (function () {
                        $('#vrn-comment-cloturee-alert').hide();
                        $('#textarea-comment-cloture').css('height', '142px');
                     }
-                    $("#vrn-roadmap-visit-page .vrn-visit-valider").animate({ 
+                    $("#vrn-visit-valider").animate({ 
                             height: "450px"
                         },
                         1500
@@ -1794,7 +1795,7 @@ app.controller = (function () {
 
                 });
                 $('#vrn-comment-cloturee-form-cancel-button').bind('tap', function(){ 
-                    $("#vrn-roadmap-visit-page .vrn-visit-valider").animate({ 
+                    $("#vrn-visit-valider").animate({ 
                             height: "108px"
                         },
                         1500
@@ -2923,9 +2924,15 @@ app.controller = (function () {
     controller.getFooter = function(pageId) {
         app.log("# app.controller : getFooter");
     
-        var footer = '<div class="vrn-inform-valider" style="display:none;"></div>';
-        footer += '<div class="vrn-visit-valider" style="display:none;"></div>';
-        footer += '<div class="vrn-roadmap-valider" style="display:none;"></div>';
+        if (pageId == "vrn-inform-page") {
+            var footer = '<div id="vrn-inform-valider"></div>';
+        }else if (pageId == "vrn-roadmap-page") {
+            var footer = '<div id="vrn-visit-valider"></div>';            
+        }else if (pageId == "vrn-roadmap-item-page") {
+            var footer = '<div id="vrn-roadmap-valider"></div>';
+        }else{
+            var footer = '';
+        }
         footer += '<div id="vrn-footer-navbar">';
         footer += '<ul>';
         // homepage.html : vrn-home-page
@@ -2941,7 +2948,7 @@ app.controller = (function () {
             footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-inform-page" id="vrn-watchword" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-inform">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Info</span></span></a></div></li>';
         }
         // roadmap.html : vrn-roadmap-page
-        if (pageId == "vrn-roadmap-page") {
+        if (pageId == "vrn-roadmap-page" || pageId == "vrn-roadmap-item-page" || pageId == "vrn-roadmap-visit-page") {
             footer += '  <li><div class="vrn-footer-navbar-liselected"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-roadselected">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></div></li>';
         } else {
             footer += '  <li class="vrn-footer-navbar-li"><div><a href="#vrn-roadmap-page" id="vrn-roadmap" class="btn ui-state-persist" data-transition="slide"><span class="vrn-footer-navbar-btn-inner"><div class="footer-icon-road">&nbsp;</div><span class="vrn-footer-navbar-btn-text">Roadmap</span></span></a></div></li>';
