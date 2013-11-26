@@ -1072,7 +1072,7 @@ app.repository = (function() {
                       " FROM sales_point " +
                       " LEFT JOIN sp_type " +
                       " ON sales_point.type_id = sp_type.id_type " +
-                      " order by min(sales_point.id_sales_point);";
+                      " order by sales_point.name;";
         var param =  null ;
         $.when(requestToDB(rsql,param)).done(function(results) {
             var pos_list = Array();
