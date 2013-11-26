@@ -1064,7 +1064,7 @@ app.repository = (function() {
     };  
 
     
-    repository.getAllRoadmapItemPosList = function(roadmap_id) {
+    repository.getAllRoadmapItemPosList = function() {
         app.log('repository.getAllRoadmapItemPosList : ');
         var op_deferred = $.Deferred();
         var rsql = "SELECT DISTINCT sales_point.*, " +
