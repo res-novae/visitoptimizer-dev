@@ -739,7 +739,7 @@ app.controller = (function () {
                                 }
                             }
                         }
-                        alert('click : '+current_params_url['sp_visit_id']);
+                       // alert('click : '+current_params_url['sp_visit_id']);
                     }); 
                     
                     
@@ -1681,7 +1681,7 @@ app.controller = (function () {
     var current_current_item;
     controller.showVrnRoadmapVisitPage = function(sp_visit_id,current_item) {
         //alert("hop:"+current_params_url['current_item']);
-        alert("visit_idA:"+sp_visit_id+" - current_item:"+current_item);
+       // alert("visit_idA:"+sp_visit_id+" - current_item:"+current_item);
         app.log("controller.showVrnRoadmapVisitPage", 'wip');
 
         // header et footer
@@ -2107,13 +2107,13 @@ app.controller = (function () {
             current_params_url['id_parent'] = "vrn-roadmap-visit-page";
             current_params_url['sp_visit_id'] = current_sp_visit_id;
             current_params_url['current_item'] = current_current_item;
-            alert('changepage');
+           // alert('changepage');
             $.mobile.changePage("#vrn-roadmap-visit-page", {
                 transition:"slide",
                 changeHash:false,
                 reverse:true
              });
-            alert('changepage');
+           // alert('changepage');
             
             if(form_statut == "ok"){
                 
@@ -2653,8 +2653,45 @@ app.controller = (function () {
         controller.showVrnFooter('vrn-stats-page');
         $("#vrn-stats-semaine-page").trigger('refresh');
 
+        timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
+        timerCurrent = 0;
+        timerFinish = new Date().getTime()+(timerSeconds*1000);
+        timer = setInterval('stopWatch()',50);
+        // }else{
+        //$('input[type=button]#watch').val('Start');
+        // clearInterval(timer);
+        // }
+        // });
+        $('input[type=button]#watch').click();
 
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("myCanvas_semaine");
+        new AnimationRectangle({
+            'canvas': canvas,
+            'width': canvas.width,
+            'height': canvas.height,
+            'radius': 100,
+            'linewidth': 10,        
+            'interval': 20,
+            'step': 1,
+            'backcolor': '#666',
+            'fillcolor': '#6d6f71'
+        }).start(100);
         
+    
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("circle_semaine");
+        new AnimationCircle({
+            'canvas': canvas,
+            'width': canvas.width-115,
+            'height': canvas.height-115,
+            'radius': 90,
+            'linewidth': 5,        
+            'interval': 20,
+            'step': 1,
+            'circlecolor': 'transparent',
+            'fillcolor': '#696a6c'
+        }).start( 70 );
         
 
         
@@ -2669,6 +2706,34 @@ app.controller = (function () {
         controller.showVrnFooter('vrn-stats-page');
         $("#vrn-stats-mois-page").trigger('refresh');
         
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("myCanvas_mois");
+        new AnimationRectangle({
+            'canvas': canvas,
+            'width': canvas.width,
+            'height': canvas.height,
+            'radius': 100,
+            'linewidth': 10,        
+            'interval': 20,
+            'step': 1,
+            'backcolor': '#666',
+            'fillcolor': '#6d6f71'
+        }).start(100);   
+        
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("circle_mois");
+        new AnimationCircle({
+            'canvas': canvas,
+            'width': canvas.width-115,
+            'height': canvas.height-115,
+            'radius': 90,
+            'linewidth': 5,        
+            'interval': 20,
+            'step': 1,
+            'circlecolor': 'transparent',
+            'fillcolor': '#696a6c'
+        }).start( 70 );
+        
     };
     
 
@@ -2679,6 +2744,34 @@ app.controller = (function () {
         controller.showVrnHeader();
         controller.showVrnFooter('vrn-stats-page');
         $("#vrn-stats-annee-page").trigger('refresh');
+        
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("myCanvas_annee");
+        new AnimationRectangle({
+            'canvas': canvas,
+            'width': canvas.width,
+            'height': canvas.height,
+            'radius': 100,
+            'linewidth': 10,        
+            'interval': 20,
+            'step': 1,
+            'backcolor': '#666',
+            'fillcolor': '#6d6f71'
+        }).start(100);
+        
+        // create the new object, add options, and start the animation with desired percentage
+        var canvas = document.getElementById("circle_annee");
+        new AnimationCircle({
+            'canvas': canvas,
+            'width': canvas.width-115,
+            'height': canvas.height-115,
+            'radius': 90,
+            'linewidth': 5,        
+            'interval': 20,
+            'step': 1,
+            'circlecolor': 'transparent',
+            'fillcolor': '#696a6c'
+        }).start(70);
         
     };
 

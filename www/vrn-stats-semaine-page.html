@@ -218,6 +218,7 @@
                                     e.preventDefault();
                                     if($('input[type=button]#watch').val() == 'Start'){
                                         $('input[type=button]#watch').val('Stop');*/
+                                
                                 timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
                                 timerCurrent = 0;
                                 timerFinish = new Date().getTime()+(timerSeconds*1000);
@@ -228,8 +229,8 @@
                                 // }
                                 // });
                                     $('input[type=button]#watch').click();
-                                
-                                    
+                                /*
+                                 $( document ).ready(function() {
                                 // create the new object, add options, and start the animation with desired percentage
                                 var canvas = document.getElementById("myCanvas_semaine");
                                 new AnimationRectangle({
@@ -257,7 +258,9 @@
                                     'step': 1,
                                     'circlecolor': 'transparent',
                                     'fillcolor': '#696a6c'
-                                }).start( 70 );
+                                }).start( 70 )
+                                });
+;*/
                             </script>
                         </div>
 
