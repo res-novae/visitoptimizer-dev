@@ -853,9 +853,9 @@
 				// if any slide in the middle
 				}else{
 					slider.controls.prev.removeClass('disabled');
-					$('.bx-prev').hide();
+					$('.bx-prev').show();
 					slider.controls.next.removeClass('disabled');
-					$('.bx-next').hide();
+					$('.bx-next').show();
 				}
 			}
 		}

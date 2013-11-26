@@ -61,8 +61,8 @@
                     </fieldset> 
                 </section>
                 <div id="vrn-roadmap-item-pos-lists-zone">
-                    <ol data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-a"> </ol>
-                    <ol data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-b"> </ol>
+                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-a"> </ul>
+                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-b"> </ul>
                 </div>
                 <!--
                 <div id="vrn-roadmap-closing-div">
@@ -76,7 +76,7 @@
                 -->
             </div>
 
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" id="vrn-footer-nav-roadmap-item" data-id="vrn-footer-nav" data-position="fixed"></div>
 
             <!-- Pop : Pos detail -->
             <div data-role="popup" id="vrn-roadmap-item-pos-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">
@@ -160,7 +160,7 @@
                         
             <div data-role="popup" id="vrn-roadmap-item-pos-add-pop">
                 <div data-role="content">
-                    <div style="text-align:center;"> <!--  id="vrn-roadmap-add-pos-div" -->
+                    <div style="text-align:center;">
                         <ul data-role="listview" data-inset="true" data-dividertheme="a" id="vrn-roadmap-item-pos-add-list" data-filter="true"></ul>
                         <a href="#" data-rel="back" id="vrn-roadmap-item-pos-add-annuler-button" data-role="button" data-inline="true">Annuler</a>
                         <a href="#" data-rel="back" id="vrn-roadmap-item-pos-add-save-btn" data-role="button" data-icon="arrow_right_white" data-iconpos="right" data-inline="true">Ajouter</a>
