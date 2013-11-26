@@ -1069,13 +1069,9 @@ app.repository = (function() {
         var op_deferred = $.Deferred();
         var rsql = "SELECT DISTINCT sales_point.*, " +
                       "sp_type.name AS type_name" +
-                     // "sp_visit.roadmap_id AS roadmap_id, " +
-                     // "sp_visit.status_visit_id AS sp_visit__status_visit_id " +
                       " FROM sales_point " +
                       " LEFT JOIN sp_type " +
                       " ON sales_point.type_id = sp_type.id_type " +
-                     //" LEFT JOIN sp_visit " +
-                     // " ON sales_point.id_sales_point = sp_visit.sales_point_id " +
                       " order by min(sales_point.id_sales_point);";
         var param =  null ;
         $.when(requestToDB(rsql,param)).done(function(results) {
@@ -1103,8 +1099,6 @@ app.repository = (function() {
                     );
                     pos.type_name = results.rows.item(i).type_name,
                     pos.roadmap_id = results.rows.item(i).roadmap_id,
-                   // pos.sp_visit__status_visit_id = results.rows.item(i).sp_visit__status_visit_id,
-                    
                     pos_list[i] = pos;
                 }
                 op_deferred.resolve(pos_list);
