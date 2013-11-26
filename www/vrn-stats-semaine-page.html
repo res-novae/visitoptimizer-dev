@@ -172,7 +172,79 @@
                                         else clearInterval(handle);
                                     }
                                 }
-                                   
+                                
+                                function AnimationRectangle( opt ) {
+                                    var context = opt.canvas.getContext("2d");
+                                    var handle = 0;
+                                    var current = 0;
+                                    var percent = 0;
+                        
+                                    this.start = function( percentage ) {
+                                        percent = percentage;
+                                        // start the interval
+                                        handle = setInterval( draw, opt.interval );
+                                    }
+                                    function draw() {
+                        
+                                        // make a rectangular clipping region
+                                        context.beginPath();
+                                        context.rect(0,0, opt.width / 3.5, opt.height/2 );
+                                        context.clip();
+                        
+                        
+                                        // draw the current rectangle
+                                        var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
+                                        context.fillStyle = opt.fillcolor;
+                                        context.fillRect( 0, height, opt.width, opt.radius*2 );
+                        
+                                        // clear the interval when the animation is over
+                                        if ( current < percent ) current+=opt.step;
+                                        else clearInterval(handle);
+                                    }
+                                }
+                                
+                              
+                                
+                                
+                                /* $('input[type=button]#percent').click(function(e){
+                                e.preventDefault();
+                                drawTimer($('input[type=text]#percent').val());
+                                });*/
+                                $('input[type=button]#size').click(function(e){
+                                    e.preventDefault();
+                                    $('.timer').css('font-size',$('input[type=text]#size').val()+'px');
+                                });
+                                /*$('input[type=button]#watch').click(function(e){
+                                    e.preventDefault();
+                                    if($('input[type=button]#watch').val() == 'Start'){
+                                        $('input[type=button]#watch').val('Stop');*/
+                                timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
+                                timerCurrent = 0;
+                                timerFinish = new Date().getTime()+(timerSeconds*1000);
+                                timer = setInterval('stopWatch()',50);
+                                // }else{
+                                //$('input[type=button]#watch').val('Start');
+                                // clearInterval(timer);
+                                // }
+                                // });
+                                    $('input[type=button]#watch').click();
+                                
+                                    
+                                // create the new object, add options, and start the animation with desired percentage
+                                var canvas = document.getElementById("myCanvas_semaine");
+                                new AnimationRectangle({
+                                    'canvas': canvas,
+                                    'width': canvas.width,
+                                    'height': canvas.height,
+                                    'radius': 100,
+                                    'linewidth': 10,        
+                                    'interval': 20,
+                                    'step': 1,
+                                    'backcolor': '#666',
+                                    'fillcolor': '#6d6f71'
+                                }).start(100);
+                                
+                            
                                 // create the new object, add options, and start the animation with desired percentage
                                 var canvas = document.getElementById("circle_semaine");
                                 new AnimationCircle({
