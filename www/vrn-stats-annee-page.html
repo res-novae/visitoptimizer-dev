@@ -34,81 +34,86 @@
     </head>
     <body onload="app.initialize()">
 
-        <!-- Content -->
         <div id="vrn-stats-annee-page" data-role="page">
+            
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
-            <div class="stats-above-div">
-                <div class="tabs">
-                    <ul class="vrn-ui-tabs">
-                        <li><a href="#vrn-stats-semaine-page" data-role="tab" class="tab1 ui-btn-inactive-tabs">semaine</a></li>
-                        <li><a href="#vrn-stats-mois-page" data-role="tab" class="tab2 ui-btn-inactive-tabs">mois</a></li>
-                        <li><a href="#vrn-stats-annee-page" data-role="tab" class="ui-btn-active-tabs default2 tab3">année</a></li>
-                    </ul>
-                </div>          
-                <div class="statistics_date"> Annee 2013</div>
-            </div>
-            <div class="stats-content-top-div">
-                <fieldset class="ui-grid-a ui-grid-top-stats">
-                    <div class="ui-block-a">
-                        <img class="stat_circle" alt="" src="css/images/vrn/stats_circle.png">    
-                        <div class="timer"></div> 
-                    </div>
-                    <div class="ui-block-b stats-content-top-right-div">
-                        <div class="taux_mise">TAUX DE MISE EN PLACE DE</div>
-                        <div class="action_prioritaire">L'ACTION PRIORITAIRE</div>    
-                        <div class="first_group">
-                            <div class="ap_mises">AP mises en place: </div> <div class="no_ap_mises"> 16</div> 
+            
+            <div class="vrn-view">
+                
+                <div class="stats-above-div">
+                    <div class="tabs">
+                        <ul class="vrn-ui-tabs">
+                            <li><a href="#vrn-stats-semaine-page" data-role="tab" class="tab1 ui-btn-inactive-tabs">semaine</a></li>
+                            <li><a href="#vrn-stats-mois-page" data-role="tab" class="tab2 ui-btn-inactive-tabs">mois</a></li>
+                            <li><a href="#vrn-stats-annee-page" data-role="tab" class="ui-btn-active-tabs default2 tab3">année</a></li>
+                        </ul>
+                    </div>          
+                    <div class="statistics_date"> Annee 2013</div>
+                </div>
+                <div class="stats-content-top-div">
+                    <fieldset class="ui-grid-a ui-grid-top-stats">
+                        <div class="ui-block-a">
+                            <img class="stat_circle" alt="" src="css/images/vrn/stats_circle.png">    
+                            <div class="timer"></div> 
                         </div>
-                        <div class="second_group">
-                            <div class="ap_non_mises">AP non mises en place: </div><div class="no_ap_non_mises"> 25</div>
-                        </div>
-                    </div>     
-                </fieldset> 
-            </div>
-            <div class="stats-content-bottom-div">
-                <fieldset class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <div class="stat_box">
-                            <div class="taux_title_visitee">Taux de visites effectuées</div>
-                            <div class="image_box1"><img alt="" src="css/images/vrn/stat_box.png">
-                                <div class="objectif objective-prevu">objectif</div>
-                                <div class="prevu objective-prevu">prévu</div>
-                                <div class="procent_objectif objective-prevu">82 <div class="precent-taux-visitee-effectuees">%</div></div>
+                        <div class="ui-block-b stats-content-top-right-div">
+                            <div class="taux_mise">TAUX DE MISE EN PLACE DE</div>
+                            <div class="action_prioritaire">L'ACTION PRIORITAIRE</div>    
+                            <div class="first_group">
+                                <div class="ap_mises">AP mises en place: </div> <div class="no_ap_mises"> 16</div> 
                             </div>
-                            <div class="procent_box_visite">
-                                <img class="rectangular-image" alt="" src="css/images/vrn/bar.jpg">
-                                <canvas id="myCanvas_annee" width="400" height="400">
-                                </canvas>
+                            <div class="second_group">
+                                <div class="ap_non_mises">AP non mises en place: </div><div class="no_ap_non_mises"> 25</div>
+                            </div>
+                        </div>     
+                    </fieldset> 
+                </div>
+                <div class="stats-content-bottom-div">
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div class="stat_box">
+                                <div class="taux_title_visitee">Taux de visites effectuées</div>
+                                <div class="image_box1"><img alt="" src="css/images/vrn/stat_box.png">
+                                    <div class="objectif objective-prevu">objectif</div>
+                                    <div class="prevu objective-prevu">prévu</div>
+                                    <div class="procent_objectif objective-prevu">82 <div class="precent-taux-visitee-effectuees">%</div></div>
+                                </div>
+                                <div class="procent_box_visite">
+                                    <img class="rectangular-image" alt="" src="css/images/vrn/bar.jpg">
+                                    <canvas id="myCanvas_annee" width="400" height="400">
+                                    </canvas>
+                                    <script>
+    
+                                    </script>
+                                    <div class="stats-white-circle"><div class="percent-stat-visitee">65 <div class="percent-stat-visitee-effectue">%</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-block-b no_vsites">  
+    
+                            <div class="quarter-title"> Nombre de visites annulées  </div>   
+                            <div class="stats_circle_no_visitee">
+                                <img class="round_image" alt="" src="css/images/vrn/circle3.png">
+    
+                                <canvas id="circle_annee" width="300" height="300"></canvas>
+                                <div class="right-quorter"> 
+                                    <div class="right-quorter-annulee-visites">04</div> 
+                                    <div class="right-quorter-text">Sur un total de</div>
+                                    <div class="right-quorter-total-visites">15 visites</div>
+                                </div>
+    
                                 <script>
-
+    
                                 </script>
-                                <div class="stats-white-circle"><div class="percent-stat-visitee">65 <div class="percent-stat-visitee-effectue">%</div></div></div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="ui-block-b no_vsites">  
-
-                        <div class="quarter-title"> Nombre de visites annulées  </div>   
-                        <div class="stats_circle_no_visitee">
-                            <img class="round_image" alt="" src="css/images/vrn/circle3.png">
-
-                            <canvas id="circle_annee" width="300" height="300"></canvas>
-                            <div class="right-quorter"> 
-                                <div class="right-quorter-annulee-visites">04</div> 
-                                <div class="right-quorter-text">Sur un total de</div>
-                                <div class="right-quorter-total-visites">15 visites</div>
-                            </div>
-
-                            <script>
-
-                            </script>
-                        </div>
-
-                    </div>                         
-                </fieldset> 
+    
+                        </div>                         
+                    </fieldset> 
+                </div>
+            
             </div>
             
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
     
         </div> 
     </body>

@@ -69,205 +69,210 @@
 </script>
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
-            <div class="stats-above-div">
-                <div class="tabs">
-                    <ul class="vrn-ui-tabs">
-                        <li><a href="#vrn-stats-semaine-page" data-role="tab" class="ui-btn-active-tabs default tab1">semaine</a></li>
-                        <li><a href="#vrn-stats-mois-page" data-role="tab" class="tab2 ui-btn-inactive-tabs">mois</a></li>
-                        <li><a href="#vrn-stats-annee-page" data-role="tab" class="tab3 ui-btn-inactive-tabs">année</a></li>
-                    </ul>
-                </div>          
-                <div class="statistics_date"> Semaine 11-17 Avril 2013</div>
-            </div>
-            <div class="stats-content-top-div">
-                <fieldset class="ui-grid-a ui-grid-top-stats">
-                    <div class="ui-block-a">
-                        <img class="stat_circle" alt="" src="css/images/vrn/stats_circle.png">    
-                        <div class="timer"></div> 
-                    </div>
-                    <div class="ui-block-b stats-content-top-right-div">
-                        <div class="taux_mise">TAUX DE MISE EN PLACE DE</div>
-                        <div class="action_prioritaire">L'ACTION PRIORITAIRE</div>    
-                        <div class="first_group">
-                            <div class="ap_mises">AP mises en place: </div> <div class="no_ap_mises"> 16</div> 
+            <div class="vrn-view">
+            
+                <div class="stats-above-div">
+                    <div class="tabs">
+                        <ul class="vrn-ui-tabs">
+                            <li><a href="#vrn-stats-semaine-page" data-role="tab" class="ui-btn-active-tabs default tab1">semaine</a></li>
+                            <li><a href="#vrn-stats-mois-page" data-role="tab" class="tab2 ui-btn-inactive-tabs">mois</a></li>
+                            <li><a href="#vrn-stats-annee-page" data-role="tab" class="tab3 ui-btn-inactive-tabs">année</a></li>
+                        </ul>
+                    </div>          
+                    <div class="statistics_date"> Semaine 11-17 Avril 2013</div>
+                </div>
+                <div class="stats-content-top-div">
+                    <fieldset class="ui-grid-a ui-grid-top-stats">
+                        <div class="ui-block-a">
+                            <img class="stat_circle" alt="" src="css/images/vrn/stats_circle.png">    
+                            <div class="timer"></div> 
                         </div>
-                        <div class="second_group">
-                            <div class="ap_non_mises">AP non mises en place: </div><div class="no_ap_non_mises"> 25</div>
-                        </div>
-                    </div>     
-                </fieldset> 
-            </div>
-            <div class="stats-content-bottom-div">
-                <fieldset class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <div class="stat_box">
-                            <div class="taux_title_visitee">Taux de visites effectuées</div>
-                            <div class="image_box1"><img alt="" src="css/images/vrn/stat_box.png">
-                                <div class="objectif objective-prevu">objectif</div>
-                                <div class="prevu objective-prevu">prévu</div>
-                                <div class="procent_objectif objective-prevu">82 <div class="precent-taux-visitee-effectuees">%</div></div>
+                        <div class="ui-block-b stats-content-top-right-div">
+                            <div class="taux_mise">TAUX DE MISE EN PLACE DE</div>
+                            <div class="action_prioritaire">L'ACTION PRIORITAIRE</div>    
+                            <div class="first_group">
+                                <div class="ap_mises">AP mises en place: </div> <div class="no_ap_mises"> 16</div> 
                             </div>
-                            <div class="procent_box_visite">
-                                <img class="rectangular-image" alt="" src="css/images/vrn/bar.jpg">
-                                <canvas id="myCanvas_semaine" width="400" height="400">
-                                </canvas>
+                            <div class="second_group">
+                                <div class="ap_non_mises">AP non mises en place: </div><div class="no_ap_non_mises"> 25</div>
+                            </div>
+                        </div>     
+                    </fieldset> 
+                </div>
+                <div class="stats-content-bottom-div">
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div class="stat_box">
+                                <div class="taux_title_visitee">Taux de visites effectuées</div>
+                                <div class="image_box1"><img alt="" src="css/images/vrn/stat_box.png">
+                                    <div class="objectif objective-prevu">objectif</div>
+                                    <div class="prevu objective-prevu">prévu</div>
+                                    <div class="procent_objectif objective-prevu">82 <div class="precent-taux-visitee-effectuees">%</div></div>
+                                </div>
+                                <div class="procent_box_visite">
+                                    <img class="rectangular-image" alt="" src="css/images/vrn/bar.jpg">
+                                    <canvas id="myCanvas_semaine" width="400" height="400">
+                                    </canvas>
+                                    <script>
+      
+                                    </script>
+                                    <div class="stats-white-circle"><div class="percent-stat-visitee">65 <div class="percent-stat-visitee-effectue">%</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-block-b no_vsites">  
+    
+                            <div class="quarter-title"> Nombre de visites annulées  </div>   
+                            <div class="stats_circle_no_visitee">
+                                <img class="round_image" alt="" src="css/images/vrn/circle3.png">
+    
+                                <canvas id="circle_semaine" width="300" height="300"></canvas>
+                                <div class="right-quorter"> 
+                                    <div class="right-quorter-annulee-visites">04</div> 
+                                    <div class="right-quorter-text">Sur un total de</div>
+                                    <div class="right-quorter-total-visites">15 visites</div>
+                                </div>
+    
                                 <script>
-  
-                                </script>
-                                <div class="stats-white-circle"><div class="percent-stat-visitee">65 <div class="percent-stat-visitee-effectue">%</div></div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui-block-b no_vsites">  
-
-                        <div class="quarter-title"> Nombre de visites annulées  </div>   
-                        <div class="stats_circle_no_visitee">
-                            <img class="round_image" alt="" src="css/images/vrn/circle3.png">
-
-                            <canvas id="circle_semaine" width="300" height="300"></canvas>
-                            <div class="right-quorter"> 
-                                <div class="right-quorter-annulee-visites">04</div> 
-                                <div class="right-quorter-text">Sur un total de</div>
-                                <div class="right-quorter-total-visites">15 visites</div>
-                            </div>
-
-                            <script>
-                                function AnimationCircle( opt ) {
-                                    var context = opt.canvas.getContext("2d");
-                                    var handle = 0;
-                                    var current = 0;
-                                    var percent = 0;
-                                       
-                                    this.start = function( percentage ) {
-                                        percent = percentage;
-                                        // start the interval
-                                        handle = setInterval( draw, opt.interval );
-                                    }
-                                       
-                                    // fill the background color
-                                    /* context.fillStyle = opt.backcolor;
-                                    context.fillRect( 0, 0, opt.width, opt.height );*/
-                                       
-                                    // draw a circle
-                                    context.arc( opt.width / 2, opt.height / 2, opt.radius, 0, 2 * Math.PI, false );
-                                    context.lineWidth = opt.linewidth;
-                                    context.strokeStyle = opt.circlecolor;
-                                    context.stroke();
-                                       
-                                    function draw() {
-                                        // make a circular clipping region
-                                        context.beginPath();
-                                        context.arc( opt.width / 2, opt.height / 2, opt.radius-(opt.linewidth/2), 0, 2 * Math.PI, false );
-                                        context.clip();
+                                    function AnimationCircle( opt ) {
+                                        var context = opt.canvas.getContext("2d");
+                                        var handle = 0;
+                                        var current = 0;
+                                        var percent = 0;
                                            
-                                        // draw the current rectangle
-                                        var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
-                                        context.fillStyle = opt.fillcolor;
-                                        context.fillRect( 0, height, opt.width, opt.radius*2 );
-                                        // Turn transparency on
-                                        /*context.globalAlpha=0.05;*/
+                                        this.start = function( percentage ) {
+                                            percent = percentage;
+                                            // start the interval
+                                            handle = setInterval( draw, opt.interval );
+                                        }
                                            
-                                        // clear the interval when the animation is over
-                                        if ( current < percent ) current+=opt.step;
-                                        else clearInterval(handle);
+                                        // fill the background color
+                                        /* context.fillStyle = opt.backcolor;
+                                        context.fillRect( 0, 0, opt.width, opt.height );*/
+                                           
+                                        // draw a circle
+                                        context.arc( opt.width / 2, opt.height / 2, opt.radius, 0, 2 * Math.PI, false );
+                                        context.lineWidth = opt.linewidth;
+                                        context.strokeStyle = opt.circlecolor;
+                                        context.stroke();
+                                           
+                                        function draw() {
+                                            // make a circular clipping region
+                                            context.beginPath();
+                                            context.arc( opt.width / 2, opt.height / 2, opt.radius-(opt.linewidth/2), 0, 2 * Math.PI, false );
+                                            context.clip();
+                                               
+                                            // draw the current rectangle
+                                            var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
+                                            context.fillStyle = opt.fillcolor;
+                                            context.fillRect( 0, height, opt.width, opt.radius*2 );
+                                            // Turn transparency on
+                                            /*context.globalAlpha=0.05;*/
+                                               
+                                            // clear the interval when the animation is over
+                                            if ( current < percent ) current+=opt.step;
+                                            else clearInterval(handle);
+                                        }
                                     }
-                                }
-                                
-                                function AnimationRectangle( opt ) {
-                                    var context = opt.canvas.getContext("2d");
-                                    var handle = 0;
-                                    var current = 0;
-                                    var percent = 0;
-                        
-                                    this.start = function( percentage ) {
-                                        percent = percentage;
-                                        // start the interval
-                                        handle = setInterval( draw, opt.interval );
-                                    }
-                                    function draw() {
-                        
-                                        // make a rectangular clipping region
-                                        context.beginPath();
-                                        context.rect(0,0, opt.width / 3.5, opt.height/2 );
-                                        context.clip();
-                        
-                        
-                                        // draw the current rectangle
-                                        var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
-                                        context.fillStyle = opt.fillcolor;
-                                        context.fillRect( 0, height, opt.width, opt.radius*2 );
-                        
-                                        // clear the interval when the animation is over
-                                        if ( current < percent ) current+=opt.step;
-                                        else clearInterval(handle);
-                                    }
-                                }
-                                
-                              
-                                
-                                
-                                /* $('input[type=button]#percent').click(function(e){
-                                e.preventDefault();
-                                drawTimer($('input[type=text]#percent').val());
-                                });*/
-                                $('input[type=button]#size').click(function(e){
-                                    e.preventDefault();
-                                    $('.timer').css('font-size',$('input[type=text]#size').val()+'px');
-                                });
-                                /*$('input[type=button]#watch').click(function(e){
-                                    e.preventDefault();
-                                    if($('input[type=button]#watch').val() == 'Start'){
-                                        $('input[type=button]#watch').val('Stop');*/
-                                
-                                timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
-                                timerCurrent = 0;
-                                timerFinish = new Date().getTime()+(timerSeconds*1000);
-                                timer = setInterval('stopWatch()',50);
-                                // }else{
-                                //$('input[type=button]#watch').val('Start');
-                                // clearInterval(timer);
-                                // }
-                                // });
-                                    $('input[type=button]#watch').click();
-                                /*
-                                 $( document ).ready(function() {
-                                // create the new object, add options, and start the animation with desired percentage
-                                var canvas = document.getElementById("myCanvas_semaine");
-                                new AnimationRectangle({
-                                    'canvas': canvas,
-                                    'width': canvas.width,
-                                    'height': canvas.height,
-                                    'radius': 100,
-                                    'linewidth': 10,        
-                                    'interval': 20,
-                                    'step': 1,
-                                    'backcolor': '#666',
-                                    'fillcolor': '#6d6f71'
-                                }).start(100);
-                                
+                                    
+                                    function AnimationRectangle( opt ) {
+                                        var context = opt.canvas.getContext("2d");
+                                        var handle = 0;
+                                        var current = 0;
+                                        var percent = 0;
                             
-                                // create the new object, add options, and start the animation with desired percentage
-                                var canvas = document.getElementById("circle_semaine");
-                                new AnimationCircle({
-                                    'canvas': canvas,
-                                    'width': canvas.width-115,
-                                    'height': canvas.height-115,
-                                    'radius': 90,
-                                    'linewidth': 5,        
-                                    'interval': 20,
-                                    'step': 1,
-                                    'circlecolor': 'transparent',
-                                    'fillcolor': '#696a6c'
-                                }).start( 70 )
-                                });
-;*/
-                            </script>
-                        </div>
-
-                    </div>                         
-                </fieldset> 
+                                        this.start = function( percentage ) {
+                                            percent = percentage;
+                                            // start the interval
+                                            handle = setInterval( draw, opt.interval );
+                                        }
+                                        function draw() {
+                            
+                                            // make a rectangular clipping region
+                                            context.beginPath();
+                                            context.rect(0,0, opt.width / 3.5, opt.height/2 );
+                                            context.clip();
+                            
+                            
+                                            // draw the current rectangle
+                                            var height = ((100-current)*opt.radius*2)/100 + (opt.height-(opt.radius*2))/2;
+                                            context.fillStyle = opt.fillcolor;
+                                            context.fillRect( 0, height, opt.width, opt.radius*2 );
+                            
+                                            // clear the interval when the animation is over
+                                            if ( current < percent ) current+=opt.step;
+                                            else clearInterval(handle);
+                                        }
+                                    }
+                                    
+                                  
+                                    
+                                    
+                                    /* $('input[type=button]#percent').click(function(e){
+                                    e.preventDefault();
+                                    drawTimer($('input[type=text]#percent').val());
+                                    });*/
+                                    $('input[type=button]#size').click(function(e){
+                                        e.preventDefault();
+                                        $('.timer').css('font-size',$('input[type=text]#size').val()+'px');
+                                    });
+                                    /*$('input[type=button]#watch').click(function(e){
+                                        e.preventDefault();
+                                        if($('input[type=button]#watch').val() == 'Start'){
+                                            $('input[type=button]#watch').val('Stop');*/
+                                    
+                                    timerSeconds = /*$('input[type=text]#watch').val();*/ 10;
+                                    timerCurrent = 0;
+                                    timerFinish = new Date().getTime()+(timerSeconds*1000);
+                                    timer = setInterval('stopWatch()',50);
+                                    // }else{
+                                    //$('input[type=button]#watch').val('Start');
+                                    // clearInterval(timer);
+                                    // }
+                                    // });
+                                        $('input[type=button]#watch').click();
+                                    /*
+                                     $( document ).ready(function() {
+                                    // create the new object, add options, and start the animation with desired percentage
+                                    var canvas = document.getElementById("myCanvas_semaine");
+                                    new AnimationRectangle({
+                                        'canvas': canvas,
+                                        'width': canvas.width,
+                                        'height': canvas.height,
+                                        'radius': 100,
+                                        'linewidth': 10,        
+                                        'interval': 20,
+                                        'step': 1,
+                                        'backcolor': '#666',
+                                        'fillcolor': '#6d6f71'
+                                    }).start(100);
+                                    
+                                
+                                    // create the new object, add options, and start the animation with desired percentage
+                                    var canvas = document.getElementById("circle_semaine");
+                                    new AnimationCircle({
+                                        'canvas': canvas,
+                                        'width': canvas.width-115,
+                                        'height': canvas.height-115,
+                                        'radius': 90,
+                                        'linewidth': 5,        
+                                        'interval': 20,
+                                        'step': 1,
+                                        'circlecolor': 'transparent',
+                                        'fillcolor': '#696a6c'
+                                    }).start( 70 )
+                                    });
+    ;*/
+                                </script>
+                            </div>
+    
+                        </div>                         
+                    </fieldset> 
+                </div>
+                
             </div>
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>     
+                
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>     
         </div>
     </body>
 </html>

@@ -491,7 +491,9 @@ a.ui-link, a.ui-link-inherit {
 }
 
 .ui-mobile,.ui-mobile body {
-    height:99.9%;
+    /*height:99.9%;*/
+   display:block;
+   overflow:hidden !important;
 }
 
 .ui-mobile fieldset,.ui-page {
@@ -514,8 +516,8 @@ a.ui-link, a.ui-link-inherit {
 .ui-mobile [data-role=page],.ui-mobile [data-role=dialog],.ui-page {
     top:0;
     left:0;
-    width:100%;
-    min-height:100%;
+    /*width:100%;
+    height:100%;*/
     position:absolute;
     display:none;
     border:0;
@@ -523,9 +525,12 @@ a.ui-link, a.ui-link-inherit {
 
 .ui-mobile .ui-page-active {
     display:block;
-    overflow:visible;
+    overflow:hidden;
 }
-
+.vrn-view{
+	display:block;
+	overflow: scroll;
+}
 .ui-page {
     outline:none;
 }
@@ -674,7 +679,6 @@ a.ui-link, a.ui-link-inherit {
 
 .ui-content {
     overflow:visible;
-    overflow-x:hidden;
     border-width:0;
     padding:15px;
 }
@@ -8374,7 +8378,7 @@ position:relative;
 
 #vrn-roadmap-item-pos-lists-zone{
     padding: 179px 0 0 0; 
-	height: 638px;
+	/*height: 638px;*/
 }
 #vrn-roadmap-item-pos-lists-a .ui-li, #vrn-roadmap-item-pos-lists-a .ui-li{
    /* min-height:50px!important;*/
@@ -8525,3 +8529,4 @@ position:relative;
 	width:48px;
 	height:48px;
 }
+

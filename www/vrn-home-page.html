@@ -38,118 +38,122 @@
 		
 			<div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
-	   		<div data-role="content" class="vrn-content" role="main">
-                <div id="vrn-home-div">
-                    <div class="vrn-home-circle">
-                        <div class="vrn-x-line1"></div>
-                        <div class="vrn-x-line2"></div>
-                    </div>
-                    <div class="paragraph" id="vrn-home-user-data">
-                        <p class="black">
-                            <span id="bienvenue">Bienvenue </span>
-                            <span class="bold" id="vrn-home-page-user"></span>
-                        </p>
-                        <p class="brown">
-                            <span id="derniere">Dernière mise à jour :</span>
-                            <span class="bold" id="vrn-home-page-date"></span>
-                            <span id="prep"> à </span>
-                            <span class="bold" id="vrn-home-page-hour"></span>
-                        </p>
-                    </div>
-                </div>    
+	   		<div class="vrn-view">
                 
-                
-                
-	   	<!--	    
-                <div id="vrn-home-div">
-					<div class="vrn-home-circle">
-                        <img src="css/images/vrn/forma1_5.png" />
-					</div>
-					<div class="paragraph" id="vrn-home-user-data">
-
-					</div>
-				</div>        -->
-				<div id="vrn-home-message-data">
-
-                </div>
-
-                <div id="roadmap_create">
-                    <div class="ui-grid-b">
-                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
-                    </div>
-                    <a href="#vrn-roadmap-add-page">
-                        <div class="vrn-tournee-circle">
-                            <p class="vrn-tournee-circle-lnk">
-                                <span class="bold">créer<br>une<br>tournée</span>
+                <div data-role="content" class="vrn-content">
+                    <div id="vrn-home-div">
+                        <div class="vrn-home-circle">
+                            <div class="vrn-x-line1"></div>
+                            <div class="vrn-x-line2"></div>
+                        </div>
+                        <div class="paragraph" id="vrn-home-user-data">
+                            <p class="black">
+                                <span id="bienvenue">Bienvenue </span>
+                                <span class="bold" id="vrn-home-page-user"></span>
+                            </p>
+                            <p class="brown">
+                                <span id="derniere">Dernière mise à jour :</span>
+                                <span class="bold" id="vrn-home-page-date"></span>
+                                <span id="prep"> à </span>
+                                <span class="bold" id="vrn-home-page-hour"></span>
                             </p>
                         </div>
-                        <div id="omulet">
-                            <img src="css/images/vrn/omulet.png" id="om">
-                        </div>
-                    </a>
-                </div>
-                
-               <div id="roadmap_start" style="display:none;">
-                    <div class="ui-grid-b">
-                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
+                    </div>    
+                    
+                    
+                    
+    	   	<!--	    
+                    <div id="vrn-home-div">
+    					<div class="vrn-home-circle">
+                            <img src="css/images/vrn/forma1_5.png" />
+    					</div>
+    					<div class="paragraph" id="vrn-home-user-data">
+    
+    					</div>
+    				</div>        -->
+    				<div id="vrn-home-message-data">
+    
                     </div>
-                    <a href="#" id="vrn-roadmap-start-btn">
-                        <div class="vrn-tournee-circle">
-                            <p class="vrn-tournee-circle-lnk">
-                                <span class="bold">Activer<br>la<br>tournée</span> 
-                            </p>
-                        </div>
-                        <div id="omuletB">
-                            <img src="css/images/vrn/omulet.png" id="omB">
-                        </div>
-                    </a>
-                </div>
-                
-               <div id="roadmap_start_empty" style="display:none;">
-                    <div class="ui-grid-b">
-                        <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
-                    </div>
-                    <a href="#vrn-roadmap-item-page" id="vrn-roadmap-start-empty-btn">
-                        <div class="vrn-tournee-circle">
-                            <p class="vrn-tournee-circle-lnk">
-                                <span class="bold">Ajouter<br>des<br>visites</span> 
-                            </p>
-                        </div>
-                        <div id="omuletB">
-                            <img src="css/images/vrn/omulet.png" id="omB">
-                        </div>
-                    </a>
-                </div>
-            	<div id="roadmap_daily" style="display:none;">
-                    <div id="roadmap_daily_top">
+    
+                    <div id="roadmap_create">
                         <div class="ui-grid-b">
-                            <div class="ui-block-a vrn-dayly-title"><p>Tournée du jour</p></div>
-                            <div class="ui-block-b"><img alt="" src="css/images/vrn/om.png" id="men"> </div>
-                            <div class="ui-block-c">
-                                    <a href="#vrn-roadmap-item-page" id="vrn-visites" data-role="button" data-inline="true" data-transition="slide" data-icon="triangle_right" data-iconpos="right">
-                                        <span>Liste des visites</span>
-                                    </a>
-                            </div>
+                            <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
                         </div>
-
-                        <div id="vrn-journey-progress">  
-                            <div class="vrn-progresbar-l"><img id="vrn-progresbar-l-a" src="css/images/vrn/vrn-progresbar-l-off.png"></div><div id="vrn-progresbar-c" class="vrn-progresbar-c" data-inline="true"><img id="vrn-progresbar-c-a" src="css/images/vrn/vrn-progresbar-c-on.png"><img id="vrn-progresbar-c-b" src="css/images/vrn/vrn-progresbar-c-off.png"></div><div class="vrn-progresbar-r"><img id="vrn-progresbar-r-a" src="css/images/vrn/vrn-progresbar-r-off.png"></div>
-                            <br>
-                            <label for="visite"> <div id="vrn-home-page-visit-counter"></div> </label>
-                              
+                        <a href="#vrn-roadmap-add-page">
+                            <div class="vrn-tournee-circle">
+                                <p class="vrn-tournee-circle-lnk">
+                                    <span class="bold">créer<br>une<br>tournée</span>
+                                </p>
+                            </div>
+                            <div id="omulet">
+                                <img src="css/images/vrn/omulet.png" id="om">
+                            </div>
+                        </a>
+                    </div>
+                    
+                   <div id="roadmap_start" style="display:none;">
+                        <div class="ui-grid-b">
+                            <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
+                        </div>
+                        <a href="#" id="vrn-roadmap-start-btn">
+                            <div class="vrn-tournee-circle">
+                                <p class="vrn-tournee-circle-lnk">
+                                    <span class="bold">Activer<br>la<br>tournée</span> 
+                                </p>
+                            </div>
+                            <div id="omuletB">
+                                <img src="css/images/vrn/omulet.png" id="omB">
+                            </div>
+                        </a>
+                    </div>
+                    
+                   <div id="roadmap_start_empty" style="display:none;">
+                        <div class="ui-grid-b">
+                            <div class="ui-block-a vrn-dayly-title"><p>Tournée</p></div>
+                        </div>
+                        <a href="#vrn-roadmap-item-page" id="vrn-roadmap-start-empty-btn">
+                            <div class="vrn-tournee-circle">
+                                <p class="vrn-tournee-circle-lnk">
+                                    <span class="bold">Ajouter<br>des<br>visites</span> 
+                                </p>
+                            </div>
+                            <div id="omuletB">
+                                <img src="css/images/vrn/omulet.png" id="omB">
+                            </div>
+                        </a>
+                    </div>
+                	<div id="roadmap_daily" style="display:none;">
+                        <div id="roadmap_daily_top">
+                            <div class="ui-grid-b">
+                                <div class="ui-block-a vrn-dayly-title"><p>Tournée du jour</p></div>
+                                <div class="ui-block-b"><img alt="" src="css/images/vrn/om.png" id="men"> </div>
+                                <div class="ui-block-c">
+                                        <a href="#vrn-roadmap-item-page" id="vrn-visites" data-role="button" data-inline="true" data-transition="slide" data-icon="triangle_right" data-iconpos="right">
+                                            <span>Liste des visites</span>
+                                        </a>
+                                </div>
+                            </div>
+    
+                            <div id="vrn-journey-progress">  
+                                <div class="vrn-progresbar-l"><img id="vrn-progresbar-l-a" src="css/images/vrn/vrn-progresbar-l-off.png"></div><div id="vrn-progresbar-c" class="vrn-progresbar-c" data-inline="true"><img id="vrn-progresbar-c-a" src="css/images/vrn/vrn-progresbar-c-on.png"><img id="vrn-progresbar-c-b" src="css/images/vrn/vrn-progresbar-c-off.png"></div><div class="vrn-progresbar-r"><img id="vrn-progresbar-r-a" src="css/images/vrn/vrn-progresbar-r-off.png"></div>
+                                <br>
+                                <label for="visite"> <div id="vrn-home-page-visit-counter"></div> </label>
+                                  
+                            </div>
+                            
+                        </div>
+    
+                        <div id="vrn-details">
+    
                         </div>
                         
                     </div>
-
-                    <div id="vrn-details">
-
-                    </div>
-                    
-                </div>
-		
-					
-			</div>
-			
-    		<div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+    		
+    					
+    			</div>
+            
+            </div>
+    			
+    		<div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
 
 		</div>

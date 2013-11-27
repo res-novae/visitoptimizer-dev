@@ -38,23 +38,27 @@
         
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
-            <div data-role="content" class="vrn-content vrn-pos-filter-top">
-                <div id="vrn-pos-div">
-                    <fieldset class="ui-grid-a" id="ui-grid-a-pos">
-                        <div class="ui-block-a">
-                            <a href="#" id="vrn-filter-pos-button" data-role="button" data-icon="arrow_down" data-iconpos="right">Filtrer les PDV</a>
-                        </div>
-                        <div class="ui-block-b">
-                            <a href="#vrn-pos-edit-page" data-url="?sales_point_id=0" id="vrn-create-pos-button" data-transition="slidedown" data-prefetch="false" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer un PDV</a>
-                        </div>
-                    </fieldset>
-
-                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-pos-list"></ul>
-
+            <div class="vrn-view">
+                
+                <div data-role="content" class="vrn-content vrn-pos-filter-top">
+                    <div id="vrn-pos-div">
+                        <fieldset class="ui-grid-a" id="ui-grid-a-pos">
+                            <div class="ui-block-a">
+                                <a href="#" id="vrn-filter-pos-button" data-role="button" data-icon="arrow_down" data-iconpos="right">Filtrer les PDV</a>
+                            </div>
+                            <div class="ui-block-b">
+                                <a href="#vrn-pos-edit-page" data-url="?sales_point_id=0" id="vrn-create-pos-button" data-transition="slidedown" data-prefetch="false" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer un PDV</a>
+                            </div>
+                        </fieldset>
+    
+                        <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-pos-list"></ul>
+    
+                    </div>
                 </div>
+            
             </div>
             
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
             
             <!-- Pop : Pos detail -->
             <div data-role="popup" id="vrn-pos-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">

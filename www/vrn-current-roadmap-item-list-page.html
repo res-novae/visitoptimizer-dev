@@ -40,42 +40,46 @@
 
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
-            <div data-role="content" class="vrn-content">
-                <div id="vrn-visit-div">
-                    <fieldset class="ui-grid-a" id="ui-grid-visit-cours">
-                        <div class="ui-block-a" id="ui-block-a-visite">
-                            <span id="visite-span">Visite en cours</span>
-                        </div>
-                        <div class="ui-block-b" id="vrn-question-back">
-                            <span id="vrn-revenir-text"><span id="vrn-ques-font">Revenir au</span> Questionnaire</span>
-                           
-                                <a href="questionnaire.html"><img src="css/images/vrn/forma1_3.png" id="om">
-                        </div>
-                    </fieldset>
-                    <fieldset class="ui-grid-a" id="ui-grid-a-visit">
-                        <div class="ui-block-a">
-                            <a href="#" id="vrn-filter-pos-button" data-role="button" data-icon="arrow_down"
-                               data-iconpos="right">Filtrer les PDV</a>
-                        </div>
-                        <div class="ui-block-b">
-                            <a href="pos_details.html" id="vrn-create-pos-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer un PDV</a>
-                        </div>
-                    </fieldset>
-                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-visit-list">      
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="height:69px; top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence</span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">cidut labore </span> <span class="type">- Agence </span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 14</span></span><span class="vrn-name">lorem ipsum</span> <span class="type">- Agence</span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">Dolorem incidut</span> <span class="type">- Agence </span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">incidut labore</span> <span class="type">- Agence</span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">rem incidut labore</span> <span class="type">- Agence </span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">cidut labore</span> <span class="type">- Agence </span> </a></li>
-                        <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence </span> </a></li>
-                    </ul>
-
+            <div class="vrn-view">
+                
+                <div data-role="content" class="vrn-content">
+                    <div id="vrn-visit-div">
+                        <fieldset class="ui-grid-a" id="ui-grid-visit-cours">
+                            <div class="ui-block-a" id="ui-block-a-visite">
+                                <span id="visite-span">Visite en cours</span>
+                            </div>
+                            <div class="ui-block-b" id="vrn-question-back">
+                                <span id="vrn-revenir-text"><span id="vrn-ques-font">Revenir au</span> Questionnaire</span>
+                               
+                                    <a href="questionnaire.html"><img src="css/images/vrn/forma1_3.png" id="om">
+                            </div>
+                        </fieldset>
+                        <fieldset class="ui-grid-a" id="ui-grid-a-visit">
+                            <div class="ui-block-a">
+                                <a href="#" id="vrn-filter-pos-button" data-role="button" data-icon="arrow_down"
+                                   data-iconpos="right">Filtrer les PDV</a>
+                            </div>
+                            <div class="ui-block-b">
+                                <a href="pos_details.html" id="vrn-create-pos-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">Créer un PDV</a>
+                            </div>
+                        </fieldset>
+                        <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-visit-list">      
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="height:69px; top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence</span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 15</span></span><span class="vrn-name">cidut labore </span> <span class="type">- Agence </span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 14</span></span><span class="vrn-name">lorem ipsum</span> <span class="type">- Agence</span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">Dolorem incidut</span> <span class="type">- Agence </span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">incidut labore</span> <span class="type">- Agence</span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 12</span></span><span class="vrn-name">rem incidut labore</span> <span class="type">- Agence </span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">cidut labore</span> <span class="type">- Agence </span> </a></li>
+                            <li data-icon="arrow-r2"><a href="#"><img class="ui-li-icon" alt="" src="./css/images/vrn/forma1.png" style="top:8px;"><span class="date">Dernière visite <span class="bold">J- 11</span></span><span class="vrn-name">Dolorem incidut labore</span> <span class="type">- Agence </span> </a></li>
+                        </ul>
+    
+                    </div>
                 </div>
+                
             </div>
 
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
             
         </div>
     </body>

@@ -39,64 +39,67 @@
 
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
 
-            <!-- Content -->
-            <div data-role="content" class="vrn-content">
-                <div id="vrn-profil-edit-div">
-                    <fieldset class="ui-grid-a" id="ui-grid-a-edit">
-                        <div class="ui-block-a" id="vrn-retour-to-profil">
-                            <a href="#vrn-params-page" id="vrn-return-profil-button" data-transition="slide" data-direction="reverse" data-role="button">retour</a>
-                        </div>
-                        <div class="ui-block-b" id="vrn-edit-profil">
-                            <p>éditer mon profil</p>
-                        </div> 
-                    </fieldset>
-
-                    <div class="ui-grid-a">
-                        <div class="ui-block-a" id="ui-block-profil-part-left">
-                            <!-- <img alt="" src="css/images/vrn/forma4.png" id="vrn-icon-men"> -->  
-                            <div id="profil_circle">
-                                <div class="vrn-profil-circle">
-                                    <div id="profil-small-circle">
-                                    </div>  
-                                    <div class="halfCircle"></div>
+            <div class="vrn-view">
+                
+                <div data-role="content" class="vrn-content">
+                    <div id="vrn-profil-edit-div">
+                        <fieldset class="ui-grid-a" id="ui-grid-a-edit">
+                            <div class="ui-block-a" id="vrn-retour-to-profil">
+                                <a href="#vrn-params-page" id="vrn-return-profil-button" data-transition="slide" data-direction="reverse" data-role="button">retour</a>
+                            </div>
+                            <div class="ui-block-b" id="vrn-edit-profil">
+                                <p>éditer mon profil</p>
+                            </div> 
+                        </fieldset>
+    
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" id="ui-block-profil-part-left">
+                                <!-- <img alt="" src="css/images/vrn/forma4.png" id="vrn-icon-men"> -->  
+                                <div id="profil_circle">
+                                    <div class="vrn-profil-circle">
+                                        <div id="profil-small-circle">
+                                        </div>  
+                                        <div class="halfCircle"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ui-block-b"  id="ui-block-profil-part-right">
-                            <input type="text" name="vrn-params-edit-lastname" id="vrn-params-edit-lastname" placeholder="Nom" value="">
-                            <input type="text" name="vrn-params-edit-firstname" id="vrn-params-edit-firstname" placeholder="Prénom" value="">
-                            <div class="profil-details">
-                                <input type="text" name="vrn-params-edit-email" id="vrn-params-edit-email" placeholder="Adresse email" value="">
-                                <!--<input type="text" name="vrn-params-edit-identif" id="vrn-params-edit-identif" placeholder="Identifiant" value="">-->
-                                <input type="text" name="vrn-params-edit-phone" id="vrn-params-edit-phone" placeholder="téléphone" value="">
-                            </div>
-                            <div class="profil-details">
-                                <select id="vrn-params-edit-profil-zone" name="vrn-params-edit-profil-zone" data-icon="arrow_down">
+                            <div class="ui-block-b"  id="ui-block-profil-part-right">
+                                <input type="text" name="vrn-params-edit-lastname" id="vrn-params-edit-lastname" placeholder="Nom" value="">
+                                <input type="text" name="vrn-params-edit-firstname" id="vrn-params-edit-firstname" placeholder="Prénom" value="">
+                                <div class="profil-details">
+                                    <input type="text" name="vrn-params-edit-email" id="vrn-params-edit-email" placeholder="Adresse email" value="">
+                                    <!--<input type="text" name="vrn-params-edit-identif" id="vrn-params-edit-identif" placeholder="Identifiant" value="">-->
+                                    <input type="text" name="vrn-params-edit-phone" id="vrn-params-edit-phone" placeholder="téléphone" value="">
+                                </div>
+                                <div class="profil-details">
+                                    <select id="vrn-params-edit-profil-zone" name="vrn-params-edit-profil-zone" data-icon="arrow_down">
+                                        <option value="option0">
+                                            ZONE      
+                                        </option>       
+                                    </select>
+                                </div>
+                                <select id="vrn-params-edit-profil-language" name="vrn-params-edit-profil-language" data-icon="arrow_down">
                                     <option value="option0">
-                                        ZONE      
+                                        LANGUE     
                                     </option>       
                                 </select>
+                                <a href="#" id="vrn-params-edit-enregistrer" data-role="button" data-icon="enregistrer_white" data-iconpos="right" data-inline="true">Enregistrer</a>
+    
                             </div>
-                            <select id="vrn-params-edit-profil-language" name="vrn-params-edit-profil-language" data-icon="arrow_down">
-                                <option value="option0">
-                                    LANGUE     
-                                </option>       
-                            </select>
-                            <a href="#" id="vrn-params-edit-enregistrer" data-role="button" data-icon="enregistrer_white" data-iconpos="right" data-inline="true">Enregistrer</a>
-
                         </div>
+                        <div id="pass_details">    
+                           <!-- <a href="#" id="vrn-change-pass" data-role="button" data-icon="change-pass"
+                               data-iconpos="right">Changer son mot de passe</a>-->
+                            <a href="#vrn-login-page" id="vrn-connect-button" data-transition="slide" data-role="button" data-icon="connect"
+                               data-iconpos="right">Se connecter avec un autre compte</a>
+                        </div>               
                     </div>
-                    <div id="pass_details">    
-                       <!-- <a href="#" id="vrn-change-pass" data-role="button" data-icon="change-pass"
-                           data-iconpos="right">Changer son mot de passe</a>-->
-                        <a href="#vrn-login-page" id="vrn-connect-button" data-transition="slide" data-role="button" data-icon="connect"
-                           data-iconpos="right">Se connecter avec un autre compte</a>
-                    </div>               
                 </div>
+            
             </div>
 
             <!-- Footer -->
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
             
             <!-- pop : error -->
             <div data-role="popup" data-url="vrn-form-item-error-popup" id="vrn-form-item-error-popup" data-overlay-theme="a" data-theme="c" data-dismissible="true" class="ui-corner-all">

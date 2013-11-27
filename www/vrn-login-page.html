@@ -38,49 +38,51 @@
             <!-- Header, filled by app.controller -->
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
             
-            <!-- Content -->
-            <div data-role="content" class="vrn-content ui-content" role="main">
+            <div class="vrn-view">
                 
-                <div id="vrn-login-div">
-                    <!-- Login and password -->
-                    <form>
-                        <div class="vrn-x-circle">
-                            <div class="vrn-x-line1"></div>
-                            <div class="vrn-x-line2"></div>
-                        </div>
-                        <div id="big_circle">
-                            <div class="vrn-credentials vrn-circle">
-                                <div class="vrn-user-pass">
-                                    <!-- Username -->
-                                    <input type="text" name="username" id="vrn-username" placeholder="LOGIN" value="">
-                                    <!-- Password -->
-                                    <input type="text" name="password" id="vrn-password" placeholder="MOT DE PASSE" value="">
-                                </div>
-                                <!-- Recover password and remember me -->
-                                <div class="ui-grid-a">
-                                    <div class="ui-block-a">
-                                        <a href="#vrn-recover-password-popup" data-rel="popup" data-transition="slideup" data-position-to="origin" data-role="none" data-inline="true" data-mini="true" data-shadow="false" id="vrn-forgot-password">Mot de passe oublié &gt;&gt;</a>
+                <div data-role="content" class="vrn-content ui-content" role="main">
+                    
+                    <div id="vrn-login-div">
+                        <!-- Login and password -->
+                        <form>
+                            <div class="vrn-x-circle">
+                                <div class="vrn-x-line1"></div>
+                                <div class="vrn-x-line2"></div>
+                            </div>
+                            <div id="big_circle">
+                                <div class="vrn-credentials vrn-circle">
+                                    <div class="vrn-user-pass">
+                                        <!-- Username -->
+                                        <input type="text" name="username" id="vrn-username" placeholder="LOGIN" value="">
+                                        <!-- Password -->
+                                        <input type="text" name="password" id="vrn-password" placeholder="MOT DE PASSE" value="">
                                     </div>
-                                    <div class="ui-block-b">
-                                        <fieldset data-role="controlgroup" data-iconpos="right" data-inline="true" data-mini="true">
-                                            <!-- Label for remember me -->
-                                            <label for="vrn-remember-me" id="vrn-remember-me-label" class="index-gray-text">Souvenir de moi</label> 
-                                            <input type="checkbox" data-role="none" name="vrn-remember-me" data-inline="true" data-mini="true" id="vrn-remember-me">
-                                        </fieldset>
+                                    <!-- Recover password and remember me -->
+                                    <div class="ui-grid-a">
+                                        <div class="ui-block-a">
+                                            <a href="#vrn-recover-password-popup" data-rel="popup" data-transition="slideup" data-position-to="origin" data-role="none" data-inline="true" data-mini="true" data-shadow="false" id="vrn-forgot-password">Mot de passe oublié &gt;&gt;</a>
+                                        </div>
+                                        <div class="ui-block-b">
+                                            <fieldset data-role="controlgroup" data-iconpos="right" data-inline="true" data-mini="true">
+                                                <!-- Label for remember me -->
+                                                <label for="vrn-remember-me" id="vrn-remember-me-label" class="index-gray-text">Souvenir de moi</label> 
+                                                <input type="checkbox" data-role="none" name="vrn-remember-me" data-inline="true" data-mini="true" id="vrn-remember-me">
+                                            </fieldset>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Login button -->
-                                <div class="ui-grid-solo">
-                                    <div class="ui-block-a vrn-login-button">
-                                        <a href="#" id="vrn-login" data-role="button" data-transition="slidedown" data-icon="login" data-iconpos="right" data-theme="r">SE CONNECTER</a>
+                                    <!-- Login button -->
+                                    <div class="ui-grid-solo">
+                                        <div class="ui-block-a vrn-login-button">
+                                            <a href="#" id="vrn-login" data-role="button" data-transition="slidedown" data-icon="login" data-iconpos="right" data-theme="r">SE CONNECTER</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+    
                 </div>
-
-            </div>
+           </div>     
             
            <!-- canceleable login popup -->
             <div data-role="popup" id="vrn-login-popup" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all">

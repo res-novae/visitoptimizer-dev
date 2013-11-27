@@ -38,63 +38,67 @@
 
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
 
-            <fieldset class="ui-grid-a" id="ui-grid-a-roadmap">
-                <div id="vrn-test">
-                    <div class="ui-block-a" id="vrn-filter-roadmap-div">
-                        <div id="try">
-                            <a href="#" id="vrn-filter-roadmap-button" data-role="button" data-icon="arrow_down"
-                               data-iconpos="right" data-inline="true" >Filtrer les tournées</a>
-                        </div>
-                        <div id="collapsable-header" class="dn">   
-                            <p>Par Date:</p>
-                            <fieldset class="ui-grid-a">
-                                <div class="ui-block-a" id="vrn-filter-block-a">
-                                    <input id="vrn-filter-roadmap-start-date" type="date" data-clear-btn="false" name="vrn-filter-roadmap-start-date">
-                                </div>
-                                <div class="ui-block-b" id="vrn-filter-block-b">
-                                    <label for="vrn-filter-roadmap-end-date" id="vrn-filter-roadmap-au">au</label>
-                                    <input id="vrn-filter-roadmap-end-date" type="date" data-clear-btn="true" name="vrn-filter-roadmap-end-date">
-                                </div>
-                            </fieldset>
-                            <div data-role="fieldcontain">
-                                <label for="vrn-filter-roadmap-area" id="label-secteur">Par Secteur:</label>
-                                <select id="vrn-filter-roadmap-area" name="vrn-filter-roadmap-area" data-icon="arrow_down">
-                                    <option value="option0">
-                                        TOUTES LES ZONES       
-                                    </option>       
-                                </select>
+            <div class="vrn-view">
+                
+                <fieldset class="ui-grid-a" id="ui-grid-a-roadmap">
+                    <div id="vrn-test">
+                        <div class="ui-block-a" id="vrn-filter-roadmap-div">
+                            <div id="try">
+                                <a href="#" id="vrn-filter-roadmap-button" data-role="button" data-icon="arrow_down"
+                                   data-iconpos="right" data-inline="true" >Filtrer les tournées</a>
                             </div>
-                            <fieldset class="ui-grid-a">
-                                <div class="ui-block-a" id="supprimer-filtres">
-                                    <a href="#" id="vrn-filter-roadmap-clear-button">Supprimer tous les filtres >></a>
+                            <div id="collapsable-header" class="dn">   
+                                <p>Par Date:</p>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" id="vrn-filter-block-a">
+                                        <input id="vrn-filter-roadmap-start-date" type="date" data-clear-btn="false" name="vrn-filter-roadmap-start-date">
+                                    </div>
+                                    <div class="ui-block-b" id="vrn-filter-block-b">
+                                        <label for="vrn-filter-roadmap-end-date" id="vrn-filter-roadmap-au">au</label>
+                                        <input id="vrn-filter-roadmap-end-date" type="date" data-clear-btn="true" name="vrn-filter-roadmap-end-date">
+                                    </div>
+                                </fieldset>
+                                <div data-role="fieldcontain">
+                                    <label for="vrn-filter-roadmap-area" id="label-secteur">Par Secteur:</label>
+                                    <select id="vrn-filter-roadmap-area" name="vrn-filter-roadmap-area" data-icon="arrow_down">
+                                        <option value="option0">
+                                            TOUTES LES ZONES       
+                                        </option>       
+                                    </select>
                                 </div>
-                                <div class="ui-block-b" id="buttons">
-                                    <a href="#" id="vrn-filter-roadmap-apply-button" data-role="button" data-inline="true">Filtrer</a>
-                                    <a href="#" id="vrn-filter-roadmap-cancel-button" data-role="button" data-inline="true">Annuler</a>   
-                                </div>
-
-                            </fieldset>
+                                <fieldset class="ui-grid-a">
+                                    <div class="ui-block-a" id="supprimer-filtres">
+                                        <a href="#" id="vrn-filter-roadmap-clear-button">Supprimer tous les filtres >></a>
+                                    </div>
+                                    <div class="ui-block-b" id="buttons">
+                                        <a href="#" id="vrn-filter-roadmap-apply-button" data-role="button" data-inline="true">Filtrer</a>
+                                        <a href="#" id="vrn-filter-roadmap-cancel-button" data-role="button" data-inline="true">Annuler</a>   
+                                    </div>
+    
+                                </fieldset>
+                            </div>
+                        </div>
+    
+                        <script type="text/javascript">
+    
+       
+                        </script> 
+                        <div class="ui-block-b" id="vrn-creer-tournee-div">
+                            <a href="#vrn-roadmap-add-page" id="vrn-create-roadmap-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus" data-inline="true">Créer une tournée</a>
                         </div>
                     </div>
-
-                    <script type="text/javascript">
-
-   
-                    </script> 
-                    <div class="ui-block-b" id="vrn-creer-tournee-div">
-                        <a href="#vrn-roadmap-add-page" id="vrn-create-roadmap-button" data-role="button" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus" data-inline="true">Créer une tournée</a>
+                </fieldset>
+    
+                <!-- Content -->
+                <div data-role="content" class="vrn-content vrn-roadmap-filter-top">
+                    <div id="vrn-roadmap-div">               
+                        <ul data-role="listview" id="vrn-roadmap-list"></ul>      
                     </div>
                 </div>
-            </fieldset>
 
-            <!-- Content -->
-            <div data-role="content" class="vrn-content vrn-roadmap-filter-top">
-                <div id="vrn-roadmap-div">               
-                    <ul data-role="listview" id="vrn-roadmap-list"></ul>      
-                </div>
             </div>
-
-            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed"></div>
+            
+            <div data-role="footer" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
 
         </div>
     </body>

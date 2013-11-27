@@ -180,6 +180,15 @@ app.controller = (function () {
             //alert($.mobile.activePage.attr('id'));
             //alert('ok2');
             //alert(dbExist);
+            
+            // taille de la vue
+            $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 - 68 ) + 'px' );
+            $(".vrn-view").css( "width", $(window).width() + 'px' );
+            $(window).resize(function() {
+                $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 - 68 ) + 'px' );
+                $(".vrn-view").css( "width", $(window).width() + 'px' );
+            });
+            
             if(dbExist == 'yes' || $.mobile.activePage.attr('id') == 'vrn-login-page') {
                 // Login Panel //
                 if($.mobile.activePage.attr('id') == 'vrn-login-page'){

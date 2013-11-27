@@ -39,44 +39,39 @@
 
             <div data-role="header" data-id="vrn-header-nav" data-position="fixed" data-tap-toggle="false"> </div>
 
-            <div data-role="content" class="vrn-content" id="vrn-roadmap-closing-content">
-                <section id="additional-header-roadmap-closing">
-                    <fieldset class="ui-grid-a" id="ui-grid-roadmap-closing-a">
-                        <div class="ui-block-a">
-                            <a href="#vrn-roadmap-page" id="vrn-roadmap-back-to-roadmap-button" data-transition="slide" data-direction="reverse" data-role="button">retour</a>
-                        </div>
-                        <div class="ui-block-b" id="ui-existent-roadmap-b">
-                            <span id="vrn-roadmap-item-title">Tournée du</span><br/>
-                            <span id="vrn-roadmap-item-date"></span>
-                        </div>
-                    </fieldset> 
-                    <fieldset class="ui-grid-a" id="ui-grid-creation">
-                        <div class="ui-block-a" id="ui-block-no-pdv">
-                            <div id="no-pdv-text">Nbr de Points De Vente</div> <input id="vrn-roadmap-item-no-pdv" type="text" data-clear-btn="false" name="vrn-roadmap-item-no-pdv" placeholder="0" class="centerText">
-                            
-                        </div>
-                        <div class="ui-block-b" id="ui-block-add-pdv">
-                            <a href="#vrn-roadmap-item-pos-add-pop" id="vrn-roadmap-item-pos-add-button" data-transition="pop" data-rel="popup" data-position-to="window" data-role="button" data-inline="true" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">  Ajouter un point de vente</a>
-                        </div>
-                    </fieldset> 
-                </section>
-                <div id="vrn-roadmap-item-pos-lists-zone">
-                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-a"> </ul>
-                    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-b"> </ul>
-                </div>
-                <!--
-                <div id="vrn-roadmap-closing-div">
-                    
-                    <div id="vrn-roadmap-closing-circle">
-
-                        <a href="#" data-shadow="false" data-theme="reset" id="vrn-cloturer-tournee-button" data-role="button"><img id="half-button-tournee" src="css/images/vrn/forma2_5.png" width="285" height="149">   </a>
-                        <span id="vrn-cloturer-roadmap-text" class="bold">clôturer <br/><span class="no_bold">la tournée</span>
+            <div class="vrn-view">
+                
+               <div data-role="content" class="vrn-content" id="vrn-roadmap-closing-content">
+                    <section id="additional-header-roadmap-closing">
+                        <fieldset class="ui-grid-a" id="ui-grid-roadmap-closing-a">
+                            <div class="ui-block-a">
+                                <a href="#vrn-roadmap-page" id="vrn-roadmap-back-to-roadmap-button" data-transition="slide" data-direction="reverse" data-role="button">retour</a>
+                            </div>
+                            <div class="ui-block-b" id="ui-existent-roadmap-b">
+                                <span id="vrn-roadmap-item-title">Tournée du</span><br/>
+                                <span id="vrn-roadmap-item-date"></span>
+                            </div>
+                        </fieldset> 
+                        <fieldset class="ui-grid-a" id="ui-grid-creation">
+                            <div class="ui-block-a" id="ui-block-no-pdv">
+                                <div id="no-pdv-text">Nbr de Points De Vente</div> <input id="vrn-roadmap-item-no-pdv" type="text" data-clear-btn="false" name="vrn-roadmap-item-no-pdv" placeholder="0" class="centerText">
+                                
+                            </div>
+                            <div class="ui-block-b" id="ui-block-add-pdv">
+                                <a href="#vrn-roadmap-item-pos-add-pop" id="vrn-roadmap-item-pos-add-button" data-transition="pop" data-rel="popup" data-position-to="window" data-role="button" data-inline="true" data-icon="plus" data-iconpos="right" data-theme="customize-icon-plus">  Ajouter un point de vente</a>
+                            </div>
+                        </fieldset> 
+                    </section>
+                    <div id="vrn-roadmap-item-pos-lists-zone">
+                        <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-a"> </ul>
+                        <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a" id="vrn-roadmap-item-pos-lists-b"> </ul>
                     </div>
+    
                 </div>
-                -->
+            
             </div>
 
-            <div data-role="footer" id="vrn-footer-nav-roadmap-item" data-id="vrn-footer-nav" data-position="fixed"></div>
+            <div data-role="footer" id="vrn-footer-nav-roadmap-item" data-id="vrn-footer-nav" data-position="fixed" data-tap-toggle="false"></div>
 
             <!-- Pop : Pos detail -->
             <div data-role="popup" id="vrn-roadmap-item-pos-detail-pop" data-overlay-theme="a" data-theme="c" data-dismissible="true">
