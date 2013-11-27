@@ -2168,6 +2168,10 @@ ol.ui-listview .ui-li-jsnumbering:before {
     left:10px;
     top:0.8em;
 }
+.ui-listview .ui-li-iconB {
+    float:left;
+    margin: 0 15px 0 15px;
+}
 
 .ui-li-thumb,.ui-listview .ui-li-icon,.ui-li-content {
     float:left;
@@ -4411,8 +4415,8 @@ p.brown{
     white-space:normal;
     height:45px; 
     margin-bottom:0px;
-    margin-top:12px;
-    margin-left:-30px;
+    margin-top:0px;
+    /*margin-left:-30px;*/
     width:100%;
 }
 /***remove the padding made by ui-content from inform only*****/
@@ -4428,6 +4432,8 @@ p.brown{
     font-size:1.438em;
     font-weight: normal;
    /* line-height: 2;*/
+  	margin-bottom:10px;
+  	display:inline-block;
 }
 .text{
     color:#919396;
@@ -8530,3 +8536,8 @@ position:relative;
 	height:48px;
 }
 
+.inform-detail-link{
+	
+}	
+.ui-li-has-thumb .ui-btn-inner a.inform-detail-link, .ui-li-static.ui-li-has-thumb {
+padding-left: 50px;

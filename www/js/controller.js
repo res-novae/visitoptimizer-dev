@@ -824,7 +824,7 @@ app.controller = (function () {
                      title = "ACTION";
                 }
                 if(messages[i].priority == '1'){
-                     var ico_priority = '<img class="ui-li-icon" alt="" src="./css/images/vrn/star.png">';
+                     var ico_priority = '<img class="ui-li-iconB" alt="" src="./css/images/vrn/star.png">';
                 } else var ico_priority = '';
                 if(messages[i].read_date == null) messages[i].read_date='';
                 if(messages[i].read_date != '' && messages[i].attachment == ''){
@@ -844,9 +844,9 @@ app.controller = (function () {
                  '  <a href="#vrn-inform-detail-pop" data-url="?id_parent_pop=vrn-inform-detail-pop&id='+messages[i].id_message+'" id="vrn-inform-message-'+messages[i].id_message+'" class="inform-detail-link" data-transition="pop" data-inline="true" data-rel="popup">'+
                            ico_priority+
                      '      <span class="min_color">'+messages[i].send_date+'</span>'+
-                     '      <span class="Information">'+title+'</span> '+
+                     '      <div class="Information">'+title+'</div> '+
                      '      <span class="text">De </span><span class="text_bold"> '+messages[i].lastname+'</span> '+
-                     '      <p class="myParagraph">'+messages[i].content+'</p> '+
+                     '      <p class="myParagraph ui-li-desc">'+messages[i].content+'</p> '+
                      '  </a>'+
                      '</li>';
             }
@@ -2955,20 +2955,12 @@ app.controller = (function () {
     controller.getHeader = function() {
         app.log("# app.controller : getHeader");
         
-        var nav = navigator.userAgent; 
-        var ischrome = nav.indexOf("Chrome") ? true : false;
-        if (ischrome) var network = "<a href=\"#vrn-sync-ar-page\"><img src=\"css/images/vrn/on_button.png\"/></a>";
+        
+        if (navigator.onLine) var network = "<a href=\"#vrn-sync-ar-page\"><img src=\"css/images/vrn/on_button.png\"/></a>";
         else{
             if(app.testNetwork() != Connection.NONE) var network = "<img src=\"css/images/vrn/on_button.png\"/>";
             else var network = "<img src=\"css/images/vrn/off_button.png\"/>";
         }
-        
-        if (navigator.onLine){
-               // alert("Internet connection is up!");
-            } else  {
-               // alert("Internet connection is down!");
-            }
-
         
         //alert(app.authenticatedInThisSession);
         if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
