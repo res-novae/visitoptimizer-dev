@@ -529,7 +529,7 @@ a.ui-link, a.ui-link-inherit {
 }
 .vrn-view{
 	display:block;
-	overflow: scroll;
+	overflow: auto;
 }
 .ui-page {
     outline:none;
@@ -3358,7 +3358,7 @@ body, .vrn-page {
 	padding: 0;
 	margin: 7px 8px 0 4px !important;
 }
-#vrn-network{
+.vrn-network{
 	float: right;
 	margin: 5px 4px 5px 4px !important;
 }
@@ -3370,7 +3370,7 @@ body, .vrn-page {
 	float: right;
 	margin: 2px 15px 0 4px !important;
 }
-#vrn-network img{
+.vrn-network img{
 	width:53px;
 	height:20px;
 }
@@ -5208,6 +5208,9 @@ position:absolute;
 }
 /****set the background color for pos(creation mode) page****/
 #vrn-pos-details-page, #vrn-pos-edit-page, #vrn-roadmap-item-pos-edit-page{
+    background:#939598!important;
+}
+#vrn-pos-details-page .vrn-content, #vrn-pos-edit-page .vrn-content, #vrn-roadmap-item-pos-edit-page .vrn-content{
     background:#939598!important;
 }
 /****align textarea description with the input text*****/

@@ -12,8 +12,10 @@ app.controller = (function () {
         pos,
         daily_roadmap,
         current_params_url = [],
-        preload;
-
+        preload,
+        network_state,
+        sync_mode,
+        sync_state;
     //controller.ajaxAsyncTask = new app.utils.AjaxAsyncTask(false);
     //controller.webservice = new app.webservice.init();
     //$( document ).unbind( "pagechange");
@@ -260,7 +262,7 @@ app.controller = (function () {
                 // POS //
                 if($.mobile.activePage.attr('id') == 'vrn-pos-page'){
                     controller.showVrnPosPage(e,data);
-                    if(document.getElementById("vrn-pos-edit-page") == null) $.mobile.loadPage("vrn-pos-edit-page.html",true);
+                    $.mobile.loadPage("vrn-pos-edit-page.html",true);
                 }
                 if($.mobile.activePage.attr('id') == 'vrn-pos-edit-page'){
                     //vrn-pos-edit-page&sales_point_id
@@ -939,6 +941,8 @@ app.controller = (function () {
         app.repository.checkMessageStatus(id_message,datetimeNow,
             function() {
                 app.log("checkMessageStatus changed : "+id_message);
+                
+                controller.syncUpDownData(app.log('end sync'));
             }
         );
     };
@@ -1115,16 +1119,25 @@ app.controller = (function () {
             var r1 = app.repository.addRoadmap(data);
             r1.done(function(data) { });
             $.when(r1).done(function(data) {
-                // goto road map item
-                current_params_url = [];
-                current_params_url['id_parent'] = "vrn-roadmap-item-page";
-                current_params_url['roadmap_id'] = eve;
-                $.mobile.changePage("#vrn-roadmap-item-page", {
-                    transition:"slide",
-                    changeHash:false,
-                    reverse:true,
-                    reload:true
-                 });
+                
+                current_roadmap_id = eve;
+                
+                controller.syncUpDownData(function (){
+                        
+                    app.log('end sync');
+                
+                    // goto road map item
+                    current_params_url = [];
+                    current_params_url['id_parent'] = "vrn-roadmap-item-page";
+                    current_params_url['roadmap_id'] = current_roadmap_id;
+                    alert("eve:"+eve);
+                    $.mobile.changePage("#vrn-roadmap-item-page", {
+                        transition:"slide",
+                        changeHash:false,
+                        reverse:true,
+                        reload:true
+                     });
+                });    
             });
         }else{
             // return error pop
@@ -1648,6 +1661,8 @@ app.controller = (function () {
                         
                     }
                     
+                    controller.syncUpDownData(app.log('end sync'));
+                    
                 });
                 
 			}
@@ -2157,78 +2172,89 @@ app.controller = (function () {
         
         $.mobile.navigate( "#vrn-roadmap-item-pos-edit-page" );
         
+        var sp_types;
+        var frequencies;
+        var microzones;
+        var pos;
         controller.showVrnHeader();
         //alert(id_sales_point);
         var pos_id = id_sales_point;
         var r1 = app.repository.getPosTypes();
         r1.done(function(spt) {
-            var sp_types = spt;
+            sp_types = spt;
+            
         });    
         var r2 = app.repository.getFrequencies();
         r2.done(function(f) {
-            var frequencies = f;
+            frequencies = f;
         });
         var r3 = app.repository.getMicroZones();
         r3.done(function(mzs) {
-            var microzones = mzs;
+            microzones = mzs;
         });
+        var r4 = app.repository.getPosItem(id_sales_point);
+        r4.done(function(p) {
+            pos = p;
+        });
+        $.when(r1, r2, r3, r4).done(function(spt, f, mzs, p) { 
+            sp_types = spt;
+            frequencies = f;
+            microzones = mzs;
+            pos = p;
+            alert("uu:"+pos.id_sales_point);
         
-        $.when(r1, r2, r3).done(function(sp_types, frequencies, microzones) {    
-            var r4 = app.repository.getPosItem(id_sales_point);
-            r4.done(function(pos) {
-                $("#vrn-roadmap-item-pos-edit-title").html("MODIFIER UN POINT DE VENTE");
-                $("#vrn-roadmap-item-pos-id").val(pos.id_sales_point);
-                if(pos.sync_status == "I") $("#vrn-roadmap-item-pos-sync-status").val('I');
-                else $("#vrn-roadmap-item-pos-sync-status").val('U');
-                $("#vrn-roadmap-item-pos-name").val(pos.name); 
-                var select = $('#vrn-roadmap-item-pos-type');
-                if(select.prop) {
-                  var options = select.prop('options');
-                }else {
-                  var options = select.attr('options');
-                }
-                $('option', select).remove();
-                for (var i=0;i<sp_types.length;i++){ 
-                    options[options.length] = new Option(sp_types[i].name,sp_types[i].id_type);
-                }
-                select.val(pos.type_id);           
-                $("#vrn-roadmap-item-pos-street").val(pos.street); 
-                $("#vrn-roadmap-item-pos-cp").val(pos.postal_code); 
-                $("#vrn-roadmap-item-pos-city").val(pos.city); 
-                $("#vrn-roadmap-item-pos-contact-name").val(pos.contact_name); 
-                $("#vrn-roadmap-item-pos-telephone").val(pos.phone_number); 
-                $("#vrn-roadmap-item-pos-mail").val(pos.email); 
-                $("#vrn-roadmap-item-pos-descriptif").val(pos.description); 
-                $("#vrn-roadmap-item-pos-gps_latitude").val(pos.gps_latitude); 
-                $("#vrn-roadmap-item-pos-gps_longitude").val(pos.gps_longitude); 
-                var selectb = $('#vrn-roadmap-item-pos-frequency');
-                if(selectb.prop) {
-                  var options = selectb.prop('options');
-                }else {
-                  var options = selectb.attr('options');
-                }
-                $('option', selectb).remove();
-                for (var i=0;i<frequencies.length;i++){ 
-                    options[options.length] = new Option(frequencies[i].label,frequencies[i].id_frequency);
-                }
-                selectb.val(pos.frequency_id);           
-                var selectc = $('#vrn-roadmap-item-pos-microzone');
-                if(selectc.prop) {
-                  var options = selectc.prop('options');
-                }else {
-                  var options = selectc.attr('options');
-                }
-                $('option', selectc).remove();
-                for (var i=0;i<microzones.length;i++){ 
-                    options[options.length] = new Option(microzones[i].name,microzones[i].id_item);
-                }
-                selectb.val(pos.microzone_id);           
-                
-            //    Manque les champs suivant :
-            //    results.rows.item(i).last_visit_id,
-            //    results.rows.item(i).local_id
+            $("#vrn-roadmap-item-pos-edit-title").html("MODIFIER UN POINT DE VENTE");
+            $("#vrn-roadmap-item-pos-id").val(pos.id_sales_point);
+            if(pos.sync_status == "I") $("#vrn-roadmap-item-pos-sync-status").val('I');
+            else $("#vrn-roadmap-item-pos-sync-status").val('U');
+            $("#vrn-roadmap-item-pos-name").val(pos.name); 
+            var select = $('#vrn-roadmap-item-pos-type');
+            if(select.prop) {
+              var options = select.prop('options');
+            }else {
+              var options = select.attr('options');
+            }
+            $('option', select).remove();
+            for (var i=0;i<sp_types.length;i++){ 
+                options[options.length] = new Option(sp_types[i].name,sp_types[i].id_type);
+            }
+            select.val(pos.type_id);           
+            $("#vrn-roadmap-item-pos-street").val(pos.street); 
+            $("#vrn-roadmap-item-pos-cp").val(pos.postal_code); 
+            $("#vrn-roadmap-item-pos-city").val(pos.city); 
+            $("#vrn-roadmap-item-pos-contact-name").val(pos.contact_name); 
+            $("#vrn-roadmap-item-pos-telephone").val(pos.phone_number); 
+            $("#vrn-roadmap-item-pos-mail").val(pos.email); 
+            $("#vrn-roadmap-item-pos-descriptif").val(pos.description); 
+            $("#vrn-roadmap-item-pos-gps_latitude").val(pos.gps_latitude); 
+            $("#vrn-roadmap-item-pos-gps_longitude").val(pos.gps_longitude); 
+            var selectb = $('#vrn-roadmap-item-pos-frequency');
+            if(selectb.prop) {
+              var options = selectb.prop('options');
+            }else {
+              var options = selectb.attr('options');
+            }
+            $('option', selectb).remove();
+            for (var i=0;i<frequencies.length;i++){ 
+                options[options.length] = new Option(frequencies[i].label,frequencies[i].id_frequency);
+            }
+            selectb.val(pos.frequency_id);           
+            var selectc = $('#vrn-roadmap-item-pos-microzone');
+            if(selectc.prop) {
+              var options = selectc.prop('options');
+            }else {
+              var options = selectc.attr('options');
+            }
+            $('option', selectc).remove();
+            for (var i=0;i<microzones.length;i++){ 
+                options[options.length] = new Option(microzones[i].name,microzones[i].id_item);
+            }
+            selectb.val(pos.microzone_id);           
             
-            });
+        //    Manque les champs suivant :
+        //    results.rows.item(i).last_visit_id,
+        //    results.rows.item(i).local_id
+         
 
         });
         
@@ -2455,6 +2481,8 @@ app.controller = (function () {
         app.log("controller.showVrnPosEditPage : "+sales_point_id , 'wip');
 
         controller.showVrnHeader();
+        controller.showVrnFooter('vrn-pos-page');
+        
         //alert(sales_point_id);
         var pos_id = sales_point_id;
         var r1 = app.repository.getPosTypes();
@@ -2631,14 +2659,21 @@ app.controller = (function () {
                 var data = [ $('#vrn-pos-id').val(), $('#vrn-pos-name').val(), $('#vrn-pos-street').val(), $('#vrn-pos-cp').val(), $('#vrn-pos-city').val(), $('#vrn-pos-contact-name').val(), $('#vrn-pos-email').val(), $('#vrn-pos-telephone').val(), $('#vrn-pos-type').val() , localStorage.getItem( "current_user_id"), $('#vrn-pos-description').val(), $('#vrn-pos-gps_latitude').val(), $('#vrn-pos-gps_longitude').val(), $('#vrn-pos-microzone').val(), $('#vrn-pos-frequency').val() , 0, $('#vrn-pos-sync-status').val(), $('#vrn-pos-id').val() ];
                 var r1 = app.repository.editPosSave(data);
             }
+            
             r1.done(function(pos) {
-               $.mobile.changePage("#vrn-pos-page", {
-                    transition:"slide",
-                    changeHash:false,
-                    reverse:false,
-                    reload:true
+                controller.syncUpDownData(function (){
+                    app.log('end sync');
+                
+                    $.mobile.changePage("#vrn-pos-page", {
+                         transition:"slide",
+                         changeHash:false,
+                         reverse:false,
+                         reload:true
+                      });
                  });
             });
+            
+
         }else{
             // return error pop
             $('#vrn-pos-edit-error-popup').popup();
@@ -2933,6 +2968,9 @@ app.controller = (function () {
             
             var r1 = app.repository.editParamsSave(data);
             
+            controller.syncUpDownData(app.log('end sync'));
+            
+            
             r1.done(function(pos) {
                 $.mobile.changePage("#vrn-params-page", {
                     transition:"slide",
@@ -2955,12 +2993,29 @@ app.controller = (function () {
     controller.getHeader = function() {
         app.log("# app.controller : getHeader");
         
-        
-        if (navigator.onLine) var network = "<a href=\"#vrn-sync-ar-page\"><img src=\"css/images/vrn/on_button.png\"/></a>";
-        else{
-            if(app.testNetwork() != Connection.NONE) var network = "<img src=\"css/images/vrn/on_button.png\"/>";
-            else var network = "<img src=\"css/images/vrn/off_button.png\"/>";
+        if(sync_state == 1){
+            var network = "<img src=\"css/images/vrn/sync.gif\"/ class=\"sync_ico\">";
+        }else if(sync_mode == 1){
+            sync_mode = 1;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button_grey.png\"/></a>";
+            }
+        }else{
+            app.log("# app.controller : changeSyncMode : on");
+            sync_mode = 0;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button_grey.png\"/></a>";
+            }
         }
+        $(".vrn-network").html(network);
         
         //alert(app.authenticatedInThisSession);
         if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
@@ -2971,7 +3026,7 @@ app.controller = (function () {
         else var settings = "";
         var header = "  <div id=\"vrn-help\">"+help+"</div>"
         + " <div id=\"vrn-settings\">"+settings+"</div>"
-        + " <div id=\"vrn-network\">"+network+"</div>"
+        + " <div class=\"vrn-network\">"+network+"</div>"
         + " <div id=\"vrn-company\">Orange</div>"
         + ""+title+"";
         return header;
@@ -3231,9 +3286,134 @@ app.controller = (function () {
         });       
     };
     */
-   
-    controller.syncUpdateData = function(doneCallback) {
+    controller.changeSyncMode = function() { 
+        if(sync_state == 1){
+            var network = "<img src=\"css/images/vrn/sync.gif\"/ class=\"sync_ico\">";
+        }else if(sync_mode == 1){
+            app.log("# app.controller : changeSyncMode : off");
+            sync_mode = 0;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button_grey.png\"/></a>";
+            }
+        }else{
+            app.log("# app.controller : changeSyncMode : on");
+            sync_mode = 1;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button_grey.png\"/></a>";
+            }
+        }
+        $(".vrn-network").html(network);
+    }
+    
+    controller.changeSyncState = function(state) {
+        sync_state = state;
+        if(sync_state == 1){
+            var network = "<img src=\"css/images/vrn/sync.gif\"/ class=\"sync_ico\">";
+        }else if(sync_mode == 1){
+            sync_mode = 1;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button_grey.png\"/></a>";
+            }
+        }else{
+            app.log("# app.controller : changeSyncMode : on");
+            sync_mode = 0;
+            if (navigator.onLine) {
+                network_state = 1;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button.png\"/></a>";
+            }else{
+                network_state = 0;
+                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button_grey.png\"/></a>";
+            }
+        }
+        $(".vrn-network").html(network);
+    }
+    
+    controller.syncUpDownData = function(doneCallback) {
+        app.log("controller.syncUpDownData", 'wip');
         
+        controller.changeSyncState(1);
+        
+        if(sync_mode == 1 && navigator.onLine){
+            app.log("Synchro montante (mobile-server)<br>Prepa des datas<br>");
+            var r1 = controller.prepaDataPack();
+            r1.done(function(zip_name, zip_content) {
+            });
+            $.when(r1).done(function(zip_name, zip_content) {
+                //alert(zip_name);
+                //alert("size:"+zip_content.byteLength);
+                //.byteLength
+                app.log($("#vrn-sync-ar-etat").html()+"Upload datas<br>");
+                
+                controller.ajaxAsyncTask = "";
+                
+                //ajaxAsyncTask, userId, bytes, md5_hash, size, zip_name, successCallback, errorCallback
+                app.webservice.syncUploadData(
+                    controller.ajaxAsyncTask, 
+                    app.loggedUser.id,
+                    zip_content,
+                    'uu',
+                    '12',
+                    zip_name,
+                    function(sync_data) { 
+                        
+                        app.log('AR traitement');
+                        // AR traitement
+                        app.log(sync_data);
+                        var uar = controller.uploadAR(sync_data);
+                        uar.done(function(sync_id, sync_date) { });
+                        $.when(uar).done(function(sync_id, sync_date) {
+                            app.log('Scynchro montante terminée');
+                            // change le statut de la sync pour la passer en "in progress" le temps de la manip
+                            app.webservice.syncUpdateStatus(
+                                controller.ajaxAsyncTask, 
+                                app.loggedUser.id,
+                                sync_id, 
+                                'ended', 
+                                function(data) {
+                                    app.log("app.webservice.syncUploadData : Sync Server statut changed : ended");
+        
+                                }
+                            );
+                            //alert('data:'+sync_id);
+                            // save des infos de cette syncro et doneCallback
+                            //var last_sync = new app.domain.sync_infos(sync_data.response_list.sync_data, app.loggedUser.id, sync_data.response_list.date);
+                            app.repository.setSyncInfos(sync_id, app.loggedUser.id, sync_date,function(data) {
+                                app.log("app.webservice.syncUploadData : Sync Local statut changed : ended");
+        
+                            });
+                            
+                            controller.changeSyncState(0);
+                            doneCallback();
+                        });
+                    }, 
+                    function(sync_data) {
+                        alert('PB sync');
+                         app.log("app.webservice.syncGetLastUpdateUrl : Sync statut changed : ended");
+                         controller.changeSyncState(0);
+                         doneCallback();
+                    }
+                );
+            });
+        }else{
+            controller.changeSyncState(0);
+            doneCallback();
+        }
+    }
+    
+    controller.syncUpdateData = function(doneCallback) {
+        /*
         // show syncPanel
         $.mobile.changePage("#vrn-sync-page", {
            transition:"slide",
@@ -3241,6 +3421,10 @@ app.controller = (function () {
            reverse:false,
            reload:true
         });
+        */
+        
+        // change ico status
+        controller.changeSyncState(1);
         
         controller.ajaxAsyncTask = "";
         
@@ -3335,6 +3519,9 @@ app.controller = (function () {
             // save des infos de cette syncro et doneCallback
             last_sync = new app.domain.sync_infos(sync_data.response_list.sync_id, app.loggedUser.id, sync_data.response_list.date);
             app.repository.setSyncInfos(sync_data.response_list.sync_id, app.loggedUser.id, sync_data.response_list.date,doneCallback);
+            
+            controller.changeSyncState(0);
+            
         });
     };
 
@@ -3527,6 +3714,7 @@ app.controller = (function () {
                         var rsql = "UPDATE sp_visit SET roadmap_id = ? WHERE roadmap_id = ?";
                         var params = [ sync_data[i].content[j].new_id, sync_data[i].content[j].id_roadmap ];
                         var r = app.repository.requestSQL(rsql,params);
+                        if(current_roadmap_id == sync_data[i].content[j].id_roadmap) current_roadmap_id = sync_data[i].content[j].new_id;
                     }else if(sync_data[i].content[j].sync_status == "U"){
                         var rsql = "UPDATE "+tb_name+" SET sync_status = ? WHERE id_roadmap = ?";
                         var params = [ "S", sync_data[i].content[j].id_roadmap ];

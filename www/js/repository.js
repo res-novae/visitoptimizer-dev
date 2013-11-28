@@ -1636,7 +1636,7 @@ app.repository = (function() {
     
     // get last ID
     repository.last_insert_rowid = function() {
-        app.log('repository.localAuthentication : '+ username);
+        app.log('repository.localAuthentication : ');
         var op_deferred = $.Deferred();
         var rsql = "SELECT last_insert_rowid()";
         var param = null;
