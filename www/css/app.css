@@ -4139,6 +4139,9 @@ p.brown{
 .ui-icon-triangle_right{
     background-color:transparent!important;
 }
+bx-viewport{
+    height:240px;
+}
 #vrn-details{
     height:450px;
 }
@@ -4147,13 +4150,13 @@ p.brown{
     width:50%;
     text-align:left;
     color:#FFFFFF;
-    height:300px;
+    height:250px;
 }
 #vrn-details-right, .vrn-details-right{
     float:left;
     width:50%;
-    margin-top:65px;
-    height:300px;
+    padding-top:65px;
+    height:250px;
     text-align:left;
     color:#fff;
     font-size: 13px;
@@ -6952,7 +6955,7 @@ position:relative;
     left: 0;
     position: fixed;
     right: 0;
-    top: 40px;
+    top: 36px;
     width: 100%;
     z-index: 1000;
 }
@@ -7064,7 +7067,7 @@ position:relative;
     top: 8px;
 }
 #ui-grid-form-solo{
-    top:38px;
+    top:36px;
     height:60px;
 }
 /***popup****/

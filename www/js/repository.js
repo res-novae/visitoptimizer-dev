@@ -30,7 +30,7 @@ app.repository = (function() {
         
     };
     
-    repository.checkStartDatabaseExist = function() {
+    repository.checkIfDatabaseExist = function() {
         app.log('repository.checkStartDatabaseExist : ');
         var rsql_deferred = $.Deferred();
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
@@ -52,6 +52,7 @@ app.repository = (function() {
         });
         return rsql_deferred.promise();
     };
+    
     repository.checkDatabaseExist = function() {
         app.log('repository.checkDatabaseExist ');
         var rsql_deferred = $.Deferred();
@@ -121,7 +122,7 @@ app.repository = (function() {
             // app.log("app.repository: languageId " + languageId);
             tx.executeSql("SELECT sync_id FROM sync_infos WHERE ( userId = ? ) ", [ user_id ], 
                 function(tx, results) {
-                    if (results.rows.length == 1) {
+                    if (results.rows.length >= 1) {
                         doneCallback();
                     } else {
                         nodataCallback();
@@ -190,15 +191,39 @@ app.repository = (function() {
          } );
     };
     
-    // prepare dn to first init 
+    // prepare db to first init 
     var rsql_deferred;
-    repository.firstInitDbApp = function(doneCallback) {
+    repository.createDbApp = function(doneCallback) {
         app.log("# app.repository : init Db App", 'wip');
         rsql_deferred = $.Deferred();
 
-        var dd = new Array();
-        var i = 0;
-        
+       var dd = new Array();
+       var i = 0;
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sync_infos (id INTEGER PRIMARY KEY UNIQUE, sync_id INTEGER, userId INTEGER, date)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS area_list (id_list INTEGER UNIQUE, parent_id INTEGER, name, status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS area_item (id_item INTEGER UNIQUE, list_id INTEGER, parent_id INTEGER, name)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS area_item_field_values (id_item INTEGER, language_id INTEGER, value)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sys_language (id_language INTEGER UNIQUE, name, short_name, default_language)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sys_language_translation (language_id INTEGER, translation_id INTEGER, value)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS usr_categories (id_user_category INTEGER UNIQUE, translation_id INTEGER, name)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sys_users (id_user INTEGER UNIQUE, parent_id INTEGER, user_category_id INTEGER, username, password, lastname, firstname, email, phone, preferred_language_id INTEGER, target_val, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS usr_area (user_id INTEGER, area_id INTEGER)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS frequency (id_frequency INTEGER UNIQUE, label, translation_id INTEGER, frequency, frq_code)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS message (id_message INTEGER UNIQUE, message_type, send_date, start_date, end_date, subject, content, priority, attachment, id_usr_message INTEGER, lastname, read_date, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS question (id_question INTEGER UNIQUE, translation_id INTEGER, question_type, label, rank, status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS questions_frequency (id_qf INTEGER, question_id INTEGER, frequency_id INTEGER, mandatory, readonly, display, rank)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS questionnaire (id_questionnaire INTEGER UNIQUE, name, translation_id INTEGER, frequency_id INTEGER, rank, status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS questionnaire_question (questionnaire_id INTEGER , question_id INTEGER)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS questions_answer (id_answer INTEGER UNIQUE, translation_id INTEGER, question_id INTEGER, label, rank, status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sp_answer (sales_point_id INTEGER, visit_id INTEGER, questionnaire_id INTEGER, question_id INTEGER, answer_id INTEGER, answer, answer_time, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS roadmap (id_roadmap INTEGER UNIQUE, initiating_user_id INTEGER, operating_user_id INTEGER, mobile_status_id INTEGER, web_status_id INTEGER, creation_date, name, scheduled_date, km, comment, close_date, area_id INTEGER, local_id INTEGER, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sales_point (id_sales_point INTEGER UNIQUE, name, email, description, contact_name, phone_number, street, city, postal_code, gps_latitude, gps_longitude, type_id INTEGER, user_id INTEGER, microzone_id INTEGER, last_visit_id INTEGER, frequency_id INTEGER, photo_url, local_id INTEGER, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS status_mobile (id_status_mobile INTEGER UNIQUE, name, translation_id INTEGER)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS status_visit (id_status_visit INTEGER UNIQUE, name, translation_id INTEGER)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sp_type (id_type INTEGER UNIQUE, name, translation_id INTEGER)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS sp_visit (id_visit INTEGER UNIQUE, sales_point_id INTEGER, roadmap_id INTEGER, status_visit_id INTEGER, scheduled_date, performed_date, rank, comment, local_id INTEGER, sync_status)";
+       dd[i++] = "CREATE TABLE IF NOT EXISTS help (id_help INTEGER UNIQUE, zip_name)";
+
         dd[i++] = 'CREATE TABLE IF NOT EXISTS sys_language_translation (language_id INTEGER, translation_id INTEGER, value)';
         
         dd[i++] = 'INSERT OR REPLACE INTO sys_language_translation (language_id, translation_id, value) VALUES (1, 1153, "Visit Optimizer1")';
@@ -211,8 +236,8 @@ app.repository = (function() {
         dd[i++] = 'INSERT OR REPLACE INTO sys_language_translation (language_id, translation_id, value) VALUES (1, 1155, "Erreur")';
         dd[i++] = 'INSERT OR REPLACE INTO sys_language_translation (language_id, translation_id, value) VALUES (1, 257,  "identifiant ou mot de passe incorect")';
         
-        dd[i++] = 'CREATE TABLE IF NOT EXISTS Settings (id INTEGER UNIQUE, defaultLanguageId INTEGER, userId INTEGER)';
-        dd[i++] = 'INSERT OR REPLACE INTO Settings (id, defaultLanguageId, userId) VALUES (1, 1, 0)';
+        dd[i++] = 'CREATE TABLE IF NOT EXISTS Settings (id INTEGER UNIQUE, defaultLanguageId INTEGER, userId INTEGER, syncMode INTEGER)';
+        dd[i++] = 'INSERT OR REPLACE INTO Settings (id, defaultLanguageId, userId, syncMode) VALUES (1, 1, 0, 1)';
         dd[i++] = 'CREATE TABLE IF NOT EXISTS sys_users (id_user INTEGER UNIQUE, parent_id INTEGER, user_category_id INTEGER, username, password, lastname, firstname, email, phone, preferred_language_id INTEGER, target_val, sync_status)';
         
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
@@ -230,7 +255,6 @@ app.repository = (function() {
         }
         
         return rsql_deferred.promise();
-
     };
     
     function saveToDB(rSQL, ligne_number) {
@@ -277,10 +301,10 @@ app.repository = (function() {
         });
     };
     
-    repository.updateSettings = function(userId) {
+    repository.updateSettings = function(defaultLanguageId, userId, syncMode) {
         repository.database.transaction(function(tx) {
             app.log("app.repository: updating settings with userId " + userId);
-            tx.executeSql("UPDATE Settings SET userId = ? WHERE id = ?", [ userId, 1 ], function(tx, results) {
+            tx.executeSql("UPDATE Settings SET defaultLanguageId = ?, userId = ?, syncMode = ? WHERE id = ?", [ defaultLanguageId, userId, syncMode, 1 ], function(tx, results) {
                 if (results.rowsAffected == 1) {
                     app.log("app.repository: app settings updated",'success');
                 } else {
@@ -292,42 +316,42 @@ app.repository = (function() {
         });
     };
     
-    // remplace to loadSettingsB
+    // remplace to getSettings
     repository.loadSettings = function(successCallback) {
         repository.database.transaction(function(tx) {
-            tx.executeSql("SELECT defaultLanguageId, userId FROM Settings WHERE (id = ?)", [ 1 ], function(tx, results) {
+            tx.executeSql("SELECT defaultLanguageId, userId, syncMode FROM Settings WHERE (id = ?)", [ 1 ], function(tx, results) {
                 if (results.rows.length == 1) {
-                    var settings = new app.domain.Settings(1, results.rows.item(0).defaultLanguageId, results.rows.item(0).userId);
+                    var settings = new app.domain.Settings(1, results.rows.item(0).defaultLanguageId, results.rows.item(0).userId, results.rows.item(0).syncMode);
                     app.log("app.repository: returning app settings",'success');
                     successCallback(settings);
                 } else {
                     app.log("app.repository: app settings not found, returning default",'success');
-                    successCallback(new app.domain.Settings(1, 1, 0));
+                    successCallback(new app.domain.Settings(1, 1, 0, 1));
                 }
             }, function(tx, err) {
                 app.log("app.repository: app settings not found, returning default",'success');
-                successCallback(new app.domain.Settings(1, 1, 0));
+                successCallback(new app.domain.Settings(1, 1, 0, 1));
             });
         });
     };
     
-    repository.loadSettingsB = function(existDBCallback, dontExistDBCallback){
+    repository.getSettings = function(existDBCallback, dontExistDBCallback){
         app.log('repository.loadSettingsB : ');
         var rsql_deferred = $.Deferred();
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
         repository.database.transaction(function(tx) {
-            var rsql = "SELECT defaultLanguageId, userId FROM Settings WHERE (id = ?)";
+            var rsql = "SELECT defaultLanguageId, userId, syncMode FROM Settings WHERE (id = ?)";
             var param = [ 1 ];
             tx.executeSql(rsql, param,
                 function(tx,results) {
                     if (results.rows.length != 0) {
-                        rsql_deferred.resolve(new app.domain.Settings(1, results.rows.item(0).defaultLanguageId, results.rows.item(0).userId));
+                        rsql_deferred.resolve(new app.domain.Settings(1, results.rows.item(0).defaultLanguageId, results.rows.item(0).userId, results.rows.item(0).syncMode));
                     } else {
-                        rsql_deferred.resolve(new app.domain.Settings(1, 1, 0));
+                        rsql_deferred.resolve(new app.domain.Settings(1, 1, 0, 1));
                     }
                 },
                 function(tx, error) {
-                    rsql_deferred.resolve(new app.domain.Settings(1, 1, 0));
+                    rsql_deferred.resolve(new app.domain.Settings(1, 1, 0, 1));
                 }
             );
         });

@@ -29,10 +29,11 @@ app.domain = (function() {
         this.target_val = target_val; 
     };
     
-    domain.Settings = function(id, defaultLanguageId, userId) {
+    domain.Settings = function(id, defaultLanguageId, userId, syncMode) {
         this.id = id; // int
         this.defaultLanguageId = defaultLanguageId; // int
         this.userId = userId; // int
+        this.syncMode = syncMode; // int
     };
 
     domain.area_list = function(id_list, parent_id, name, status) {

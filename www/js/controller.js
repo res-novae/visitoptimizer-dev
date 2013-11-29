@@ -51,38 +51,33 @@ app.controller = (function () {
             app.log('preload en cours...');
 
             $.mobile.loadPage("vrn-login-page.html",true);
-            $.mobile.loadPage("vrn-sync-page.html",true);
+            //$.mobile.loadPage("vrn-sync-page.html",true);
             $.mobile.loadPage("vrn-home-page.html",true);
 
+
+
+
             // test si la db existe
-            app.log("::Init:: Step 1 : DB test");
-            var r1 = app.repository.checkStartDatabaseExist();
+            app.log("::Init:: : DB test");
+            var r1 = app.repository.checkIfDatabaseExist();
+            
             r1.done(function() {});
             $.when(r1).done(function(dbExist) {
-                //alert(dbExist);
-                if(dbExist == 'yes') {
-                    app.log("app.repository: DB : " + app.repository.databaseName + " exist");
-
-                    // recup le setting (remerber me) si exist
-                    var r2 = app.repository.loadSettingsB();
+            	if(dbExist == 'yes') {
+            		app.log("::Init:: : Step 1 : DB test");
+            		app.log("- DB : " + app.repository.databaseName + " exist");
+            
+            		// recup le setting (remerber me) si exist
+                    var r2 = app.repository.getSettings();
                     r2.done(function() {});
-                    $.when(r2).done(function(settings) {
-                    
+                    $.when(r2).done(function(set) {
+                    	settings = set;
                         app.log("::Init:: Step 2 : Load user setting...");
                         if(settings.userId == 0) {
                             app.log("::Init:: Step 3 : No setting exist");
                             app.authenticatedInThisSession = false;
-
-                            var r3 = app.repository.getTranslation([256,323,324,257,451,771,1155]);
-                            r3.done(function(data) {
-                                trad = data;
-                            });
-                            $.when(r3).done(function(data) {
-                                trad = data;
-                                $.mobile.changePage('#vrn-login-page', {transition:"slidedown",changeHash:false,reverse:false,reload:true});
-                            });
+                            $.mobile.changePage('#vrn-login-page', {transition:"slidedown",changeHash:false,reverse:false,reload:true});
                             return;
-
                         }
                         else {
                             app.log("::Init:: Step 3 : Setting exist (remember me)");
@@ -92,10 +87,9 @@ app.controller = (function () {
                                 app.loggedUser = user;
 
                                 app.log("::Init:: Step 4 : Setting exist : loading success (id:"+localStorage.getItem( "current_user_id" )+")");
-
-                                app.repository.checkUserSyncData(user.id, 
+								app.repository.checkUserSyncData(user.id, 
                                    function() {
-                                        app.log("::Init:: Step 5a : Init light DB (with login translation)");
+                                        app.log("::Init:: Step 5a : go to #vrn-home-page");
 
                                         app.repository.getLastSyncInfos(localStorage.getItem( "current_user_id" ), function(id, sync_id, userId, date) {
                                             app.log("getLastSyncInfos is ok : "+ date, 'success');
@@ -112,9 +106,11 @@ app.controller = (function () {
                                         });
                                    },
                                    function() {
-                                       app.log("::Init:: Step 5b : Init light DB (with login translation)");
+                                       app.log("::Init:: Step 5b : sync Update Data");
                                        // Sync Update Data
                                         controller.syncUpdateData(function() {
+                                        	
+                                        	app.log("::Init:: Step 5b2 : go to #vrn-home-page");
                                             // recup last sync data
                                             app.repository.getLastSyncInfos(localStorage.getItem( "current_user_id" ), function(id, sync_id, userId, date) {
                                                 app.log("getLastSyncInfos is ok : "+ date, 'success');
@@ -139,31 +135,25 @@ app.controller = (function () {
 
                     });
 
-                }else {
+            		
+            	}else{
+            		// No db, create DB + insert first data to init app
                     app.log("app.repository: DB : " + app.repository.databaseName + " does not exist");
 
-                    var r2 = app.repository.firstInitDbApp();
+                    var r2 = app.repository.createDbApp();
                     r2.done(function(data) {});
                     $.when(r2).done(function(data) {
 
                         app.log("::Init:: Step 2 : Init light DB (with login translation only)");
                         app.authenticatedInThisSession = false;
 
-                        var r3 = app.repository.getTranslation([256,323,324,257,451,771,1155]);
-                        r3.done(function(data) {
-                            trad = data;
-                        });
-                        $.when(r3).done(function(data) {
-                            trad = data;
-                            //alert('trad:'+trad[256]);
-                            $.mobile.changePage('#vrn-login-page', {transition:"pop",changeHash:false,reverse:false,reload:true});
-                        });
-
+                        $.mobile.changePage('#vrn-login-page', {transition:"pop",changeHash:false,reverse:false,reload:true});
+                        
                         return;
                     });
-                }
-                app.log('preload fini.');
-            });
+            	}	
+            });	
+            	
 
         }   
 
@@ -381,39 +371,54 @@ app.controller = (function () {
         controller.errorLoadingPopup = $("#vrn-login-error-popup");
         controller.errorLoadingPopup.popup();
 
-        //location.hash = "vrn-login-page";
         $.mobile.navigate( "vrn-login-page" );
+        // taille de la vue
+        $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 ) + 'px' );
+        $(".vrn-view").css( "width", $(window).width() + 'px' );
+        $(window).resize(function() {
+                $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36) + 'px' );
+                $(".vrn-view").css( "width", $(window).width() + 'px' );
+        });
         // show header
         controller.showVrnHeader();
 
-        // def i18n text value$("#vrn-login-page").fadeIn('slow');
-        $("#vrn-username").attr("placeholder", trad["256"]);
-        $("#vrn-password").attr("placeholder", trad["323"]);
-        $("#vrn-forgot-password").html(trad["324"]+ " >>");
+		//alert("ok");
 
-        $("label[for='vrn-remember-me']").text(trad["451"]).trigger("refresh");
+		var r1 = app.repository.getTranslation([256,323,324,257,451,771,1155]);
+	    r1.done(function(data) {
+	        trad = data;
+	    });
+	    $.when(r1).done(function(data) {
+		    // def i18n text value$("#vrn-login-page").fadeIn('slow');
+	        $("#vrn-username").attr("placeholder", trad["256"]);
+	        $("#vrn-password").attr("placeholder", trad["323"]);
+	        $("#vrn-forgot-password").html(trad["324"]+ " >>");
+	
+	        $("label[for='vrn-remember-me']").text(trad["451"]).trigger("refresh");
+	
+	        $("#vrn-login .ui-btn-text").text(trad["771"]);
+	        $("#vrn-login-error-popup").children("[data-role=header]").html("<h1>"+trad["1155"]+"</h1>");
+	        $("#vrn-login-error-popup-content").children(".ui-title").html(trad["257"]);
+	        $('#vrn-login').show();
+	
+	        $('#vrn-login').unbind('tap');
+	        $('#vrn-login').bind('tap', controller.authenticate );
+	
+	        $('#vrn-popup-cancel').unbind('tap');
+	        $('#vrn-popup-cancel').bind('tap', function() {
+	            /*
+	            if (controller.ajaxAsyncTask.active) {
+	                app.log("app.controller.index: cancel current async task", 'pause');
+	                controller.ajaxAsyncTask.cancel();
+	            }*/
+	            $("#vrn-login-popup").popup('close', {
+	                dataRel : "back"
+	            });
+	        });
+	        $(".vrn-page").trigger('updatelayout');
 
-        $("#vrn-login .ui-btn-text").text(trad["771"]);
-        $("#vrn-login-error-popup").children("[data-role=header]").html("<h1>"+trad["1155"]+"</h1>");
-        $("#vrn-login-error-popup-content").children(".ui-title").html(trad["257"]);
-        $('#vrn-login').show();
-
-        $('#vrn-login').unbind('tap');
-        $('#vrn-login').bind('tap', controller.authenticate );
-
-        $('#vrn-popup-cancel').unbind('tap');
-        $('#vrn-popup-cancel').bind('tap', function() {
-            /*
-            if (controller.ajaxAsyncTask.active) {
-                app.log("app.controller.index: cancel current async task", 'pause');
-                controller.ajaxAsyncTask.cancel();
-            }*/
-            $("#vrn-login-popup").popup('close', {
-                dataRel : "back"
-            });
-        });
-        $(".vrn-page").trigger('updatelayout');
-
+	    
+	    });
     };
 
     // message de sync WAIT !
@@ -1308,7 +1313,7 @@ app.controller = (function () {
                 $('#vrn-roadmap-valider').html(code).trigger("create");
                 $('#vrn-roadmap-valider').show();
               
-                
+                alert(roadmap.mobile_status_id);
                 for (var i=0;i<status_roadmap.length;i++){
                     
                     if(roadmap.mobile_status_id == status_roadmap[i].id_status_roadmap) var selected = " selected";
@@ -3025,48 +3030,60 @@ app.controller = (function () {
     
     controller.getHeader = function() {
         app.log("# app.controller : getHeader");
+         // recup l'ancien setting du user (si exist)
+
+			if(sync_state == 1){
+	            var network = "<img src=\"css/images/vrn/sync.gif\"/ class=\"sync_ico\">";
+	        }else if(sync_mode == 1){
+	            sync_mode = 1;
+	            if (navigator.onLine) {
+	                network_state = 1;
+	                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button.png\"/></a>";
+	            }else{
+	                network_state = 0;
+	                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button_grey.png\"/></a>";
+	            }
+	        }else{
+	            app.log("# app.controller : changeSyncMode : on");
+	            sync_mode = 0;
+	            if (navigator.onLine) {
+	                network_state = 1;
+	                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button.png\"/></a>";
+	            }else{
+	                network_state = 0;
+	                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button_grey.png\"/></a>";
+	            }
+	        }
+	        //$(".vrn-network").html(network);
+	        
+	        //alert(app.authenticatedInThisSession);
+	        if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
+	        else var title = "<span class=\"ui-title\">Visit Optimizer</span>";
+	        if(app.authenticatedInThisSession == true) var help = "<a href=\"#help-popup\"><img src=\"css/images/vrn/help.png\"/></a>";
+	        else var help = "";
+	        if(app.authenticatedInThisSession == true) var set = "<a href=\"#vrn-params-page\"><img src=\"css/images/vrn/icon_settings_pressed.png\"/></a>";
+	        else var set = "";
+	        var header = "  <div id=\"vrn-help\">"+help+"</div>"
+	        + " <div id=\"vrn-settings\">"+set+"</div>"
+	        + " <div class=\"vrn-network\">"+network+"</div>"
+	        + " <div id=\"vrn-company\">Orange</div>"
+	        + ""+title+"";
+	        
+	        return header;
+
         
-        if(sync_state == 1){
-            var network = "<img src=\"css/images/vrn/sync.gif\"/ class=\"sync_ico\">";
-        }else if(sync_mode == 1){
-            sync_mode = 1;
-            if (navigator.onLine) {
-                network_state = 1;
-                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button.png\"/></a>";
-            }else{
-                network_state = 0;
-                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/on_button_grey.png\"/></a>";
-            }
-        }else{
-            app.log("# app.controller : changeSyncMode : on");
-            sync_mode = 0;
-            if (navigator.onLine) {
-                network_state = 1;
-                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button.png\"/></a>";
-            }else{
-                network_state = 0;
-                var network = "<a href=\"#\" onclick=\"app.controller.changeSyncMode()\"><img src=\"css/images/vrn/off_button_grey.png\"/></a>";
-            }
-        }
-        $(".vrn-network").html(network);
-        
-        //alert(app.authenticatedInThisSession);
-        if(app.authenticatedInThisSession == true) var title = "<span class=\"ui-title\"><a href=\"#vrn-home-page\">Visit Optimizer</a></span>";
-        else var title = "<span class=\"ui-title\">Visit Optimizer</span>";
-        if(app.authenticatedInThisSession == true) var help = "<a href=\"#help-popup\"><img src=\"css/images/vrn/help.png\"/></a>";
-        else var help = "";
-        if(app.authenticatedInThisSession == true) var settings = "<a href=\"#vrn-params-page\"><img src=\"css/images/vrn/icon_settings_pressed.png\"/></a>";
-        else var settings = "";
-        var header = "  <div id=\"vrn-help\">"+help+"</div>"
-        + " <div id=\"vrn-settings\">"+settings+"</div>"
-        + " <div class=\"vrn-network\">"+network+"</div>"
-        + " <div id=\"vrn-company\">Orange</div>"
-        + ""+title+"";
-        return header;
     };
     
     controller.showVrnHeader = function() {
-        $("[data-id=vrn-header-nav]").html(controller.getHeader()).trigger('create');
+    	var r1 = app.repository.getSettings();
+        r1.done(function() {});
+        $.when(r1).done(function(settings) {	
+ 
+			sync_mode = settings.syncMode;
+			
+			$("[data-id=vrn-header-nav]").html(controller.getHeader()).trigger('create');	
+        });
+        
     };
     
     controller.getFooter = function(pageId) {
@@ -3204,17 +3221,20 @@ app.controller = (function () {
                         app.log("::Init:: Step 3a : authentification in progress");
                         app.loggedUser = user;
                         app.authenticatedInThisSession = true;
-                
                         app.repository.saveOrUpdateUser(user, function(user) {
                             // update ui
                             app.log("::Init:: Step 4a :  authenticated successfully");
-                            if ($("#vrn-remember-me").is(":checked")) {
-                                //alert('check user');
-                                app.repository.updateSettings(user.id);
-                            } else {
-                                app.repository.updateSettings(0);
-                            }
                             
+                            // recup l'ancien setting du user (si exist)
+                            var r2 = app.repository.getSettings();
+		                    r2.done(function() {});
+		                    $.when(r2).done(function(settings) {
+                                if ($("#vrn-remember-me").is(":checked")) {
+	                                app.repository.updateSettings(app.loggedUser.preferred_language_id, app.loggedUser.id, settings.syncMode);
+	                            } else {
+	                                app.repository.updateSettings(app.loggedUser.preferred_language_id, 0, settings.syncMode);
+	                            }
+                            });
                             //alert(connexionTimestamp);
                             
                             // persistant curent user id
@@ -3239,7 +3259,7 @@ app.controller = (function () {
                                     app.log("::Init:: Step 5b : Obligatory sync");
                                     // if no data
                                     // purge db (juste data, no user infos)
-                                    app.repository.purgeData(function() {
+                                   // app.repository.purgeData(function() {
                                         app.log("::Init:: Step 6 : Clean DB");
                                         // Sync Update Data
                                         controller.syncUpdateData(function() {
@@ -3263,7 +3283,7 @@ app.controller = (function () {
                                             }); 
                                              
                                         });   
-                                    });
+                                    //});
                                 }
                             );
                         }, function(error) {
@@ -3294,6 +3314,17 @@ app.controller = (function () {
                 
             }else{
                 app.log("::Init:: Step 2a.1 : Local data exist for this user");
+                
+                var r2 = app.repository.getSettings();
+                r2.done(function() {});
+                $.when(r2).done(function(settings) {
+                    if ($("#vrn-remember-me").is(":checked")) {
+                        app.repository.updateSettings(user.preferred_language_id, user.id, settings.syncMode);
+                    } else {
+                        app.repository.updateSettings(user.preferred_language_id, 0, settings.syncMode);
+                    }
+                });
+                
                 
                 // show TASKBOARD
                 $.mobile.changePage("#vrn-home-page", {
