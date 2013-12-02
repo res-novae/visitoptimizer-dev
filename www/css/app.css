@@ -7072,7 +7072,7 @@ position:relative;
     top: 8px;
 }
 #ui-grid-form-solo{
-    top:36px;
+    top:35px;
     height:60px;
 }
 /***popup****/
@@ -7131,7 +7131,7 @@ position:relative;
    /* position:fixed;*/
     width:100%;
     height:128px;
-    bottom:78px;
+    bottom:80px;
     line-height:35px;
     z-index:130;
     overflow: hidden;
@@ -8183,7 +8183,7 @@ position:relative;
     background-image: -ms-radial-gradient(center center, circle cover, #7e8082, #545456);
     background-image: -moz-radial-gradient(center center, circle cover, #7e8082, #545456);
     background-image: -webkit-radial-gradient(center center, circle cover, #7e8082, #545456);
-    margin-right:25px;
+    margin-right:20px;
 }
 #vrn-home-message-data-title {
     padding:20px 0 15px 15px;

@@ -2025,7 +2025,7 @@ app.controller = (function () {
             
             code += '<div class="ui-grid-solo" id="vrn-question-grid">'
                 +'  <div class="ui-block-a">'
-                +'    <a href="#u" id="vrn-question-valider-button" data-role="button" data-icon="triangle_right_black_image" data-iconpos="right" data-inline="true">valider</a>'
+                +'    <a href="#" id="vrn-question-valider-button" data-role="button" data-icon="triangle_right_black_image" data-iconpos="right" data-inline="true">valider</a>'
                 +'  </div>'
                 +'</div>'
                 +'<br/><br/><br/><br/><br/><br/><br/>';
