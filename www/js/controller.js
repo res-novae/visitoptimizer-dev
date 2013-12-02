@@ -49,13 +49,22 @@ app.controller = (function () {
         //preload 
         if($.mobile.activePage.attr('id') == 'vrn-index-loading'){
             app.log('preload en cours...');
+            
 
 		// show header
         controller.showVrnHeader();
-
-        if ($("#vrn-login-page").length) {} else $.mobile.loadPage("vrn-login-page.html",true);
+        //if($( "#vrn-login-page" ).length > 0) alert("  0a");
+        //else alert("0b");
+                
+        //if ($("#vrn-login-page").length > 0) {} else $.mobile.loadPage("vrn-login-page.html",false);
+        
+        //if($( "#vrn-login-page" ).length > 0) alert("  0a");
+        //else alert("0b");
+        
+        
+        
         //$.mobile.loadPage("vrn-sync-page.html",true);
-        if ($("#vrn-home-page").length) {} else $.mobile.loadPage("vrn-home-page.html",true);
+        //if ($("#vrn-home-page").length > 0) {} else $.mobile.loadPage("vrn-home-page.html",false);
 
             // test si la db existe
             app.log("::Init:: : DB test");
@@ -171,13 +180,20 @@ app.controller = (function () {
         $.when(r1).done(function(dbExist) {
             //Preload page
             
-            if ($("#vrn-login-page").length) {} else $.mobile.loadPage("vrn-login-page.html",true);
-            if ($("#vrn-home-page").length) {} else $.mobile.loadPage("vrn-home-page.html",true);
-            if ($("#vrn-inform-page").length) {} else $.mobile.loadPage("vrn-inform-page.html",true);
-            if ($("#vrn-roadmap-page").length) {} else $.mobile.loadPage("vrn-roadmap-page.html",true);
-            if ($("#vrn-pos-page").length) {} else $.mobile.loadPage("vrn-pos-page.html",true);
-            if ($("#vrn-stats-semaine-page").length) {} else $.mobile.loadPage("vrn-stats-semaine-page.html",true);
-            if ($("#vrn-params-page").length) {} else $.mobile.loadPage("vrn-params-page.html",true);
+            //if($( "#vrn-login-page" ).length > 0) alert("  1a");
+            //else alert("1b");
+           
+            if ($("#vrn-login-page").length > 0) { alert("hop");} else $.mobile.loadPage("vrn-login-page.html",false);
+            
+            //if($( "#vrn-login-page" ).length > 0) alert("  1a");
+            //else alert("1b");
+           
+            if ($("#vrn-home-page").length > 0) {} else $.mobile.loadPage("vrn-home-page.html",false);
+            if ($("#vrn-inform-page").length) {} else $.mobile.loadPage("vrn-inform-page.html",false);
+            if ($("#vrn-roadmap-page").length) {} else $.mobile.loadPage("vrn-roadmap-page.html",false);
+            if ($("#vrn-pos-page").length) {} else $.mobile.loadPage("vrn-pos-page.html",false);
+            if ($("#vrn-stats-semaine-page").length) {} else $.mobile.loadPage("vrn-stats-semaine-page.html",false);
+            if ($("#vrn-params-page").length) {} else $.mobile.loadPage("vrn-params-page.html",false);
               
             // taille de la vue
             $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 - 68 ) + 'px' );
@@ -272,8 +288,8 @@ app.controller = (function () {
                 if($.mobile.activePage.attr('id') == 'vrn-params-edit-page'){
                     //alert('guop');
                     controller.showVrnParamsEditPage();
-                    if ($("#vrn-params-page").length) {} else $.mobile.loadPage("vrn-params-page.html",true);
-                    if ($("#vrn-login-page").length) {} else $.mobile.loadPage("vrn-login-page.html",true);
+                    if ($("#vrn-params-page").length) {} else $.mobile.loadPage("vrn-params-page.html",false);
+                    if ($("#vrn-login-page").length > 0) {} else $.mobile.loadPage("vrn-login-page.html",false);
                 }
 
             }else if($.mobile.activePage.attr('id') != 'vrn-index-loading'){
