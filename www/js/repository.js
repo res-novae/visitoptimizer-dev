@@ -336,7 +336,7 @@ app.repository = (function() {
     };
     
     repository.getSettings = function(existDBCallback, dontExistDBCallback){
-        app.log('repository.loadSettingsB : ');
+        app.log('repository.getSettings : ');
         var rsql_deferred = $.Deferred();
         repository.database = window.openDatabase(repository.databaseName, repository.databaseVersion, repository.databaseDisplayName, repository.databaseSize);
         repository.database.transaction(function(tx) {

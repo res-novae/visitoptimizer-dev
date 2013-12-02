@@ -4503,7 +4503,7 @@ bx-viewport{
 }
 .vrn-inform-valider-text{
     /*padding-left:10px;*/
-    font-size:1.188em;
+    font-size:17px;
     color:#fff;
     font-weight:bold;
     text-shadow: 0 -1px 0 #000000;
@@ -4542,6 +4542,7 @@ bx-viewport{
 }
 #vrn-inform-div{
     bottom:189px;
+    margin-bottom:73px;
 }
 #vrn-inform-page .ui-footer-fixed{
     box-shadow:none;
@@ -4588,6 +4589,10 @@ bx-viewport{
 .ui-icon-check3, .ui-icon-check3-searchfield:after{
     background-color:transparent;
     border-radius:0px 0px 0px 0px;
+}
+
+#inform-listview-end{
+    height:63px;
 }
 #inform-listview .ui-icon-shadow{
     box-shadow:none;
@@ -8236,8 +8241,8 @@ position:relative;
 #vrn-footer-navbar {
 /*    background-image: url("images/vrn/footer_bg.png");
     background-repeat: repeat-x;
-    background-color: transparent;*/
-	position:absolute;
+    background-color: transparent;
+	position:absolute;*/
     width: 100%;
     height: 79px;
     text-shadow: none;
@@ -8260,7 +8265,7 @@ position:relative;
 	padding: 1px;
 	border: 0;
 	float: left;
-	min-height: 75px;
+	min-height: 81px;
 	width: 16.666%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
