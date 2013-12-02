@@ -53,9 +53,9 @@ app.controller = (function () {
 		// show header
         controller.showVrnHeader();
 
-        $.mobile.loadPage("vrn-login-page.html",true);
+        if ($("#vrn-login-page").length) {} else $.mobile.loadPage("vrn-login-page.html",true);
         //$.mobile.loadPage("vrn-sync-page.html",true);
-        $.mobile.loadPage("vrn-home-page.html",true);
+        if ($("#vrn-home-page").length) {} else $.mobile.loadPage("vrn-home-page.html",true);
 
             // test si la db existe
             app.log("::Init:: : DB test");
