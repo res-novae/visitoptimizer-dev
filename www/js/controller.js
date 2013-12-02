@@ -226,7 +226,7 @@ app.controller = (function () {
                 }
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-item-pos-edit-page'){
                     controller.showRoadmapItemPosEditPage( current_params_url['roadmap_id'], current_params_url['sales_point_id']);
-                //    $.mobile.loadPage("vrn-roadmap-page.html",true);
+                    if ($("#vrn-roadmap-page").length) {} else $.mobile.loadPage("vrn-roadmap-page.html",true);
                 }
                 // roadmap / questionnaire list
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-visit-page'){
@@ -249,6 +249,7 @@ app.controller = (function () {
                     //alert('-id:'+current_params_url['sales_point_id']);
                     if(typeof current_params_url['sales_point_id'] != 'undefined') controller.showVrnPosEditPage( current_params_url['sales_point_id']);
                     else controller.showVrnPosEditPage(0);
+                    if ($("#vrn-pos-page").length) {} else $.mobile.loadPage("vrn-pos-page.html",true);
                 }
                 // Stats //
                 if($.mobile.activePage.attr('id') == 'vrn-stats-semaine-page'){
