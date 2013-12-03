@@ -235,12 +235,12 @@ app.controller = (function () {
                 // roadmap / questionnaire list
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-visit-page'){
                     controller.showVrnRoadmapVisitPage(current_params_url['sp_visit_id'],current_params_url['current_item']);
-                    if ($("#vrn-roadmap-visit-questionnaire-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-visit-questionnaire-page.html",true);
+                    if ($("#vrn-roadmap-visit-questionnaire-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-visit-questionnaire-page.html",false);
                 }
                 // roadmap / questionnaire item form
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-visit-questionnaire-page'){
                     controller.showVrnRoadmapVisitQuestionnairePage(current_params_url['sp_visit_id'], current_params_url['questionnaire_id']);
-                    if ($("#vrn-roadmap-visit-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-visit-page.html",true);
+                    if ($("#vrn-roadmap-visit-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-visit-page.html",false);
                 }
 
                 // POS //
@@ -2043,9 +2043,7 @@ app.controller = (function () {
             $(".quest-fieldset-rad").trigger('create');
 
             $('#vrn-question-valider-button').unbind('tap');
-            $('#vrn-question-valider-button').bind('tap',function (event){
-                controller.showRoadmapItemPosFormItemSave(event);
-            });
+            $('#vrn-question-valider-button').bind('tap',controller.showRoadmapItemPosFormItemSave);
 
         });
 
@@ -2061,6 +2059,7 @@ app.controller = (function () {
         var message = "";
         var sp_visit;
         
+        if ($("#vrn-roadmap-visit-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-visit-page.html",false);
         
         // get sp_visit infos
         var r1 = app.repository.getPosVisit(current_sp_visit_id);
@@ -2134,10 +2133,9 @@ app.controller = (function () {
                     rsql.done(function() {});
                 }
                 
-                // todo text and slider + Save to sqlite :)
-                
             }
 
+            
             
             
             current_params_url = [];
@@ -2146,9 +2144,7 @@ app.controller = (function () {
             current_params_url['current_item'] = current_current_item;
            // alert('changepage');
             $.mobile.changePage("#vrn-roadmap-visit-page", {
-                transition:"slide",
-                changeHash:false,
-                reverse:true
+                changeHash:false
              });
            // alert('changepage');
             
@@ -3125,7 +3121,7 @@ app.controller = (function () {
     
     var vrnHomePageFooter = "";
     var vrnInformPageFooter = "";
-    var vrnRroadmapPageFooter = "";
+    var vrnRoadmapPageFooter = "";
     var vrnRoadmapItemPageFooter = "";
     var vrnRoadmapVisitFooter = "";
     var vrnPosPageFooter = "";
@@ -3143,9 +3139,9 @@ app.controller = (function () {
         	$("#vrn-footer-nav-inform").html('<div id="vrn-inform-valider"></div>' +vrnInformPageFooter).trigger('create');
         	//$("#vrn-footer-nav-inform").height(79);
         }
-        if (active_sector == "vrn-roadmap-page" && vrnRroadmapPageFooter == '') { 
-        	vrnRroadmapPageFooter = controller.getFooter(active_sector);
-        	$(".vrn-roadmap-page-foot").html(vrnRroadmapPageFooter).trigger('create');
+        if (active_sector == "vrn-roadmap-page" && vrnRoadmapPageFooter == '') { 
+        	vrnRoadmapPageFooter = controller.getFooter(active_sector);
+        	$(".vrn-roadmap-page-foot").html(vrnRoadmapPageFooter).trigger('create');
         	$(".vrn-roadmap-page-foot").height(79);
         }
         if (active_sector == "vrn-roadmap-item-page" && vrnRoadmapItemPageFooter == '') { 
@@ -3154,9 +3150,11 @@ app.controller = (function () {
         	//$("#vrn-footer-nav-roadmap-item").height(79);
         }
         if (active_sector == "vrn-roadmap-visit-page" && vrnRoadmapVisitFooter == '') { 
-        	vrnRoadmapVisitFooter = controller.getFooter(active_sector);
+            alert('nav generate');
+            vrnRoadmapVisitFooter = controller.getFooter(active_sector);
         	$("#vrn-footer-nav-roadmap-visit").html('<div id="vrn-visit-valider"></div>'+vrnRoadmapVisitFooter).trigger('create');
         	//$("#vrn-footer-nav-roadmap-visit").height(79);
+        	//alert('nav generate');
         }
         if (active_sector == "vrn-pos-page" && vrnPosPageFooter == '') { 
         	vrnPosPageFooter = controller.getFooter(active_sector);
