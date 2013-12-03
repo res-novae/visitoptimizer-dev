@@ -171,7 +171,7 @@ app.controller = (function () {
             //if($( "#vrn-login-page" ).length > 0) alert("  1a");
             //else alert("1b");
            
-            if ($("#vrn-login-page").length > 0) { alert("hop");} else $.mobile.loadPage("vrn-login-page.html",false);
+            if ($("#vrn-login-page").length > 0) {} else $.mobile.loadPage("vrn-login-page.html",false);
             
             //if($( "#vrn-login-page" ).length > 0) alert("  1a");
             //else alert("1b");
