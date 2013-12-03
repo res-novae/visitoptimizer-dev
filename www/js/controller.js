@@ -320,7 +320,7 @@ app.controller = (function () {
         // POS : item detail pop //
         if(current_params_url['id_parent_pop'] == 'vrn-pos-detail-pop'){
             controller.showVrnPosDetailPop(current_params_url['id']);
-            if ($("#vrn-pos-edit-page").length > 0) {alert('vrn-pos-edit-page')} else $.mobile.loadPage("vrn-pos-edit-page.html",true);
+            if ($("#vrn-pos-edit-page").length > 0) {alert('vrn-pos-edit-page')} else $.mobile.loadPage("vrn-pos-edit-page.html",false);
         }
 
         // POS : item map pop //
