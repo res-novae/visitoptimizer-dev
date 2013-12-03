@@ -1972,7 +1972,7 @@ app.controller = (function () {
                                 for (var k=0;k<sp_answers.length;k++){
                                     if(sp_answers[k].question_id == questions[i].id_question && sp_answers[k].answer_id == questions_answer[j].id_answer) val_select = " selected";
                                 }
-                                code += '          <option value="'+questions_answer[j].id_answer+'" '+val_select+'> '+questions_answer[j].label+' </option>';
+                                code += '          <option value="'+questions_answer[j].id_answer+'" '+val_select+'> '+questions_answer[j].questions_answer_label+' </option>';
                             }
                         }
                         code += '          </select>'
@@ -1991,7 +1991,7 @@ app.controller = (function () {
                                     if(sp_answers[k].question_id == questions[i].id_question && sp_answers[k].answer_id == questions_answer[j].id_answer) val_select = " checked";
                                 }
                                 code += '          <input type="radio" name="radio-choice-'+questions[i].id_question+'" id="radio-choice-'+questions[i].id_question+'-'+questions_answer[j].id_answer+'" value="'+questions_answer[j].id_answer+'" '+val_select+' />'
-                                +'          <label for="radio-choice-'+questions[i].id_question+'-'+questions_answer[j].id_answer+'">'+questions_answer[j].label+'</label>';
+                                +'          <label for="radio-choice-'+questions[i].id_question+'-'+questions_answer[j].id_answer+'">'+questions_answer[j].questions_answer_label+'</label>';
                             }
                         }
                         +'      </fieldset>'
@@ -3154,7 +3154,7 @@ app.controller = (function () {
             vrnRoadmapVisitFooter = controller.getFooter(active_sector);
         	$("#vrn-footer-nav-roadmap-visit").html('<div id="vrn-visit-valider"></div>'+vrnRoadmapVisitFooter).trigger('create');
         	//$("#vrn-footer-nav-roadmap-visit").height(79);
-        	//alert('nav generate');
+        	// alert('nav generate');
         }
         if (active_sector == "vrn-pos-page" && vrnPosPageFooter == '') { 
         	vrnPosPageFooter = controller.getFooter(active_sector);

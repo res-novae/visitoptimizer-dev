@@ -1376,7 +1376,7 @@ app.repository = (function() {
     repository.getQuestionnaireQuestionsAnswer = function(questionnaire_id) {
         app.log('repository.getQuestionnaireQuestions : '+ questionnaire_id);
         var op_deferred = $.Deferred();
-        var rsql = "SELECT * FROM questions_answer " +
+        var rsql = "SELECT *, questions_answer.label as questions_answer_label FROM questions_answer " +
             " LEFT JOIN question ON question.id_question = questions_answer.question_id " +
             " LEFT JOIN questionnaire_question ON questionnaire_question.question_id = question.id_question " +
             " WHERE ( questionnaire_question.questionnaire_id = ?)";
@@ -1389,7 +1389,7 @@ app.repository = (function() {
                         results.rows.item(i).id_answer,
                         results.rows.item(i).translation_id, 
                         results.rows.item(i).question_id, 
-                        results.rows.item(i).label, 
+                        results.rows.item(i).questions_answer_label, 
                         results.rows.item(i).rank, 
                         results.rows.item(i).status
                     );
