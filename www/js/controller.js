@@ -186,6 +186,7 @@ app.controller = (function () {
             // taille de la vue
             $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 - 68 ) + 'px' );
             $(".vrn-view").css( "width", $(window).width() + 'px' );
+            $(window).resize(function() {
                 $(".vrn-view").css( "height" , (parseInt($(window).height(),10) - 36 - 68 ) + 'px' );
                 $(".vrn-view").css( "width", $(window).width() + 'px' );
             });
@@ -222,7 +223,6 @@ app.controller = (function () {
                     controller.showVrnRoadmapAddPage();
                     if ($("#vrn-roadmap-item-page").length > 0) {} else $.mobile.loadPage("vrn-roadmap-item-page.html",true);
                 }
-                $(window).resize(function() {
                 if($.mobile.activePage.attr('id') == 'vrn-roadmap-item-page'){
                     controller.showVrnRoadmapItemPage(current_params_url['roadmap_id']);
                     if ($("#vrn-roadmap-item-pos-edit-page").length) {} else $.mobile.loadPage("vrn-roadmap-item-pos-edit-page.html",true);
@@ -246,14 +246,14 @@ app.controller = (function () {
                 // POS //
                 if($.mobile.activePage.attr('id') == 'vrn-pos-page'){
                     controller.showVrnPosPage(e,data);
-                    if ($("#vrn-pos-edit-page").length > 0) {} else $.mobile.loadPage("vrn-pos-edit-page.html",false);
+                    if ($("#vrn-pos-edit-page").length > 0) {} else $.mobile.loadPage("vrn-pos-edit-page.html",true);
                 }
                 if($.mobile.activePage.attr('id') == 'vrn-pos-edit-page'){
                     //vrn-pos-edit-page&sales_point_id
                     //alert('-id:'+current_params_url['sales_point_id']);
                     if(typeof current_params_url['sales_point_id'] != 'undefined') controller.showVrnPosEditPage( current_params_url['sales_point_id']);
                     else controller.showVrnPosEditPage(0);
-                    if ($("#vrn-pos-page").length > 0) {} else $.mobile.loadPage("vrn-pos-page.html",false);
+                    if ($("#vrn-pos-page").length > 0) {} else $.mobile.loadPage("vrn-pos-page.html",true);
                 }
                 // Stats //
                 if($.mobile.activePage.attr('id') == 'vrn-stats-semaine-page'){
@@ -320,7 +320,6 @@ app.controller = (function () {
         // POS : item detail pop //
         if(current_params_url['id_parent_pop'] == 'vrn-pos-detail-pop'){
             controller.showVrnPosDetailPop(current_params_url['id']);
-            if ($("#vrn-pos-edit-page").length > 0) {} else $.mobile.loadPage("vrn-pos-edit-page.html",false);
         }
 
         // POS : item map pop //
